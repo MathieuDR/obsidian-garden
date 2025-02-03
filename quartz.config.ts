@@ -8,25 +8,23 @@ import * as Plugin from "./quartz/plugins"
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "🪴 Quartz 4.0",
-    pageTitleSuffix: "",
+    pageTitle: "Mathieu's digital garden",
+    pageTitleSuffix: "Thieu's garden",
     enableSPA: true,
     enablePopovers: true,
-    analytics: {
-      provider: "plausible",
-    },
-    locale: "en-US",
-    baseUrl: "quartz.jzhao.xyz",
-    ignorePatterns: ["private", "templates", ".obsidian"],
+    analytics: null,
+    locale: "en-GB",
+    baseUrl: "garden.deraedt.dev",
+    ignorePatterns: ["private", "assets/templates", ".obsidian", "archived", "Workflows", "assets/scripts", "assets/views"],
     defaultDateType: "created",
-    generateSocialImages: false,
+    generateSocialImages: true,
     theme: {
       fontOrigin: "googleFonts",
       cdnCaching: true,
       typography: {
         header: "Schibsted Grotesk",
         body: "Source Sans Pro",
-        code: "IBM Plex Mono",
+        code: "JetBrains Mono",
       },
       colors: {
         lightMode: {
@@ -58,23 +56,26 @@ const config: QuartzConfig = {
     transformers: [
       Plugin.FrontMatter(),
       Plugin.CreatedModifiedDate({
-        priority: ["frontmatter", "filesystem"],
+        priority: ["frontmatter", "git", "filesystem"],
       }),
       Plugin.SyntaxHighlighting({
         theme: {
-          light: "github-light",
-          dark: "github-dark",
+          light: "catppuccin-frappe",
+          dark: "catppuccin-mocha",
         },
-        keepBackground: false,
+        keepBackground: true,
       }),
-      Plugin.ObsidianFlavoredMarkdown({ enableInHtmlEmbed: false }),
-      Plugin.GitHubFlavoredMarkdown(),
+      Plugin.ObsidianFlavoredMarkdown({ 
+        enableInHtmlEmbed: false,
+        mermaid: false
+      }),
+      //Plugin.GitHubFlavoredMarkdown(),
       Plugin.TableOfContents(),
       Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
       Plugin.Description(),
-      Plugin.Latex({ renderEngine: "katex" }),
+      //Plugin.Latex({ renderEngine: "katex" }),
     ],
-    filters: [Plugin.RemoveDrafts()],
+    filters: [Plugin.ExplicitPublish()],
     emitters: [
       Plugin.AliasRedirects(),
       Plugin.ComponentResources(),
