@@ -14,7 +14,7 @@ const config: QuartzConfig = {
     enablePopovers: true,
     analytics: null,
     locale: "en-GB",
-    baseUrl: "garden.deraedt.dev",
+    baseUrl: "localhost:8080",
     ignorePatterns: ["private", "assets/templates", ".obsidian", "archived", "Workflows", "assets/scripts", "assets/views"],
     defaultDateType: "created",
     generateSocialImages: true,
@@ -67,9 +67,10 @@ const config: QuartzConfig = {
       }),
       Plugin.ObsidianFlavoredMarkdown({ 
         enableInHtmlEmbed: false,
-        mermaid: false
+        mermaid: false,
+        enableCheckbox: true
       }),
-      //Plugin.GitHubFlavoredMarkdown(),
+      Plugin.GitHubFlavoredMarkdown(),
       Plugin.TableOfContents(),
       Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
       Plugin.Description(),
