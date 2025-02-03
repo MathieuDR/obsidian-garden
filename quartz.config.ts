@@ -8,13 +8,14 @@ import * as Plugin from "./quartz/plugins"
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "Mathieu's digital garden",
-    pageTitleSuffix: "Thieu's garden",
+    pageTitle: "T's Garden",
+    pageTitleSuffix: " - Thieu's garden",
     enableSPA: true,
     enablePopovers: true,
     analytics: null,
     locale: "en-GB",
     baseUrl: "localhost:8080",
+    // baseUrl: "garden.deraedt.dev",
     ignorePatterns: ["private", "assets/templates", ".obsidian", "archived", "Workflows", "assets/scripts", "assets/views"],
     defaultDateType: "created",
     generateSocialImages: true,

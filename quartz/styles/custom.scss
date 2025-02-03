@@ -1,2 +1,25 @@
 @use "./base.scss";
-@use "./themes"
+@use "./themes";
+
+
+:root[saved-theme="light"],
+:root[saved-theme="dark"] {
+  --ctp-accent: var(--ctp-mauve);
+}
+
+h1 {
+  color: rgb(var(--ctp-accent))
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: rgb(var(--ctp-subtext0))
+}
+
+.breadcrumb-element>a,
+.breadcrumb-element>p {
+  color: rgb(var(--ctp-peach))
+}
