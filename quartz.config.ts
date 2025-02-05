@@ -14,8 +14,8 @@ const config: QuartzConfig = {
     enablePopovers: true,
     analytics: null,
     locale: "en-GB",
-    baseUrl: "localhost:8080",
-    // baseUrl: "garden.deraedt.dev",
+    // baseUrl: "localhost:8080",
+    baseUrl: "garden.deraedt.dev",
     ignorePatterns: ["private", "assets/templates", ".obsidian", "archived", "Workflows", "assets/scripts", "assets/views"],
     defaultDateType: "created",
     generateSocialImages: true,
@@ -59,6 +59,10 @@ const config: QuartzConfig = {
       Plugin.CreatedModifiedDate({
         priority: ["frontmatter", "git", "filesystem"],
       }),
+      Plugin.TranscludeUnpublished({
+        debug: true,
+        commonDirectories: ["slips/", "fleeting/", "fleeting/clippings"]
+      }),
       Plugin.SyntaxHighlighting({
         theme: {
           light: "catppuccin-frappe",
@@ -69,6 +73,7 @@ const config: QuartzConfig = {
       Plugin.ObsidianFlavoredMarkdown({ 
         enableInHtmlEmbed: false,
         mermaid: false,
+        parseBlockReferences: true,
         enableCheckbox: true
       }),
       Plugin.GitHubFlavoredMarkdown(),

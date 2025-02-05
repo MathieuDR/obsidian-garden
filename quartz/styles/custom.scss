@@ -8,7 +8,7 @@
 }
 
 h1 {
-  color: rgb(var(--ctp-accent))
+  color: rgb(var(--ctp-accent));
 }
 
 h2,
@@ -16,10 +16,18 @@ h3,
 h4,
 h5,
 h6 {
-  color: rgb(var(--ctp-subtext0))
+  color: rgb(var(--ctp-subtext0));
 }
 
 .breadcrumb-element>a,
 .breadcrumb-element>p {
-  color: rgb(var(--ctp-peach))
+  color: rgb(var(--ctp-peach));
+}
+
+@media (max-width: 800px) {
+
+  .page>#quartz-body .sidebar.left:has(.explorer),
+  .explorer #explorer-content {
+    background-color: unset;
+  }
 }
