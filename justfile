@@ -3,7 +3,7 @@ default:
     @just --list
 
 # Variables
-IMAGE_NAME := "ghcr.io/mathieudr/obsidian-gardn"
+IMAGE_NAME := "ghcr.io/mathieudr/obsidian-garden"
 TAG := "latest"
 DOCKERFILE := "Dockerfile"
 

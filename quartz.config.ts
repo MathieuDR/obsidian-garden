@@ -14,7 +14,6 @@ const config: QuartzConfig = {
     enablePopovers: true,
     analytics: null,
     locale: "en-GB",
-    // baseUrl: "localhost:8080",
     baseUrl: "garden.deraedt.dev",
     ignorePatterns: ["private", "assets/templates", ".obsidian", "archived", "Workflows", "assets/scripts", "assets/views"],
     defaultDateType: "created",
@@ -80,7 +79,6 @@ const config: QuartzConfig = {
       Plugin.TableOfContents(),
       Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
       Plugin.Description(),
-      //Plugin.Latex({ renderEngine: "katex" }),
     ],
     filters: [Plugin.ExplicitPublish()],
     emitters: [
