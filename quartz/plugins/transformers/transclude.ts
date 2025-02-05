@@ -96,11 +96,6 @@ export const TranscludeUnpublished: QuartzTransformerPlugin<Partial<Options>> = 
                   const anchor = rawHeader?.trim() ?? ""
                   const alias = rawAlias?.trim()
 
-                  // TO DEBUG CURRENTLY
-                  // if (fp != "1720280217-return-of-the-lazy-dungeon-master" || alias != "Inspirationa") {
-                  //   return false
-                  // }
-
                   debug('Looking for, trimmed:', fp)
                   const fileData = findAndReadFile(fp)
                   if (!fileData) {
