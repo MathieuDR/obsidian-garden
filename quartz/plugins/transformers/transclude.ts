@@ -27,8 +27,6 @@ export const TranscludeUnpublished: QuartzTransformerPlugin<Partial<Options>> = 
     name: "TranscludeUnpublished",
     markdownPlugins(ctx) {
 
-      // const baseProcessor = unified().use(markdown).freeze()
-
       return [
         () => {
           return async (tree: Root, file) => {
@@ -36,16 +34,13 @@ export const TranscludeUnpublished: QuartzTransformerPlugin<Partial<Options>> = 
             const currentDir = dirname(file.data.relativePath)
             
             const debug = (...args: any[]) => {
-              if (opts.debug) {
+              if (ctx.argv.verbose) {
                 console.log(`[TranscludeUnpublished][${currentSlug}]`, ...args)
               }
             }
 
             const parseMdast =  (content: string): Root => {
-              const a = fromMarkdown(content)?.children[0] ?? null
-              // const err = JSON.stringify(a)
-              // throw new Error(err)
-              return a;
+              return fromMarkdown(content)?.children[0] ?? null
             }
 
             const findBlock = (content: string, blockRef: string): string | null => {

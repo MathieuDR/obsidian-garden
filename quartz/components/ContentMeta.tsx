@@ -12,11 +12,15 @@ interface ContentMetaOptions {
    */
   showReadingTime: boolean
   showComma: boolean
+  showInProgress: boolean
+  showInComplete: boolean
 }
 
 const defaultOptions: ContentMetaOptions = {
   showReadingTime: true,
   showComma: true,
+  showInProgress: true,
+  showIncomplete: true,
 }
 
 export default ((opts?: Partial<ContentMetaOptions>) => {
@@ -40,6 +44,18 @@ export default ((opts?: Partial<ContentMetaOptions>) => {
           minutes: Math.ceil(minutes),
         })
         segments.push(<span>{displayedTime}</span>)
+      }
+
+      if(options.showInProgress && fileData?.frontmatter["in-progress"]){
+        segments.push(<span class="in-progress">In progress</span>)
+      }
+
+      if(options.showIncomplete && Object.hasOwn(fileData.frontmatter, "incomplete")){
+        if(!fileData.frontmatter.incomplete){
+          segments.push(<span class="complete">completed note</span>)
+        } else {
+          segments.push(<span class="incomplete">incomplete note</span>)
+        }
       }
 
       return (

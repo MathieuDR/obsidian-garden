@@ -20,4 +20,4 @@ push:
     docker push {{IMAGE_NAME}}:{{TAG}}
 	
 server:
-    docker run --rm -itp 8080:8080 $(docker build -q .)
+    npx quartz build --concurrency 6 --serve

@@ -420,10 +420,7 @@ export const ObsidianFlavoredMarkdown: QuartzTransformerPlugin<Partial<Options>>
                 return
               }
 
-              console.log(node)
-
               const text = firstChild.children[0].value
-              console.log(text)
               const restOfTitle = firstChild.children.slice(1)
               const [firstLine, ...remainingLines] = text.split("\n")
               const remainingText = remainingLines.join("\n")

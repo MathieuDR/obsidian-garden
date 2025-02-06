@@ -26,7 +26,6 @@
           ];
           shellHook = ''
             npm i
-            npx quartz build --concurrency 6 --serve
           '';
         };
       };

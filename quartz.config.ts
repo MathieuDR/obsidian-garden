@@ -17,7 +17,9 @@ const config: QuartzConfig = {
     baseUrl: "garden.deraedt.dev",
     ignorePatterns: ["private", "assets/templates", ".obsidian", "archived", "Workflows", "assets/scripts", "assets/views"],
     defaultDateType: "created",
-    generateSocialImages: true,
+    generateSocialImages: {
+      colorScheme: "darkMode",
+    },
     theme: {
       fontOrigin: "googleFonts",
       cdnCaching: true,
