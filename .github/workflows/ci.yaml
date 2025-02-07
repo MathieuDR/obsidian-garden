@@ -15,7 +15,29 @@ env:
   PACKAGE_NAME: ${{ github.event.repository.name }}
 
 jobs:
+  update-submodule:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'repository_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.PAT_TOKEN }}
+          submodules: true
+      
+      - name: Update submodule
+        run: |
+          cd content
+          git pull origin main
+          cd ..
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add content
+          git commit -m "Update Obsidian submodule"
+          git push
+
   build-push-and-cleanup:
+    needs: [update-submodule]
     runs-on: ubuntu-latest
     permissions:
       contents: read
