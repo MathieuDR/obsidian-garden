@@ -1,9 +1,10 @@
-name: Build, Push, and Cleanup Docker Images
+name: Build, Push and Pull Docker Image
 
 on:
   workflow_dispatch:
-  repository_dispatch:
-    types: [content-update]
+  push:
+    branches:
+      - v4
 
 env:
   REGISTRY: ghcr.io
@@ -11,30 +12,7 @@ env:
   PACKAGE_NAME: ${{ github.event.repository.name }}
 
 jobs:
-  update-submodule:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'repository_dispatch'
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.PAT_TOKEN }}
-      
-      - name: Update submodule
-        run: |
-          git config --global url."https://${{ secrets.PAT_TOKEN }}@github.com/".insteadOf "https://github.com/"
-          git submodule init
-          git submodule update
-          cd content
-          git pull origin main
-          cd ..
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          git add content
-          git commit -m "Update Obsidian submodule"
-          git push
-
   build-push-and-cleanup:
-    needs: [update-submodule]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -54,7 +32,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Extract metadata (tags, labels) for Docker
+    - name: Extract metadata
       id: meta
       uses: docker/metadata-action@v5
       with:
