@@ -21,3 +21,6 @@ push:
 	
 server:
     npx quartz build --concurrency 6 --serve
+
+docker-server:
+    docker run --rm -itp 8080:8080 $(docker build -q .)
