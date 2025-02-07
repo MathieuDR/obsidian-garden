@@ -1,6 +1,8 @@
 name: Build, Push, and Cleanup Docker Images
 
 on:
+  push:
+    branches: [ "v4" ]
   pull_request:
     branches: [ "v4" ]
   workflow_dispatch:
