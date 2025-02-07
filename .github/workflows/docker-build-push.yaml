@@ -3,7 +3,8 @@ name: Docker build & push image
 on:
   push:
     branches: [v4]
-    tags: ["v*"]
+    paths-ignore:
+      - '.github/**'
   pull_request:
     branches: [v4]
     paths:
