@@ -17,12 +17,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 1
           token: ${{ secrets.PAT_TOKEN }}
-          submodules: true
       
       - name: Update submodule
         run: |
+          git submodule init
+          git submodule update
           cd content
           git pull origin main
           cd ..
@@ -43,7 +43,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        fetch-depth: 1
         submodules: true
         token: ${{ secrets.PAT_TOKEN }}
 
