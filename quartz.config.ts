@@ -84,6 +84,9 @@ const config: QuartzConfig = {
     ],
     filters: [Plugin.ExplicitPublish()],
     emitters: [
+      Plugin.TimelinePage({
+        limit: 100
+      }),
       Plugin.AliasRedirects(),
       Plugin.ComponentResources(),
       Plugin.ContentPage(),
@@ -91,7 +94,6 @@ const config: QuartzConfig = {
       Plugin.TagPage(),
       Plugin.ContentIndex({
         enableSiteMap: true,
-        enableRSS: true,
       }),
       Plugin.Assets(),
       Plugin.Static(),
