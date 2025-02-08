@@ -10,7 +10,7 @@ import { FilePath, pathToRoot } from "../../util/path"
 import { write } from "./helpers"
 
 interface TimelineEvent {
-  type: 'created' | 'modified' | 'combined'
+  type: "created" | "modified" | "combined"
   date: Date
   slug: string
   title: string
@@ -28,78 +28,80 @@ function createTimelineEvents(fileData: any): TimelineEvent[] {
 
   if (fileData.dates?.created) {
     events.push({
-      type: 'created',
+      type: "created",
       date: new Date(fileData.dates.created),
       slug: fileData.slug,
-      title: fileData.title
+      title: fileData.title,
     })
   }
-  
+
   if (fileData.dates?.modified) {
     events.push({
-      type: 'modified',
+      type: "modified",
       date: new Date(fileData.dates.modified),
       slug: fileData.slug,
-      title: fileData.title
+      title: fileData.title,
     })
   }
-  
-  return [  ...events ]
+
+  return [...events]
 }
 
 function compactEvents(events: TimelineEvent[]): TimelineEvent[] {
   const compacted: TimelineEvent[] = []
   let i = 0
-  
+
   while (i < events.length) {
     const current = events[i]
     const next = events[i + 1]
-    
+
     if (
-      next && 
-      current.slug === next.slug && 
+      next &&
+      current.slug === next.slug &&
       Math.abs(current.date.getTime() - next.date.getTime()) < 1000 * 60 * 60 * 12 // 12 hour threshold
     ) {
       compacted.push({
-        type: 'combined',
+        type: "combined",
         date: new Date(Math.max(current.date.getTime(), next.date.getTime())),
         slug: current.slug,
-        title: current.title
+        title: current.title,
       })
       i += 2
     } else {
       compacted.push({
         ...current,
-        date: new Date(current.date.getTime())});
+        date: new Date(current.date.getTime()),
+      })
       i++
     }
   }
-  
+
   return [...compacted]
 }
 
-const getTimelineEvents = (content: [string, { data: any }][],
+const getTimelineEvents = (
+  content: [string, { data: any }][],
   disallowedSlugs: Set<string>,
-  disallowedTags: Set<string>) => {
+  disallowedTags: Set<string>,
+) => {
   const filteredContent = content
     .filter(([_, file]) => {
-      const { data } = file;
-      return !disallowedSlugs.has(data.slug) && 
-             !data.tags?.some(tag => disallowedTags.has(tag));
+      const { data } = file
+      return !disallowedSlugs.has(data.slug) && !data.tags?.some((tag) => disallowedTags.has(tag))
     })
     .map(([_, file]) => ({
       slug: file.data.slug,
       title: file.data.frontmatter?.title || file.data.frontmatter?.aliases[0],
-      dates: { ...file.data.dates } 
-    }));
+      dates: { ...file.data.dates },
+    }))
 
   // Create new array of timeline events
   const events = filteredContent
-    .flatMap(fileData => createTimelineEvents(fileData))
-    .sort((a, b) => b.date.getTime() - a.date.getTime());
+    .flatMap((fileData) => createTimelineEvents(fileData))
+    .sort((a, b) => b.date.getTime() - a.date.getTime())
 
-  return compactEvents(events);
-};
+  return compactEvents(events)
+}
 
 export const TimelinePage: QuartzEmitterPlugin<Options> = (userOpts) => {
   const opts: FullPageLayout = {
@@ -137,8 +139,11 @@ export const TimelinePage: QuartzEmitterPlugin<Options> = (userOpts) => {
       const disallowedSlugs = new Set(userOpts?.disallowedSlugs ?? [])
       const disallowedTags = new Set(userOpts?.disallowedTags ?? [])
 
-
-      const compactedEvents = getTimelineEvents([...content], disallowedSlugs, disallowedTags).slice(0, limit)
+      const compactedEvents = getTimelineEvents(
+        [...content],
+        disallowedSlugs,
+        disallowedTags,
+      ).slice(0, limit)
       const timelinePageData = {
         slug,
         frontmatter: { title: "Timeline" },
@@ -151,7 +156,7 @@ export const TimelinePage: QuartzEmitterPlugin<Options> = (userOpts) => {
         externalResources: pageResources(pathToRoot(slug), timelinePageData, resources),
         cfg,
         children: compactedEvents,
-        tree: { type: 'root', children: [] },
+        tree: { type: "root", children: [] },
         allFiles,
       }
 
@@ -160,15 +165,17 @@ export const TimelinePage: QuartzEmitterPlugin<Options> = (userOpts) => {
         slug,
         componentData,
         opts,
-        componentData.externalResources
+        componentData.externalResources,
       )
 
-      return [await write({
-        ctx,
-        content: pageContent,
-        slug,
-        ext: ".html",
-      })]
+      return [
+        await write({
+          ctx,
+          content: pageContent,
+          slug,
+          ext: ".html",
+        }),
+      ]
     },
   }
 }

@@ -46,12 +46,12 @@ export default ((opts?: Partial<ContentMetaOptions>) => {
         segments.push(<span>{displayedTime}</span>)
       }
 
-      if(options.showInProgress && fileData?.frontmatter["in-progress"]){
+      if (options.showInProgress && fileData?.frontmatter["in-progress"]) {
         segments.push(<span class="in-progress">In progress</span>)
       }
 
-      if(options.showIncomplete && Object.hasOwn(fileData.frontmatter, "incomplete")){
-        if(!fileData.frontmatter.incomplete){
+      if (options.showIncomplete && Object.hasOwn(fileData.frontmatter, "incomplete")) {
+        if (!fileData.frontmatter.incomplete) {
           segments.push(<span class="complete">completed note</span>)
         } else {
           segments.push(<span class="incomplete">incomplete note</span>)

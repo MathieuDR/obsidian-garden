@@ -64,15 +64,16 @@ export const FrontMatter: QuartzTransformerPlugin<Partial<Options>> = (userOpts)
 
             if (data.title != null && data.title.toString() !== "") {
               data.title = data.title.toString()
-            } if (aliases) {
+            }
+            if (aliases) {
               data.title = aliases[0]
             } else {
               data.title = file.stem ?? i18n(cfg.configuration.locale).propertyDefaults.title
             }
 
             let tags = coerceToArray(coalesceAliases(data, ["tags", "tag"]))
-            if (tags){
-              tags = tags.filter(t => !filterTags.includes(t))
+            if (tags) {
+              tags = tags.filter((t) => !filterTags.includes(t))
               data.tags = [...new Set(tags.map((tag: string) => slugTag(tag)))]
             }
 

@@ -8,7 +8,7 @@ export const sharedPageComponents: SharedLayout = {
   afterBody: [],
   footer: Component.Footer({
     links: {
-      Home: "https://garden.deraedt.dev"
+      Home: "https://garden.deraedt.dev",
     },
   }),
 }
@@ -19,7 +19,7 @@ export const defaultContentPageLayout: PageLayout = {
     Component.Breadcrumbs(),
     Component.ArticleTitle(),
     Component.ContentMeta({
-      showReadingTime: false
+      showReadingTime: false,
     }),
     Component.MediaMeta(),
     Component.TagList(),
@@ -28,7 +28,7 @@ export const defaultContentPageLayout: PageLayout = {
     Component.PageTitle(),
     Component.MobileOnly(Component.Spacer()),
     Component.Search(),
-    Component.Explorer()
+    Component.Explorer(),
   ],
   right: [
     Component.Darkmode(),

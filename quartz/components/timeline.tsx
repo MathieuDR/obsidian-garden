@@ -1,26 +1,26 @@
 import { QuartzComponentConstructor, QuartzComponentProps } from "./types"
 
 interface TimelineEvent {
-  type: 'created' | 'modified' | 'combined'
+  type: "created" | "modified" | "combined"
   date: Date
   slug: string
   title: string
 }
 
 function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   }).format(date)
 }
 
 export default (() => {
   function Timeline(props: QuartzComponentProps) {
     const { children: events } = props
-    
+
     if (events.length === 0) {
       return (
         <div class="timeline">
@@ -36,21 +36,17 @@ export default (() => {
         <div class="timeline-container">
           {events.map((event, i) => (
             <div key={`${event.slug}-${event.type}-${i}`} class="timeline-event">
-              <div class="timeline-date">
-                {formatDate(event.date)}
-              </div>
+              <div class="timeline-date">{formatDate(event.date)}</div>
               <div class="timeline-content">
                 <a href={"/" + event.slug} class="timeline-title">
                   {event.title}
                 </a>
                 <div class="timeline-type">
-                  {event.type === 'combined' ? (
-                    "Created and modified"
-                  ) : event.type === 'created' ? (
-                    "Created"
-                  ) : (
-                    "Last modified"
-                  )}
+                  {event.type === "combined"
+                    ? "Created and modified"
+                    : event.type === "created"
+                      ? "Created"
+                      : "Last modified"}
                 </div>
               </div>
             </div>

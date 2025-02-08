@@ -15,7 +15,15 @@ const config: QuartzConfig = {
     analytics: null,
     locale: "en-GB",
     baseUrl: "garden.deraedt.dev",
-    ignorePatterns: ["private", "assets/templates", ".obsidian", "archived", "Workflows", "assets/scripts", "assets/views"],
+    ignorePatterns: [
+      "private",
+      "assets/templates",
+      ".obsidian",
+      "archived",
+      "Workflows",
+      "assets/scripts",
+      "assets/views",
+    ],
     defaultDateType: "modified",
     generateSocialImages: {
       colorScheme: "darkMode",
@@ -62,7 +70,7 @@ const config: QuartzConfig = {
       }),
       Plugin.TranscludeUnpublished({
         debug: true,
-        commonDirectories: ["slips/", "fleeting/", "fleeting/clippings"]
+        commonDirectories: ["slips/", "fleeting/", "fleeting/clippings"],
       }),
       Plugin.SyntaxHighlighting({
         theme: {
@@ -71,11 +79,11 @@ const config: QuartzConfig = {
         },
         keepBackground: true,
       }),
-      Plugin.ObsidianFlavoredMarkdown({ 
+      Plugin.ObsidianFlavoredMarkdown({
         enableInHtmlEmbed: false,
         mermaid: false,
         parseBlockReferences: true,
-        enableCheckbox: true
+        enableCheckbox: true,
       }),
       Plugin.GitHubFlavoredMarkdown(),
       Plugin.TableOfContents(),
@@ -85,7 +93,7 @@ const config: QuartzConfig = {
     filters: [Plugin.ExplicitPublish()],
     emitters: [
       Plugin.TimelinePage({
-        limit: 100
+        limit: 100,
       }),
       Plugin.AliasRedirects(),
       Plugin.ComponentResources(),

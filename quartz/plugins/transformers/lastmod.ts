@@ -26,14 +26,17 @@ function coerceDate(fp: string, d: any): Date {
   return invalidDate ? new Date() : dt
 }
 
-async function initializeRepository(cwd: string, debug: (message: string, ...args: any[]) => void): Promise<{
-  mainRepo: Repository | undefined,
+async function initializeRepository(
+  cwd: string,
+  debug: (message: string, ...args: any[]) => void,
+): Promise<{
+  mainRepo: Repository | undefined
   subRepo: Repository | undefined
 }> {
   try {
     debug("Initializing repositories...")
     debug("Working directory:", cwd)
-    
+
     // Initialize main repository
     let mainRepo: Repository | undefined
     try {
@@ -45,10 +48,10 @@ async function initializeRepository(cwd: string, debug: (message: string, ...arg
     } catch (error) {
       console.error(chalk.red("✗ Failed to initialize main repo:"), error)
     }
-    
+
     // Initialize content submodule repository
     let subRepo: Repository | undefined
-    const contentPath = path.join(cwd, 'content')
+    const contentPath = path.join(cwd, "content")
     try {
       if (fs.existsSync(contentPath)) {
         subRepo = new Repository(contentPath)
@@ -60,7 +63,7 @@ async function initializeRepository(cwd: string, debug: (message: string, ...arg
     } catch (error) {
       console.error(chalk.red("✗ Failed to initialize content submodule repo:"), error)
     }
-    
+
     return { mainRepo, subRepo }
   } catch (error) {
     console.error(chalk.red("Repository initialization failed:"), error)
@@ -76,8 +79,8 @@ export const CreatedModifiedDate: QuartzTransformerPlugin<Partial<Options>> = (u
     markdownPlugins(ctx) {
       return [
         () => {
-          let repos: { mainRepo?: Repository, subRepo?: Repository } = {}
-          
+          let repos: { mainRepo?: Repository; subRepo?: Repository } = {}
+
           // Moved debug function to higher scope
           const debug = (message: string, ...args: any[]) => {
             if (ctx.argv.verbose) {
@@ -110,26 +113,25 @@ export const CreatedModifiedDate: QuartzTransformerPlugin<Partial<Options>> = (u
 
                   // Determine which repository to use and adjust file path
                   const relativePath = path.relative(file.cwd, fullFp)
-                  const isInContent = relativePath.startsWith('content/')
+                  const isInContent = relativePath.startsWith("content/")
                   const activeRepo = isInContent ? repos.subRepo : repos.mainRepo
-                  
+
                   debug("Processing file:", relativePath)
                   debug("Using repository:", isInContent ? "content submodule" : "main")
-                  
+
                   if (!activeRepo) {
                     throw new Error(`No valid repository found for ${relativePath}`)
                   }
 
                   // Convert file path to be relative to the appropriate repository root
-                  const repoRelativePath = isInContent 
-                    ? path.relative(path.join(file.cwd, 'content'), fullFp)
+                  const repoRelativePath = isInContent
+                    ? path.relative(path.join(file.cwd, "content"), fullFp)
                     : relativePath
 
                   debug("Repository-relative path:", repoRelativePath)
-                  
+
                   modified ||= await activeRepo.getFileLatestModifiedDateAsync(repoRelativePath)
                   debug("✓ Successfully got modified date")
-
                 } catch (error) {
                   console.error(chalk.red("\nGit operation failed:"), error)
                   console.error("File path:", fp)
