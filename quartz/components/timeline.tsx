@@ -19,17 +19,11 @@ function formatDate(date: Date): string {
 
 export default (() => {
   function Timeline(props: QuartzComponentProps) {
-    const { allFiles: events } = props
-    
-    // Debug logging
-    console.log('Timeline props:', props)
-    console.log('All files:', events)
-
+    const { children: events } = props
     
     if (events.length === 0) {
       return (
         <div class="timeline">
-          <h1>Timeline</h1>
           <div class="timeline-container">
             <div class="timeline-event">No events found</div>
           </div>
@@ -39,7 +33,6 @@ export default (() => {
 
     return (
       <div class="timeline">
-        <h1>Timeline</h1>
         <div class="timeline-container">
           {events.map((event, i) => (
             <div key={`${event.slug}-${event.type}-${i}`} class="timeline-event">
