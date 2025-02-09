@@ -16,10 +16,11 @@ import {
   simplifySlug,
 } from "../../util/path"
 import { defaultListPageLayout, sharedPageComponents } from "../../../quartz.layout"
-import { FolderContent } from "../../components"
+import { Timeline } from "../../components"
 import { write } from "./helpers"
 import { i18n } from "../../i18n"
 import DepGraph from "../../depgraph"
+import { getTimelineEvents } from "../../util/timeline"
 
 interface FolderPageOptions extends FullPageLayout {
   sort?: (f1: QuartzPluginData, f2: QuartzPluginData) => number
@@ -29,7 +30,7 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
   const opts: FullPageLayout = {
     ...sharedPageComponents,
     ...defaultListPageLayout,
-    pageBody: FolderContent({ sort: userOpts?.sort }),
+    pageBody: Timeline(),
     ...userOpts,
   }
 
@@ -54,9 +55,6 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
       ]
     },
     async getDependencyGraph(_ctx, content, _resources) {
-      // Example graph:
-      // nested/file.md --> nested/index.html
-      // nested/file2.md ------^
       const graph = new DepGraph<FilePath>()
 
       content.map(([_tree, vfile]) => {
@@ -108,20 +106,31 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
         const slug = joinSegments(folder, "index") as FullSlug
         const [tree, file] = folderDescriptions[folder]
         const externalResources = pageResources(pathToRoot(slug), file.data, resources)
+
+        const timelineEvents = getTimelineEvents(
+          content,
+          new Set(),
+          new Set(),
+          false
+        ).filter(event => {
+          if (folder === ".") return true
+          return (event.type === "created") && event.folder === folder
+        })
+
         const componentData: QuartzComponentProps = {
           ctx,
           fileData: file.data,
           externalResources,
           cfg,
-          children: [],
+          children: timelineEvents,
           tree,
           allFiles,
         }
 
-        const content = renderPage(cfg, slug, componentData, opts, externalResources)
+        const pageContent = renderPage(cfg, slug, componentData, opts, externalResources)
         const fp = await write({
           ctx,
-          content,
+          content: pageContent,
           slug,
           ext: ".html",
         })
