@@ -24,8 +24,16 @@ h6 {
   color: rgb(var(--ctp-peach));
 }
 
-p.content-meta {
+ul.tags {
+  li:first-child {
+    a {
+      margin-left: 0;
+      padding-left: 0;
+    }
+  }
+}
 
+p.content-meta {
   span.in-progress,
   span.incomplete {
     color: rgb(var(--ctp-maroon));

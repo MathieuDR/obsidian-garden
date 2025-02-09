@@ -1,51 +1,76 @@
 import { QuartzComponentConstructor, QuartzComponentProps } from "./types"
+import { classNames } from "../util/lang"
+import { pathToRoot, slugTag } from "../util/path"
+import { Date as DateComponent } from "./Date"
+import { ValidLocale } from "../i18n"
 
 interface TimelineEvent {
   type: "created" | "modified"
   date: Date
   slug: string
   title: string
+  tags?: string[]
+  folder?: string
 }
 
-function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date)
+function EventTags({ tags, slug }: { tags?: string[], slug: string }) {
+  if (!tags || tags.length === 0) return null
+  
+  const baseDir = pathToRoot(slug)
+  return (
+    <ul className="tags">
+      {tags.map((tag) => {
+        const linkDest = baseDir + `/tags/${slugTag(tag)}`
+        return (
+          <li key={tag}>
+            <a href={linkDest} className="internal tag-link">
+              {tag}
+            </a>
+          </li>
+        )
+      })}
+    </ul>
+  )
 }
 
 export default (() => {
   function Timeline(props: QuartzComponentProps) {
-    const { children: events } = props
-
+    const { children: events, cfg } = props
+    const locale = cfg?.locale as ValidLocale | undefined
+    
     if (events.length === 0) {
       return (
-        <div class="timeline">
-          <div class="timeline-container">
-            <div class="timeline-event">No events found</div>
+        <div className="timeline">
+          <div className="timeline-container">
+            <div className="timeline-event">No events found</div>
           </div>
         </div>
       )
     }
 
     return (
-      <div class="timeline">
-        <div class="timeline-container">
-          {events.map((event, i) => (
-            <div key={`${event.slug}-${event.type}-${i}`} class="timeline-event">
-              <div class="timeline-date">{formatDate(event.date)}</div>
-              <div class="timeline-content">
-                <a href={"/" + event.slug} class="timeline-title">
-                  {event.title}
-                </a>
-                <div class="timeline-type">
-                  { event.type === "created"
-                      ? "Created"
-                      : "Last modified"}
+      <div className="timeline">
+        <div className="timeline-container">
+          {events.map((event: TimelineEvent, i) => (
+            <div key={`${event.slug}-${event.type}-${i}`} className="timeline-event">
+              <div className="timeline-date">
+                <DateComponent date={event.date} locale={locale} />
+              </div>
+              <div className="timeline-content">
+                <div className="timeline-header">
+                  <a href={"/" + event.slug} className="timeline-title">
+                    {event.title}
+                  </a>
+                  <div className="timeline-type">
+                    {event.type === "created" ? "Created" : "Last modified"}
+                  </div>
                 </div>
+                {event.folder && (
+                  <div className="timeline-folder">
+                    {event.folder}
+                  </div>
+                )}
+                <EventTags tags={event.tags} slug={event.slug} />
               </div>
             </div>
           ))}
@@ -84,12 +109,17 @@ export default (() => {
       flex: 1;
     }
     
+    .timeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.5rem;
+    }
+    
     .timeline-title {
       font-weight: 600;
       color: rgb(var(--ctp-accent));
       text-decoration: none;
-      display: block;
-      margin-bottom: 0.25rem;
     }
     
     .timeline-title:hover {
@@ -99,6 +129,36 @@ export default (() => {
     .timeline-type {
       font-size: 0.9em;
       color: rgb(var(--ctp-subtext0));
+    }
+
+    .timeline-folder {
+      font-size: 0.9em;
+      color: rgb(var(--ctp-subtext1));
+      margin-bottom: 0.5rem;
+    }
+    
+    .tags {
+      list-style: none;
+      display: flex;
+      padding-left: 0;
+      gap: 0.4rem;
+      margin: 0.5rem 0 0 0;
+      flex-wrap: wrap;
+    }
+    
+    .tags > li {
+      display: inline-block;
+      white-space: nowrap;
+      margin: 0;
+      overflow-wrap: normal;
+    }
+    
+    .internal.tag-link {
+      border-radius: 8px;
+      background-color: var(--highlight);
+      padding: 0.2rem 0.4rem;
+      margin: 0;
+      font-size: 0.9em;
     }
   `
 
