@@ -4,6 +4,7 @@ import { visit } from "unist-util-visit"
 import { ReplaceFunction, findAndReplace } from "mdast-util-find-and-replace"
 import { FilePath, pathToRoot, slugTag, slugifyFilePath, FullSlug } from "../../util/path"
 import { dirname, join } from "path"
+import { QuartzLogger } from "../../util/log"
 import { readFileSync } from "fs"
 import yaml from "js-yaml"
 import markdown from "remark-parse"
@@ -31,12 +32,7 @@ export const TranscludeUnpublished: QuartzTransformerPlugin<Partial<Options>> = 
           return async (tree: Root, file) => {
             const currentSlug = file.data.slug! as FullSlug
             const currentDir = dirname(file.data.relativePath)
-
-            const debug = (...args: any[]) => {
-              if (ctx.argv.verbose) {
-                console.log(`[TranscludeUnpublished][${currentSlug}]`, ...args)
-              }
-            }
+            const debug = new QuartzLogger(ctx.argv.verbose).createDebug(`TranscludeUnpublished[${currentSlug}]`)
 
             const parseMdast = (content: string): Root => {
               return fromMarkdown(content)?.children[0] ?? null

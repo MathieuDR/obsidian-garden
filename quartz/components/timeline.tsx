@@ -77,6 +77,7 @@ export default (() => {
     .timeline {
       width: 100%;
       margin: 4rem 0;
+      grid-area: grid-center;
     }
     
     .timeline-container {

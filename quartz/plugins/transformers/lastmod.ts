@@ -2,6 +2,7 @@ import fs from "fs"
 import path from "path"
 import { Repository } from "@napi-rs/simple-git"
 import { QuartzTransformerPlugin } from "../types"
+import { QuartzLogger } from "../../util/log"
 import chalk from "chalk"
 
 function parseCustomDateFormat(dateStr: string): Date | null {
@@ -77,12 +78,7 @@ export const CreatedModifiedDate: QuartzTransformerPlugin<Partial<Options>> = (u
       return [
         () => {
           let repos: { mainRepo?: Repository; subRepo?: Repository } = {}
-
-          const debug = (message: string, ...args: any[]) => {
-            if (ctx.argv.verbose) {
-              console.log(chalk.blue(`[CreatedModifiedDate] ${message}`), ...args)
-            }
-          }
+          const debug = new QuartzLogger(ctx.argv.verbose).createDebug("LastMod")
 
           return async (_tree, file) => {
             let created: MaybeDate = undefined

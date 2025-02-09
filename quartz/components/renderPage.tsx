@@ -1,6 +1,8 @@
 import { render } from "preact-render-to-string"
 import { QuartzComponent, QuartzComponentProps } from "./types"
 import HeaderConstructor from "./Header"
+import { QuartzLogger } from "../util/log"
+import chalk from "chalk"
 import BodyConstructor from "./Body"
 import { JSResourceToScriptElement, StaticResources } from "../util/resources"
 import { clone, FullSlug, RelativeURL, joinSegments, normalizeHastElement } from "../util/path"
@@ -87,6 +89,8 @@ export function renderPage(
   // make a deep copy of the tree so we don't remove the transclusion references
   // for the file cached in contentMap in build.ts
   const root = clone(componentData.tree) as Root
+  const debug = new QuartzLogger(false).createDebug("RenderPage")
+  debug(chalk.blue, "Rendering page:", slug)
 
   // process transcludes in componentData
   visit(root, "element", (node, _index, _parent) => {
@@ -236,11 +240,14 @@ export function renderPage(
     </div>
   )
 
+  debug(chalk.red, "  ↳ right", right)
+  // debug(chalk.red, "  ↳ left", left)
+
   const lang = componentData.fileData.frontmatter?.lang ?? cfg.locale?.split("-")[0] ?? "en"
   const doc = (
     <html lang={lang}>
       <Head {...componentData} />
-      <body data-slug={slug}>
+      <body data-slug={slug} data-has-right={right.length > 0}>
         <div id="quartz-root" class="page">
           <Body {...componentData}>
             {LeftComponent}
@@ -265,7 +272,7 @@ export function renderPage(
                 ))}
               </div>
             </div>
-            {RightComponent}
+            {right.length > 0 && RightComponent}
             <Footer {...componentData} />
           </Body>
         </div>

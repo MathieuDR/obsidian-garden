@@ -4,11 +4,13 @@ import HeaderConstructor from "../../components/Header"
 import BodyConstructor from "../../components/Body"
 import { pageResources, renderPage } from "../../components/renderPage"
 import { FullPageLayout } from "../../cfg"
-import { defaultContentPageLayout, sharedPageComponents } from "../../../quartz.layout"
+import { defaultListPageLayout, sharedPageComponents } from "../../../quartz.layout"
 import { Timeline } from "../../components"
 import { FilePath, pathToRoot } from "../../util/path"
+import { QuartzLogger } from "../../util/log"
 import { write } from "./helpers"
 import { getTimelineEvents } from "../../util/timeline"
+import chalk from "chalk"
 
 interface Options {
   limit?: number
@@ -25,6 +27,9 @@ async function createPage(
   title: string,
   events: TimelineEvent[],
 ) {
+  const debug = new QuartzLogger(ctx.argv.verbose).createDebug("TimeLinePages")
+  debug(chalk.blue, "Creating page:", slug)
+
   const cfg = ctx.cfg.configuration
   const allFiles = content.map((c) => c[1].data)
 
@@ -34,10 +39,17 @@ async function createPage(
     filePath: slug,
   }
 
+  const externalResources = pageResources(pathToRoot(slug), pageData, resources)
+
+  debug(chalk.red, "  ↳ page data:", pageData)
+  debug(chalk.red, "  ↳ external resources:", externalResources)
+  debug(chalk.red, "  ↳ ctx:", ctx)
+  debug(chalk.red, "  ↳ cfg:", cfg)
+
   const componentData: QuartzComponentProps = {
     ctx,
     fileData: pageData,
-    externalResources: pageResources(pathToRoot(slug), pageData, resources),
+    externalResources: externalResources,
     cfg,
     children: events,
     tree: { type: "root", children: [] },
@@ -54,10 +66,11 @@ async function createPage(
   })
 }
 
+
 export const TimelinePages: QuartzEmitterPlugin<Options> = (userOpts) => {
   const opts: FullPageLayout = {
     ...sharedPageComponents,
-    ...defaultContentPageLayout,
+    ...defaultListPageLayout,
     pageBody: Timeline(),
     ...userOpts
   }
