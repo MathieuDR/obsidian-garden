@@ -114,8 +114,9 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
           false
         ).filter(event => {
           if (folder === ".") return true
-          return (event.type === "created") && event.folder === folder
-        })
+          // Handle subfolders by checking if the event's folder starts with our current folder
+          return (event.type === "created") && (event.folder === folder || event.folder?.startsWith(folder + "/"))
+        });
 
         const componentData: QuartzComponentProps = {
           ctx,
