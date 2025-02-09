@@ -8,7 +8,9 @@ export const sharedPageComponents: SharedLayout = {
   afterBody: [],
   footer: Component.Footer({
     links: {
-      Home: "https://garden.deraedt.dev",
+      Home: "/",
+      "Recent notes": "/recent",
+      Timeline: "/timeline",
     },
   }),
 }

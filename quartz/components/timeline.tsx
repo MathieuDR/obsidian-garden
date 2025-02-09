@@ -1,7 +1,7 @@
 import { QuartzComponentConstructor, QuartzComponentProps } from "./types"
 
 interface TimelineEvent {
-  type: "created" | "modified" | "combined"
+  type: "created" | "modified"
   date: Date
   slug: string
   title: string
@@ -42,9 +42,7 @@ export default (() => {
                   {event.title}
                 </a>
                 <div class="timeline-type">
-                  {event.type === "combined"
-                    ? "Created and modified"
-                    : event.type === "created"
+                  { event.type === "created"
                       ? "Created"
                       : "Last modified"}
                 </div>
