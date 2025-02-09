@@ -19,8 +19,8 @@ push:
     @echo "Pushing Docker image to GitHub Container Registry..."
     docker push {{IMAGE_NAME}}:{{TAG}}
 	
-server:
-    npx quartz build --concurrency 6 --serve
+server *ARGS:
+    npx quartz build --concurrency 6 --serve {{ARGS}}
 
 docker-server:
     docker run --rm -itp 8080:8080 $(docker build -q .)

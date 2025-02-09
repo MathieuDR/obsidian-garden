@@ -24,7 +24,7 @@ const config: QuartzConfig = {
       "assets/scripts",
       "assets/views",
     ],
-    defaultDateType: "modified",
+    defaultDateType: "created",
     generateSocialImages: {
       colorScheme: "darkMode",
     },
@@ -66,7 +66,7 @@ const config: QuartzConfig = {
     transformers: [
       Plugin.FrontMatter(),
       Plugin.CreatedModifiedDate({
-        priority: ["frontmatter", "git", "filesystem"],
+        priority: ["frontmatter", "filesystem"],
       }),
       Plugin.TranscludeUnpublished({
         debug: true,
