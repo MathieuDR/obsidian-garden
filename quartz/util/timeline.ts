@@ -13,7 +13,7 @@ export function createTimelineEvents(fileData: any): TimelineEvent[] {
     slug: fileData.slug,
     title: fileData.title,
     tags: fileData.tags || [],
-    folder: fileData.folder
+    folder: fileData.folder,
   }
 
   if (fileData.dates?.created) {
@@ -39,7 +39,7 @@ export function getTimelineEvents(
   content: [string, { data: any }][],
   disallowedSlugs: Set<string>,
   disallowedTags: Set<string>,
-  createdOnly: boolean = false
+  createdOnly: boolean = false,
 ) {
   const filteredContent = content
     .filter(([_, file]) => {
@@ -51,12 +51,12 @@ export function getTimelineEvents(
       title: file.data.frontmatter?.title || file.data.frontmatter?.aliases[0],
       dates: { ...file.data.dates },
       tags: file.data.frontmatter?.tags || [],
-      folder: file.data.slug.split('/').slice(0, -1).join('/')
+      folder: file.data.slug.split("/").slice(0, -1).join("/"),
     }))
 
   const events = filteredContent
     .flatMap((fileData) => createTimelineEvents(fileData))
-    .filter(event => !createdOnly || event.type === "created")
+    .filter((event) => !createdOnly || event.type === "created")
     .sort((a, b) => b.date.getTime() - a.date.getTime())
 
   return events

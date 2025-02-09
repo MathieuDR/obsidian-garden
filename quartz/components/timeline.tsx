@@ -3,6 +3,7 @@ import { classNames } from "../util/lang"
 import { pathToRoot, slugTag } from "../util/path"
 import { Date as DateComponent } from "./Date"
 import { ValidLocale } from "../i18n"
+import { SimpleTagList as TagList } from "./simpleTagList"
 
 interface TimelineEvent {
   type: "created" | "modified"
@@ -13,31 +14,11 @@ interface TimelineEvent {
   folder?: string
 }
 
-function EventTags({ tags, slug }: { tags?: string[], slug: string }) {
-  if (!tags || tags.length === 0) return null
-  
-  const baseDir = pathToRoot(slug)
-  return (
-    <ul className="tags">
-      {tags.map((tag) => {
-        const linkDest = baseDir + `/tags/${slugTag(tag)}`
-        return (
-          <li key={tag}>
-            <a href={linkDest} className="internal tag-link">
-              {tag}
-            </a>
-          </li>
-        )
-      })}
-    </ul>
-  )
-}
-
 export default (() => {
   function Timeline(props: QuartzComponentProps) {
     const { children: events, cfg } = props
     const locale = cfg?.locale as ValidLocale | undefined
-    
+
     if (events.length === 0) {
       return (
         <div className="timeline">
@@ -53,34 +34,37 @@ export default (() => {
         <div className="timeline-container">
           <div className="timeline-line"></div>
           {events.map((event: TimelineEvent, i) => (
-            <div 
-              key={`${event.slug}-${event.type}-${i}`} 
-              className={`timeline-event ${i % 2 === 0 ? 'left' : 'right'}`}
+            <div
+              key={`${event.slug}-${event.type}-${i}`}
+              className={`timeline-event ${i % 2 === 0 ? "left" : "right"}`}
             >
               <div className="timeline-connector">
                 <div className="timeline-dot"></div>
                 <div className="timeline-line-to-content"></div>
               </div>
-              <div className="timeline-type-date">
-                <span className="timeline-type">
-                  {event.type === "created" ? "Created" : "Last modified"}
-                </span>
-                <span className="timeline-date">
-                  <DateComponent date={event.date} locale={locale} />
-                </span>
+              <div className="timeline-metadata">
+                <div className="timeline-type-date">
+                  <span className="timeline-type">
+                    {event.type === "created" ? "Created" : "Last modified"}
+                  </span>
+                  <span className="timeline-date">
+                    <DateComponent date={event.date} locale={locale} />
+                  </span>
+                  {event.folder && <span className="timeline-folder-mobile">{event.folder}</span>}
+                </div>
+                {event.folder && <div className="timeline-folder-desktop">{event.folder}</div>}
               </div>
               <div className="timeline-content">
                 <div className="timeline-header">
-                  <a href={"/" + event.slug} className="timeline-title">
+                  <a href={"/" + event.slug} className="internal timeline-title">
                     {event.title}
                   </a>
                 </div>
-                {event.folder && (
-                  <div className="timeline-folder">
-                    {event.folder}
-                  </div>
-                )}
-                <EventTags tags={event.tags} slug={event.slug} />
+                <TagList 
+                  tags={event.tags}
+                  slug={event.slug}
+                  displayClass=""
+                />
               </div>
             </div>
           ))}
@@ -163,11 +147,38 @@ export default (() => {
       width: 100%;
     }
     
+    .timeline-metadata {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.25rem;
+      color: rgb(var(--ctp-subtext0));
+      gap: 1rem;
+    }
+    
+    .timeline-folder-desktop {
+      font-size: 0.9em;
+      color: rgb(var(--ctp-subtext1));
+      align-self: flex-end;
+    }
+    
+    .timeline-folder-mobile {
+      display: none;
+      font-size: 0.9em;
+      color: rgb(var(--ctp-subtext1));
+    }
+    
+    .timeline-event.right .timeline-metadata {
+      flex-direction: row;
+    }
+    
+    .timeline-event.left .timeline-metadata {
+      flex-direction: row-reverse;
+    }
+    
     .timeline-type-date {
       display: flex;
       flex-direction: column;
-      margin-bottom: 0.25rem;
-      color: rgb(var(--ctp-subtext0));
     }
     
     .timeline-event.right .timeline-type-date {
@@ -190,12 +201,18 @@ export default (() => {
       border-radius: 8px;
       padding: 1rem;
     }
+
+    .timeline-content ul.tags{
+      margin-bottom: 0;
+    }
     
     .timeline-header {
       margin-bottom: 0.5rem;
     }
-    
-    .timeline-title {
+
+    a.timeline-title.internal {
+      font-size: 1.15em;
+      background-color: unset;
       font-weight: 600;
       color: rgb(var(--ctp-accent));
       text-decoration: none;
@@ -205,71 +222,59 @@ export default (() => {
       text-decoration: underline;
     }
     
-    .timeline-folder {
-      font-size: 0.9em;
-      color: rgb(var(--ctp-subtext1));
-      margin-bottom: 0.5rem;
-    }
-    
-    .tags {
-      list-style: none;
-      display: flex;
-      padding-left: 0;
-      gap: 0.4rem;
-      margin: 0.5rem 0 0 0;
-      flex-wrap: wrap;
-    }
-    
-    .tags > li {
-      display: inline-block;
-      white-space: nowrap;
-      margin: 0;
-      overflow-wrap: normal;
-    }
-    
-    .internal.tag-link {
-      border-radius: 8px;
-      background-color: var(--highlight);
-      padding: 0.2rem 0.4rem;
-      margin: 0;
-      font-size: 0.9em;
-    }
-
     @media (max-width: 1200px) {
       .timeline-event.left .timeline-connector {
         justify-content: unset;
       }
-
+    
       .timeline-container {
         padding-left: 2rem;
         padding-right: 1rem;
       }
-      
+    
       .timeline-line {
         left: 2rem;
       }
-      
+    
       .timeline-event {
         width: calc(100% - 2rem);
         margin-left: auto !important;
         padding-left: 2rem !important;
         padding-right: 0 !important;
       }
-      
+    
       .timeline-connector {
         left: 0 !important;
         right: auto !important;
       }
-
-      .timeline-dot{
+    
+      .timeline-dot {
         margin-left: -8px;
       }
-      
+    
       .timeline-type-date {
-        align-items: flex-start !important;
+        align-items: flex-start;
       }
-      .timeline-content{
+    
+      .timeline-content {
         max-width: 90%
+      }
+    
+      .timeline-metadata {
+        min-height: unset;
+      }
+    
+      .timeline-folder-desktop {
+        display: none;
+      }
+    
+      .timeline-folder-mobile {
+        display: block;
+        margin-top: 0.2rem;
+      }
+    
+      .timeline-event.left .timeline-metadata {
+        flex-direction: unset;
       }
     }
   `

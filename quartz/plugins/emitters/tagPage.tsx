@@ -5,7 +5,13 @@ import BodyConstructor from "../../components/Body"
 import { pageResources, renderPage } from "../../components/renderPage"
 import { ProcessedContent, QuartzPluginData, defaultProcessedContent } from "../vfile"
 import { FullPageLayout } from "../../cfg"
-import { FilePath, FullSlug, getAllSegmentPrefixes, joinSegments, pathToRoot } from "../../util/path"
+import {
+  FilePath,
+  FullSlug,
+  getAllSegmentPrefixes,
+  joinSegments,
+  pathToRoot,
+} from "../../util/path"
 import { defaultListPageLayout, sharedPageComponents } from "../../../quartz.layout"
 import { Timeline } from "../../components"
 import { write } from "./helpers"
@@ -77,9 +83,10 @@ export const TagPage: QuartzEmitterPlugin<Partial<TagPageOptions>> = (userOpts) 
 
       const tagDescriptions: Record<string, ProcessedContent> = Object.fromEntries(
         [...tags].map((tag) => {
-          const title = tag === "index"
-            ? i18n(cfg.locale).pages.tagContent.tagIndex
-            : `${i18n(cfg.locale).pages.tagContent.tag}: ${tag}`
+          const title =
+            tag === "index"
+              ? i18n(cfg.locale).pages.tagContent.tagIndex
+              : `${i18n(cfg.locale).pages.tagContent.tag}: ${tag}`
           return [
             tag,
             defaultProcessedContent({
@@ -95,15 +102,12 @@ export const TagPage: QuartzEmitterPlugin<Partial<TagPageOptions>> = (userOpts) 
         const [tree, file] = tagDescriptions[tag]
         const externalResources = pageResources(pathToRoot(slug), file.data, resources)
 
-        const timelineEvents = getTimelineEvents(
-          content,
-          new Set(),
-          new Set(),
-          false
-        ).filter(event => {
-          if (tag === "index") return true
-          return (event.type === "created") && event.tags?.includes(tag)
-        })
+        const timelineEvents = getTimelineEvents(content, new Set(), new Set(), false).filter(
+          (event) => {
+            if (tag === "index") return true
+            return event.type === "created" && event.tags?.includes(tag)
+          },
+        )
 
         const componentData: QuartzComponentProps = {
           ctx,

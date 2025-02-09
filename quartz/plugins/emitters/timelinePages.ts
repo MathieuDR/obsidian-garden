@@ -12,7 +12,6 @@ import { getTimelineEvents } from "../../util/timeline"
 
 interface Options {
   limit?: number
-  layout?: Partial<FullPageLayout>
   disallowedSlugs?: string[]
   disallowedTags?: string[]
 }
@@ -24,7 +23,7 @@ async function createPage(
   opts: FullPageLayout,
   slug: string,
   title: string,
-  events: TimelineEvent[]
+  events: TimelineEvent[],
 ) {
   const cfg = ctx.cfg.configuration
   const allFiles = content.map((c) => c[1].data)
@@ -45,13 +44,7 @@ async function createPage(
     allFiles,
   }
 
-  const pageContent = renderPage(
-    cfg,
-    slug,
-    componentData,
-    opts,
-    componentData.externalResources,
-  )
+  const pageContent = renderPage(cfg, slug, componentData, opts, componentData.externalResources)
 
   return write({
     ctx,
@@ -66,7 +59,7 @@ export const TimelinePages: QuartzEmitterPlugin<Options> = (userOpts) => {
     ...sharedPageComponents,
     ...defaultContentPageLayout,
     pageBody: Timeline(),
-    ...userOpts?.layout,
+    ...userOpts
   }
 
   const { head: Head, header, beforeBody, pageBody, afterBody, left, right, footer: Footer } = opts
@@ -94,10 +87,14 @@ export const TimelinePages: QuartzEmitterPlugin<Options> = (userOpts) => {
       const disallowedSlugs = new Set(userOpts?.disallowedSlugs ?? [])
       const disallowedTags = new Set(userOpts?.disallowedTags ?? [])
 
-      const timelineEvents = getTimelineEvents(content, disallowedSlugs, disallowedTags)
-        .slice(0, limit)
-      const recentEvents = getTimelineEvents(content, disallowedSlugs, disallowedTags, true)
-        .slice(0, limit)
+      const timelineEvents = getTimelineEvents(content, disallowedSlugs, disallowedTags).slice(
+        0,
+        limit,
+      )
+      const recentEvents = getTimelineEvents(content, disallowedSlugs, disallowedTags, true).slice(
+        0,
+        limit,
+      )
 
       const timelinePage = await createPage(
         ctx,
@@ -106,7 +103,7 @@ export const TimelinePages: QuartzEmitterPlugin<Options> = (userOpts) => {
         opts,
         "timeline/index",
         "Timeline",
-        timelineEvents
+        timelineEvents,
       )
 
       const recentPage = await createPage(
@@ -116,7 +113,7 @@ export const TimelinePages: QuartzEmitterPlugin<Options> = (userOpts) => {
         opts,
         "recent/index",
         "Recent Notes",
-        recentEvents
+        recentEvents,
       )
 
       return [timelinePage, recentPage]

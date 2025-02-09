@@ -107,16 +107,16 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
         const [tree, file] = folderDescriptions[folder]
         const externalResources = pageResources(pathToRoot(slug), file.data, resources)
 
-        const timelineEvents = getTimelineEvents(
-          content,
-          new Set(),
-          new Set(),
-          false
-        ).filter(event => {
-          if (folder === ".") return true
-          // Handle subfolders by checking if the event's folder starts with our current folder
-          return (event.type === "created") && (event.folder === folder || event.folder?.startsWith(folder + "/"))
-        });
+        const timelineEvents = getTimelineEvents(content, new Set(), new Set(), false).filter(
+          (event) => {
+            if (folder === ".") return true
+            // Handle subfolders by checking if the event's folder starts with our current folder
+            return (
+              event.type === "created" &&
+              (event.folder === folder || event.folder?.startsWith(folder + "/"))
+            )
+          },
+        )
 
         const componentData: QuartzComponentProps = {
           ctx,

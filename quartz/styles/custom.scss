@@ -1,7 +1,6 @@
 @use "./base.scss";
 @use "./themes";
 
-
 :root[saved-theme="light"],
 :root[saved-theme="dark"] {
   --ctp-accent: var(--ctp-mauve);
@@ -19,8 +18,8 @@ h6 {
   color: rgb(var(--ctp-subtext0));
 }
 
-.breadcrumb-element>a,
-.breadcrumb-element>p {
+.breadcrumb-element > a,
+.breadcrumb-element > p {
   color: rgb(var(--ctp-peach));
 }
 
@@ -54,16 +53,16 @@ body[data-slug="index"] {
   }
 }
 
-@media not (min-width:1200px) {
-  .page>#quartz-body .sidebar.right {
+@media not (min-width: 1200px) {
+  .page > #quartz-body .sidebar.right {
     flex-direction: column;
   }
 
-  .page>#quartz-body {
+  .page > #quartz-body {
     padding: 0 0;
   }
 
-  .page>#quartz-body>div.center {
+  .page > #quartz-body > div.center {
     box-sizing: border-box;
     padding: 0 1rem;
   }
@@ -78,9 +77,37 @@ body[data-slug="index"] {
     margin-top: 0 !important;
   }
 
-  .page>#quartz-body .sidebar.left:has(.explorer),
+  .page > #quartz-body .sidebar.left:has(.explorer),
   .explorer #explorer-content {
     background-color: rgb(var(--ctp-surface0));
     padding-bottom: 0.5rem;
   }
+}
+
+// From simple tag list, not sure how to import
+.tags {
+  list-style: none;
+  display: flex;
+  padding-left: 0;
+  gap: 0.4rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+.section-li > .section > .tags {
+  justify-content: flex-end;
+}
+
+.tags > li {
+  display: inline-block;
+  white-space: nowrap;
+  margin: 0;
+  overflow-wrap: normal;
+}
+
+a.internal.tag-link {
+  border-radius: 8px;
+  background-color: var(--red);
+  padding: 0.2rem 0.4rem;
+  margin: 0 0.1rem;
 }
