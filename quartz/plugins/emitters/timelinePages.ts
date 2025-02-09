@@ -8,69 +8,13 @@ import { defaultContentPageLayout, sharedPageComponents } from "../../../quartz.
 import { Timeline } from "../../components"
 import { FilePath, pathToRoot } from "../../util/path"
 import { write } from "./helpers"
-
-interface TimelineEvent {
-  type: "created" | "modified"
-  date: Date
-  slug: string
-  title: string
-}
+import { getTimelineEvents } from "../../util/timeline"
 
 interface Options {
   limit?: number
   layout?: Partial<FullPageLayout>
   disallowedSlugs?: string[]
   disallowedTags?: string[]
-}
-
-function createTimelineEvents(fileData: any): TimelineEvent[] {
-  const events: TimelineEvent[] = []
-
-  if (fileData.dates?.created) {
-    events.push({
-      type: "created",
-      date: new Date(fileData.dates.created),
-      slug: fileData.slug,
-      title: fileData.title,
-    })
-  }
-
-  if (fileData.dates?.modified) {
-    events.push({
-      type: "modified",
-      date: new Date(fileData.dates.modified),
-      slug: fileData.slug,
-      title: fileData.title,
-    })
-  }
-
-  return events
-}
-
-const getTimelineEvents = (
-  content: [string, { data: any }][],
-  disallowedSlugs: Set<string>,
-  disallowedTags: Set<string>,
-  createdOnly: boolean = false
-) => {
-  const filteredContent = content
-    .filter(([_, file]) => {
-      const { data } = file
-      return !disallowedSlugs.has(data.slug) && !data.tags?.some((tag) => disallowedTags.has(tag))
-    })
-    .map(([_, file]) => ({
-      slug: file.data.slug,
-      title: file.data.frontmatter?.title || file.data.frontmatter?.aliases[0],
-      dates: { ...file.data.dates },
-    }))
-
-  // Create new array of timeline events
-  const events = filteredContent
-    .flatMap((fileData) => createTimelineEvents(fileData))
-    .filter(event => !createdOnly || event.type === "created")
-    .sort((a, b) => b.date.getTime() - a.date.getTime())
-
-  return events
 }
 
 async function createPage(
@@ -150,13 +94,11 @@ export const TimelinePages: QuartzEmitterPlugin<Options> = (userOpts) => {
       const disallowedSlugs = new Set(userOpts?.disallowedSlugs ?? [])
       const disallowedTags = new Set(userOpts?.disallowedTags ?? [])
 
-      // Get events for both pages
       const timelineEvents = getTimelineEvents(content, disallowedSlugs, disallowedTags)
         .slice(0, limit)
       const recentEvents = getTimelineEvents(content, disallowedSlugs, disallowedTags, true)
         .slice(0, limit)
 
-      // Create both pages
       const timelinePage = await createPage(
         ctx,
         content,

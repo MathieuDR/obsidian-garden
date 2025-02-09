@@ -5,18 +5,13 @@ import BodyConstructor from "../../components/Body"
 import { pageResources, renderPage } from "../../components/renderPage"
 import { ProcessedContent, QuartzPluginData, defaultProcessedContent } from "../vfile"
 import { FullPageLayout } from "../../cfg"
-import {
-  FilePath,
-  FullSlug,
-  getAllSegmentPrefixes,
-  joinSegments,
-  pathToRoot,
-} from "../../util/path"
+import { FilePath, FullSlug, getAllSegmentPrefixes, joinSegments, pathToRoot } from "../../util/path"
 import { defaultListPageLayout, sharedPageComponents } from "../../../quartz.layout"
-import { TagContent } from "../../components"
+import { Timeline } from "../../components"
 import { write } from "./helpers"
 import { i18n } from "../../i18n"
 import DepGraph from "../../depgraph"
+import { getTimelineEvents } from "../../util/timeline"
 
 interface TagPageOptions extends FullPageLayout {
   sort?: (f1: QuartzPluginData, f2: QuartzPluginData) => number
@@ -26,7 +21,7 @@ export const TagPage: QuartzEmitterPlugin<Partial<TagPageOptions>> = (userOpts) 
   const opts: FullPageLayout = {
     ...sharedPageComponents,
     ...defaultListPageLayout,
-    pageBody: TagContent({ sort: userOpts?.sort }),
+    pageBody: Timeline(),
     ...userOpts,
   }
 
@@ -56,7 +51,6 @@ export const TagPage: QuartzEmitterPlugin<Partial<TagPageOptions>> = (userOpts) 
       for (const [_tree, file] of content) {
         const sourcePath = file.data.filePath!
         const tags = (file.data.frontmatter?.tags ?? []).flatMap(getAllSegmentPrefixes)
-        // if the file has at least one tag, it is used in the tag index page
         if (tags.length > 0) {
           tags.push("index")
         }
@@ -79,16 +73,13 @@ export const TagPage: QuartzEmitterPlugin<Partial<TagPageOptions>> = (userOpts) 
       const tags: Set<string> = new Set(
         allFiles.flatMap((data) => data.frontmatter?.tags ?? []).flatMap(getAllSegmentPrefixes),
       )
-
-      // add base tag
       tags.add("index")
 
       const tagDescriptions: Record<string, ProcessedContent> = Object.fromEntries(
         [...tags].map((tag) => {
-          const title =
-            tag === "index"
-              ? i18n(cfg.locale).pages.tagContent.tagIndex
-              : `${i18n(cfg.locale).pages.tagContent.tag}: ${tag}`
+          const title = tag === "index"
+            ? i18n(cfg.locale).pages.tagContent.tagIndex
+            : `${i18n(cfg.locale).pages.tagContent.tag}: ${tag}`
           return [
             tag,
             defaultProcessedContent({
@@ -99,37 +90,35 @@ export const TagPage: QuartzEmitterPlugin<Partial<TagPageOptions>> = (userOpts) 
         }),
       )
 
-      for (const [tree, file] of content) {
-        const slug = file.data.slug!
-        if (slug.startsWith("tags/")) {
-          const tag = slug.slice("tags/".length)
-          if (tags.has(tag)) {
-            tagDescriptions[tag] = [tree, file]
-            if (file.data.frontmatter?.title === tag) {
-              file.data.frontmatter.title = `${i18n(cfg.locale).pages.tagContent.tag}: ${tag}`
-            }
-          }
-        }
-      }
-
       for (const tag of tags) {
         const slug = joinSegments("tags", tag) as FullSlug
         const [tree, file] = tagDescriptions[tag]
         const externalResources = pageResources(pathToRoot(slug), file.data, resources)
+
+        const timelineEvents = getTimelineEvents(
+          content,
+          new Set(),
+          new Set(),
+          false
+        ).filter(event => {
+          if (tag === "index") return true
+          return (event.type === "created") && event.tags?.includes(tag)
+        })
+
         const componentData: QuartzComponentProps = {
           ctx,
           fileData: file.data,
           externalResources,
           cfg,
-          children: [],
+          children: timelineEvents,
           tree,
           allFiles,
         }
 
-        const content = renderPage(cfg, slug, componentData, opts, externalResources)
+        const pageContent = renderPage(cfg, slug, componentData, opts, externalResources)
         const fp = await write({
           ctx,
-          content,
+          content: pageContent,
           slug: file.data.slug!,
           ext: ".html",
         })
