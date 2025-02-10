@@ -54,6 +54,12 @@ body[data-slug="index"] {
   }
 }
 
+.recent-notes {
+  a.title h3:hover {
+    color: var(--link-color-hover) !important;
+  }
+}
+
 @media not (min-width: 1200px) {
   .page>#quartz-body .sidebar.right {
     flex-direction: column;

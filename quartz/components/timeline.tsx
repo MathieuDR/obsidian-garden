@@ -254,7 +254,7 @@ export default (() => {
       }
     
       .timeline-type-date {
-        align-items: flex-start;
+        align-items: flex-start !important;
       }
     
       .timeline-content {
