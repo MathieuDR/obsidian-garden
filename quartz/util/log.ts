@@ -6,7 +6,7 @@ type ChalkStyleFn = (text: string) => string
 export class QuartzLogger {
   verbose: boolean
   spinner: Spinner | undefined
-  
+
   constructor(verbose: boolean) {
     this.verbose = verbose
   }
@@ -32,7 +32,7 @@ export class QuartzLogger {
 
   log(messageOrStyle: string | ChalkStyleFn, ...args: any[]) {
     // If the first argument is a string, use default blue styling
-    if (typeof messageOrStyle === 'string') {
+    if (typeof messageOrStyle === "string") {
       console.log(chalk.blue(`[Quartz] ${messageOrStyle}`), ...args)
       return
     }
@@ -42,12 +42,12 @@ export class QuartzLogger {
     console.log(messageOrStyle(`[Quartz] ${message}`), ...restArgs)
   }
 
-  createDebug(prefix: string = 'Quartz') {
+  createDebug(prefix: string = "Quartz") {
     return (messageOrStyle: string | ChalkStyleFn, ...args: any[]) => {
       if (!this.verbose) return
 
       // If the first argument is a string, use default blue styling
-      if (typeof messageOrStyle === 'string') {
+      if (typeof messageOrStyle === "string") {
         console.log(chalk.blue(`[${prefix}] ${messageOrStyle}`), ...args)
         return
       }

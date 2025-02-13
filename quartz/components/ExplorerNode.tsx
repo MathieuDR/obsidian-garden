@@ -173,10 +173,12 @@ export function ExplorerNode({ node, opts, fullPath, fileData }: ExplorerNodePro
   const folderPath = node.name !== "" ? joinSegments(fullPath ?? "", node.name) : ""
   const href = resolveRelative(fileData.slug!, folderPath as SimpleSlug) + "/"
 
-  console.log('Rendering node:', {
-    name: node.name,
-    icon: node.icon,
-  })
+  if (node.icon) {
+    console.log("Rendering node:", {
+      name: node.name,
+      icon: node.icon,
+    })
+  }
 
   return (
     <>
@@ -216,7 +218,7 @@ export function ExplorerNode({ node, opts, fullPath, fileData }: ExplorerNodePro
                 ) : (
                   <button class="folder-button">
                     <span class="folder-title">
-                      {/* Icon here */
+                      {/* Icon here */}
                       {node.displayName}
                     </span>
                   </button>

@@ -60,11 +60,7 @@ export default (() => {
                     {event.title}
                   </a>
                 </div>
-                <TagList 
-                  tags={event.tags}
-                  slug={event.slug}
-                  displayClass=""
-                />
+                <TagList tags={event.tags} slug={event.slug} displayClass="" />
               </div>
             </div>
           ))}
