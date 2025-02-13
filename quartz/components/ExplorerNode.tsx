@@ -47,6 +47,7 @@ export class FileNode {
   displayName: string
   file: QuartzPluginData | null
   depth: number
+  icon?: LucidIcon
 
   constructor(slugSegment: string, displayName?: string, file?: QuartzPluginData, depth?: number) {
     this.children = []
@@ -54,6 +55,7 @@ export class FileNode {
     this.displayName = displayName ?? file?.frontmatter?.title ?? slugSegment
     this.file = file ? clone(file) : null
     this.depth = depth ?? 0
+    this.icon = undefined
   }
 
   private insert(fileData: DataWrapper) {
@@ -171,6 +173,11 @@ export function ExplorerNode({ node, opts, fullPath, fileData }: ExplorerNodePro
   const folderPath = node.name !== "" ? joinSegments(fullPath ?? "", node.name) : ""
   const href = resolveRelative(fileData.slug!, folderPath as SimpleSlug) + "/"
 
+  console.log('Rendering node:', {
+    name: node.name,
+    icon: node.icon,
+  })
+
   return (
     <>
       {node.file ? (
@@ -208,7 +215,10 @@ export function ExplorerNode({ node, opts, fullPath, fileData }: ExplorerNodePro
                   </a>
                 ) : (
                   <button class="folder-button">
-                    <span class="folder-title">{node.displayName}</span>
+                    <span class="folder-title">
+                      {/* Icon here */
+                      {node.displayName}
+                    </span>
                   </button>
                 )}
               </div>
