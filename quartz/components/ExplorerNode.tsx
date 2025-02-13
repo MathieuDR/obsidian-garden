@@ -1,4 +1,5 @@
 // @ts-ignore
+import { iconToSVG } from "./Icon"
 import { QuartzPluginData } from "../plugins/vfile"
 import {
   joinSegments,
@@ -172,13 +173,7 @@ export function ExplorerNode({ node, opts, fullPath, fileData }: ExplorerNodePro
   // Calculate current folderPath
   const folderPath = node.name !== "" ? joinSegments(fullPath ?? "", node.name) : ""
   const href = resolveRelative(fileData.slug!, folderPath as SimpleSlug) + "/"
-
-  if (node.icon) {
-    console.log("Rendering node:", {
-      name: node.name,
-      icon: node.icon,
-    })
-  }
+  const iconHtml = node.icon ? iconToSVG(node.icon) : null;
 
   return (
     <>
@@ -218,8 +213,10 @@ export function ExplorerNode({ node, opts, fullPath, fileData }: ExplorerNodePro
                 ) : (
                   <button class="folder-button">
                     <span class="folder-title">
-                      {/* Icon here */}
-                      {node.displayName}
+                      {iconHtml}
+                      <span class="label">
+                        {node.displayName}
+                      </span>
                     </span>
                   </button>
                 )}

@@ -1,5 +1,5 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
-import { NotepadText, Pencil, ClipboardList } from "lucide"
+import { Microscope, NotebookText, PencilLine, ClipboardList, ScrollText } from "lucide"
 import * as Component from "./quartz/components"
 
 // components shared across all pages
@@ -75,13 +75,13 @@ export const defaultContentPageLayout: PageLayout = {
           // Set icon component based on folder
           switch (node.name.toLowerCase()) {
             case "slips":
-              node.icon = NotepadText
+              node.icon = NotebookText
               break
             case "output":
-              node.icon = Pencil
+              node.icon = PencilLine
               break
             case "research":
-              node.icon = ClipboardList
+              node.icon = Microscope
               break
           }
         }

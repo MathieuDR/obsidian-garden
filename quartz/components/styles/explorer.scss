@@ -1,13 +1,15 @@
 @use "../../styles/variables.scss" as *;
 
 @media all and ($mobile) {
-  .page > #quartz-body {
+  .page>#quartz-body {
+
     // Shift page position when toggling Explorer on mobile.
-    & > :not(.sidebar.left:has(.explorer)) {
+    &> :not(.sidebar.left:has(.explorer)) {
       transform: translateX(0);
       transition: transform 300ms ease-in-out;
     }
-    &.lock-scroll > :not(.sidebar.left:has(.explorer)) {
+
+    &.lock-scroll> :not(.sidebar.left:has(.explorer)) {
       transform: translateX(100dvw);
       transition: transform 300ms ease-in-out;
     }
@@ -21,7 +23,7 @@
 
     // Hide Explorer on mobile until done loading.
     // Prevents ugly animation on page load.
-    .hide-until-loaded ~ #explorer-content {
+    .hide-until-loaded~#explorer-content {
       display: none;
     }
   }
@@ -77,6 +79,27 @@
     transition: opacity 0.3s ease;
     background: linear-gradient(transparent 0px, var(--light));
   }*/
+
+  .folder-title {
+    display: flex;
+    align-items: center;
+
+
+    svg {
+      /* color: rgb(var(--ctp-peach)); */
+      color: var(--nav-item-color);
+
+      >* {
+        stroke-width: 2px;
+      }
+    }
+
+    span.label {
+      color: var(--nav-item-color);
+
+      margin-left: 7px;
+    }
+  }
 }
 
 button#mobile-explorer,
@@ -117,7 +140,7 @@ button#desktop-explorer {
   grid-template-rows: 1fr;
 }
 
-.folder-outer > ul {
+.folder-outer>ul {
   overflow: hidden;
 }
 
@@ -149,14 +172,14 @@ button#desktop-explorer {
       transform 0.35s ease,
       opacity 0.2s ease;
 
-    & li > a {
+    & li>a {
       color: var(--dark);
       opacity: 0.75;
       pointer-events: all;
     }
   }
 
-  > #explorer-ul {
+  >#explorer-ul {
     max-height: none;
   }
 }
@@ -164,7 +187,7 @@ button#desktop-explorer {
 svg {
   pointer-events: all;
 
-  & > polyline {
+  &>polyline {
     pointer-events: none;
   }
 }
@@ -175,7 +198,7 @@ svg {
   align-items: center;
   user-select: none;
 
-  & div > a {
+  & div>a {
     color: var(--secondary);
     font-family: var(--headerFont);
     font-size: 0.95rem;
@@ -184,11 +207,11 @@ svg {
     display: inline-block;
   }
 
-  & div > a:hover {
+  & div>a:hover {
     color: var(--tertiary);
   }
 
-  & div > button {
+  & div>button {
     color: var(--dark);
     background-color: transparent;
     border: none;
@@ -220,7 +243,7 @@ svg {
   backface-visibility: visible;
 }
 
-li:has(> .folder-outer:not(.open)) > .folder-container > svg {
+li:has(> .folder-outer:not(.open))>.folder-container>svg {
   transform: rotate(-90deg);
 }
 

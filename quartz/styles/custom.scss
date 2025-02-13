@@ -6,7 +6,13 @@
   --ctp-accent: var(--ctp-mauve);
 }
 
+.page-title a {
+  font-family: "JetBrains Mono", serif;
+  color: rgb(var(--ctp-accent))
+}
+
 h1 {
+  /* text-transform: uppercase; */
   color: rgb(var(--ctp-accent));
 }
 
@@ -55,6 +61,10 @@ body[data-slug="index"] {
 }
 
 .recent-notes {
+  ul.tags {
+    font-size: 14px;
+  }
+
   a.title h3:hover {
     color: var(--link-color-hover) !important;
   }
@@ -102,6 +112,7 @@ em {
 
 // From simple tag list, not sure how to import
 .tags {
+  font-family: JetBrains Mono, serif;
   list-style: none;
   display: flex;
   padding-left: 0;
