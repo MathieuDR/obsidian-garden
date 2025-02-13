@@ -1,4 +1,5 @@
 // @ts-ignore
+import { iconToSVG } from "./Icon"
 import { QuartzPluginData } from "../plugins/vfile"
 import {
   joinSegments,
@@ -47,6 +48,7 @@ export class FileNode {
   displayName: string
   file: QuartzPluginData | null
   depth: number
+  icon?: LucidIcon
 
   constructor(slugSegment: string, displayName?: string, file?: QuartzPluginData, depth?: number) {
     this.children = []
@@ -54,6 +56,7 @@ export class FileNode {
     this.displayName = displayName ?? file?.frontmatter?.title ?? slugSegment
     this.file = file ? clone(file) : null
     this.depth = depth ?? 0
+    this.icon = undefined
   }
 
   private insert(fileData: DataWrapper) {
@@ -170,6 +173,7 @@ export function ExplorerNode({ node, opts, fullPath, fileData }: ExplorerNodePro
   // Calculate current folderPath
   const folderPath = node.name !== "" ? joinSegments(fullPath ?? "", node.name) : ""
   const href = resolveRelative(fileData.slug!, folderPath as SimpleSlug) + "/"
+  const iconHtml = node.icon ? iconToSVG(node.icon) : null;
 
   return (
     <>
@@ -208,7 +212,12 @@ export function ExplorerNode({ node, opts, fullPath, fileData }: ExplorerNodePro
                   </a>
                 ) : (
                   <button class="folder-button">
-                    <span class="folder-title">{node.displayName}</span>
+                    <span class="folder-title">
+                      {iconHtml}
+                      <span class="label">
+                        {node.displayName}
+                      </span>
+                    </span>
                   </button>
                 )}
               </div>

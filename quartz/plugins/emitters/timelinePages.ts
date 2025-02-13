@@ -66,13 +66,12 @@ async function createPage(
   })
 }
 
-
 export const TimelinePages: QuartzEmitterPlugin<Options> = (userOpts) => {
   const opts: FullPageLayout = {
     ...sharedPageComponents,
     ...defaultListPageLayout,
     pageBody: Timeline(),
-    ...userOpts
+    ...userOpts,
   }
 
   const { head: Head, header, beforeBody, pageBody, afterBody, left, right, footer: Footer } = opts

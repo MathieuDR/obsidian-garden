@@ -32,7 +32,9 @@ export const TranscludeUnpublished: QuartzTransformerPlugin<Partial<Options>> = 
           return async (tree: Root, file) => {
             const currentSlug = file.data.slug! as FullSlug
             const currentDir = dirname(file.data.relativePath)
-            const debug = new QuartzLogger(ctx.argv.verbose).createDebug(`TranscludeUnpublished[${currentSlug}]`)
+            const debug = new QuartzLogger(ctx.argv.verbose).createDebug(
+              `TranscludeUnpublished[${currentSlug}]`,
+            )
 
             const parseMdast = (content: string): Root => {
               return fromMarkdown(content)?.children[0] ?? null

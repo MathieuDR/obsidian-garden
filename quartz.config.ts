@@ -8,7 +8,7 @@ import * as Plugin from "./quartz/plugins"
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "A Dev's Garden",
+    pageTitle: "dev.garden",
     pageTitleSuffix: " | Growing ideas",
     enableSPA: true,
     enablePopovers: true,
@@ -104,7 +104,7 @@ const config: QuartzConfig = {
         enableSiteMap: true,
         enableRSS: true,
         rssLimit: 15,
-        rssFullHtml: true
+        rssFullHtml: true,
       }),
       Plugin.Assets(),
       Plugin.Static(),
