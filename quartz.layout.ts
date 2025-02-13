@@ -11,6 +11,7 @@ export const sharedPageComponents: SharedLayout = {
       Home: "/",
       "Recent notes": "/recent",
       Timeline: "/timeline",
+      "RSS Feed": "/index.xml"
     },
   }),
 }
