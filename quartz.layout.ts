@@ -2,37 +2,7 @@ import { PageLayout, SharedLayout } from "./quartz/cfg"
 import { Microscope, NotebookText, PencilLine, ClipboardList, ScrollText } from "lucide"
 import * as Component from "./quartz/components"
 
-// components shared across all pages
-export const sharedPageComponents: SharedLayout = {
-  head: Component.Head(),
-  header: [],
-  afterBody: [],
-  footer: Component.Footer({
-    links: {
-      Home: "/",
-      "Recent notes": "/recent",
-      Timeline: "/timeline",
-      "RSS Feed": "/index.xml",
-    },
-  }),
-}
-
-// components for pages that display a single page (e.g. a single note)
-export const defaultContentPageLayout: PageLayout = {
-  beforeBody: [
-    Component.Breadcrumbs(),
-    Component.ArticleTitle(),
-    Component.ContentMeta({
-      showReadingTime: false,
-    }),
-    Component.MediaMeta(),
-    Component.TagList(),
-  ],
-  left: [
-    Component.PageTitle(),
-    Component.MobileOnly(Component.Spacer()),
-    Component.Search(),
-    Component.Explorer({
+const explorerOpts = {
       title: "Notes",
       sortFn: (a, b) => {
         // Define folder order
@@ -89,7 +59,39 @@ export const defaultContentPageLayout: PageLayout = {
       folderDefaultState: "collapsed",
       useSavedState: true,
       order: ["filter", "sort", "map"], // Explicitly ensure mapping happens last
+    };
+
+// components shared across all pages
+export const sharedPageComponents: SharedLayout = {
+  head: Component.Head(),
+  header: [],
+  afterBody: [],
+  footer: Component.Footer({
+    links: {
+      Home: "/",
+      "Recent notes": "/recent",
+      Timeline: "/timeline",
+      "RSS Feed": "/index.xml",
+    },
+  }),
+}
+
+// components for pages that display a single page (e.g. a single note)
+export const defaultContentPageLayout: PageLayout = {
+  beforeBody: [
+    Component.Breadcrumbs(),
+    Component.ArticleTitle(),
+    Component.ContentMeta({
+      showReadingTime: false,
     }),
+    Component.MediaMeta(),
+    Component.TagList(),
+  ],
+  left: [
+    Component.PageTitle(),
+    Component.MobileOnly(Component.Spacer()),
+    Component.Search(),
+    Component.Explorer(explorerOpts),
   ],
   right: [
     Component.Darkmode(),
@@ -108,7 +110,7 @@ export const defaultListPageLayout: PageLayout = {
     Component.MobileOnly(Component.Spacer()),
     Component.Search(),
     Component.Darkmode(),
-    Component.Explorer(),
+    Component.Explorer(explorerOpts),
   ],
   right: [],
 }
