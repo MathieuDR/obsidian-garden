@@ -7,6 +7,8 @@ import { Date, getDate } from "./Date"
 import { GlobalConfiguration } from "../cfg"
 import { i18n } from "../i18n"
 import { classNames } from "../util/lang"
+import { iconToSVG } from "./Icon"
+import { ChevronRight } from "lucide"
 
 interface Options {
   title?: string
@@ -38,7 +40,9 @@ export default ((userOpts?: Partial<Options>) => {
     return (
       <div class={classNames(displayClass, "recent-notes")}>
         <a class="title" href="/recent">
-          <h3>{opts.title ?? i18n(cfg.locale).components.recentNotes.title}</h3>
+          <h3>
+            {opts.title ?? i18n(cfg.locale).components.recentNotes.title} {iconToSVG(ChevronRight)}
+          </h3>
         </a>
         <ul class="recent-ul">
           {pages.slice(0, opts.limit).map((page) => {
@@ -51,7 +55,7 @@ export default ((userOpts?: Partial<Options>) => {
                   <div class="desc">
                     <h3>
                       <a href={resolveRelative(fileData.slug!, page.slug!)} class="internal">
-                        {title}
+                        {title} 
                       </a>
                     </h3>
                   </div>

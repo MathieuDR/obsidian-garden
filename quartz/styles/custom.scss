@@ -65,8 +65,12 @@ body[data-slug="index"] {
     font-size: 14px;
   }
 
-  a.title h3:hover {
-    color: var(--link-color-hover) !important;
+  a.title h3 {
+    color: var(--text-normal) !important;
+
+    &:hover {
+      color: var(--link-color-hover) !important;
+    }
   }
 }
 
