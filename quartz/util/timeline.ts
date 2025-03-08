@@ -61,8 +61,8 @@ export function getTimelineEvents(
       const timeComparison = b.date.getTime() - a.date.getTime();
       
       if (timeComparison === 0) {
-        if (a.type === "created" && b.type === "modified") return -1;
-        if (a.type === "modified" && b.type === "created") return 1;
+        if (a.type === "created" && b.type === "modified") return 1;
+        if (a.type === "modified" && b.type === "created") return -1;
       }
       
       return timeComparison;
