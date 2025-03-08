@@ -57,7 +57,16 @@ export function getTimelineEvents(
   const events = filteredContent
     .flatMap((fileData) => createTimelineEvents(fileData))
     .filter((event) => !createdOnly || event.type === "created")
-    .sort((a, b) => b.date.getTime() - a.date.getTime())
+    .sort((a, b) => {
+      const timeComparison = b.date.getTime() - a.date.getTime();
+      
+      if (timeComparison === 0) {
+        if (a.type === "created" && b.type === "modified") return -1;
+        if (a.type === "modified" && b.type === "created") return 1;
+      }
+      
+      return timeComparison;
+    })
 
   return events
 }
