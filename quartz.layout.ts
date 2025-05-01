@@ -97,8 +97,10 @@ export const defaultContentPageLayout: PageLayout = {
     Component.Darkmode(),
     Component.Graph(),
     Component.DesktopOnly(Component.TableOfContents()),
-    Component.Backlinks(),
     Component.RecentNotes(),
+  ],
+  afterBody: [
+    Component.Backlinks(),
   ],
 }
 
