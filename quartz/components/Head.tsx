@@ -201,7 +201,7 @@ export default (() => {
         {js
           .filter((resource) => resource.loadTime === "beforeDOMReady")
           .map((res) => JSResourceToScriptElement(res, true))}
-        <script defer data-domain="mathieu.deraedt.dev" src="https://stats.deraedt.dev/js/script.js"></script>
+        <script defer data-domain="mathieu.deraedt.dev" src="https://stats.deraedt.dev/js/script.outbound-links.js"></script>
       </head>
     )
   }
