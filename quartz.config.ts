@@ -7,13 +7,13 @@ import * as Plugin from "./quartz/plugins"
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "~/.garden",
+    pageTitle: "~/.mathieu",
     pageTitleSuffix: " | Growing ideas",
     enableSPA: true,
     enablePopovers: true,
     analytics: null,
     locale: "en-GB",
-    baseUrl: "garden.deraedt.dev",
+    baseUrl: "mathieu.deraedt.dev",
     ignorePatterns: [
       "private",
       "assets/templates",
