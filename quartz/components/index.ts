@@ -38,7 +38,7 @@ export {
   TableOfContents,
   Explorer,
   TagList,
-  Graph,
+  // Graph,
   Backlinks,
   Search,
   Footer,
@@ -47,5 +47,5 @@ export {
   RecentNotes,
   NotFound,
   Breadcrumbs,
-  Comments,
+  // Comments,
 }

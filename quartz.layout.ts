@@ -95,7 +95,7 @@ export const defaultContentPageLayout: PageLayout = {
   ],
   right: [
     Component.Darkmode(),
-    Component.Graph(),
+    // Component.Graph(),
     Component.DesktopOnly(Component.TableOfContents()),
     Component.RecentNotes(),
   ],

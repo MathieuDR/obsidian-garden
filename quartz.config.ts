@@ -11,7 +11,7 @@ const config: QuartzConfig = {
     pageTitleSuffix: " | Growing ideas",
     enableSPA: true,
     enablePopovers: true,
-    analytics: null,
+    analytics: { provider: 'plausible', host: 'https://insights.deraedt.dev' },
     locale: "en-GB",
     baseUrl: "mathieu.deraedt.dev",
     ignorePatterns: [
