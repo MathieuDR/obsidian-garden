@@ -65,6 +65,14 @@ const explorerOpts = {
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
+  // header: [Component.Nav({
+  //   links: {
+  //     Home: "/",
+  //     About: "/output/pages/1746442137-about-me",
+  //     Projects: "/output/pages/1746442167-current-projects",
+  //     Garden: "/output/pages/1746441940-digital-garden"
+  //   }
+  // })],
   afterBody: [],
   footer: Component.Footer({
     links: {

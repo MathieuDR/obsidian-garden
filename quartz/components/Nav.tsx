@@ -8,10 +8,10 @@ interface Options {
 }
 
 export default ((opts?: Options) => {
-  const Footer: QuartzComponent = ({ displayClass, cfg }: QuartzComponentProps) => {
+  const Nav: QuartzComponent = ({ displayClass, cfg }: QuartzComponentProps) => {
     const links = opts?.links ?? []
     return (
-      <footer class={`${displayClass ?? ""}`}>
+      <nav role="pages" class={`${displayClass ?? ""}`}>
         <ul>
           {Object.entries(links).map(([text, link]) => (
             <li>
@@ -19,10 +19,10 @@ export default ((opts?: Options) => {
             </li>
           ))}
         </ul>
-      </footer>
+      </nav>
     )
   }
 
-  Footer.css = style
-  return Footer
+  Nav.css = style
+  return Nav
 }) satisfies QuartzComponentConstructor

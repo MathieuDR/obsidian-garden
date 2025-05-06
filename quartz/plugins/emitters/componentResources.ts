@@ -98,9 +98,10 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
       });`)
   } else if (cfg.analytics?.provider === "plausible") {
     const plausibleHost = cfg.analytics.host ?? "https://plausible.io"
+    const script = cfg.analytics.script ?? "manual"
     componentResources.afterDOMLoaded.push(`
       const plausibleScript = document.createElement("script")
-      plausibleScript.src = "${plausibleHost}/js/script.manual.js"
+      plausibleScript.src = "${plausibleHost}/js/script.${script}.js"
       plausibleScript.setAttribute("data-domain", location.hostname)
       plausibleScript.defer = true
       document.head.appendChild(plausibleScript)

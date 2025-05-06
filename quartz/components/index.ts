@@ -22,6 +22,7 @@ import RecentNotes from "./RecentNotes"
 import Breadcrumbs from "./Breadcrumbs"
 import Comments from "./Comments"
 import Timeline from "./timeline"
+import Nav from "./Nav"
 
 export {
   Timeline,
@@ -38,6 +39,7 @@ export {
   TableOfContents,
   Explorer,
   TagList,
+  Nav,
   // Graph,
   Backlinks,
   Search,

@@ -84,7 +84,7 @@ export default ((userOpts?: Partial<Options>) => {
       constructFileTree(allFiles)
     }
     return (
-      <div class={classNames(displayClass, "explorer")}>
+      <nav role="notes" class={classNames(displayClass, "explorer")}>
         <button
           type="button"
           id="mobile-explorer"
@@ -146,7 +146,7 @@ export default ((userOpts?: Partial<Options>) => {
             <li id="explorer-end" />
           </ul>
         </div>
-      </div>
+      </nav>
     )
   }
 
