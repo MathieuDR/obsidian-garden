@@ -198,3 +198,48 @@ body[data-has-right='false'] div#quartz-body {
     gap: 5px;
   }
 }
+
+// Explorer
+.explorer {
+  .folder-title {
+    display: flex;
+    align-items: center;
+
+    svg {
+      color: var(--nav-item-color);
+
+      >* {
+        stroke-width: 2px;
+      }
+    }
+
+    span.label {
+      color: var(--nav-item-color);
+      margin-left: 7px;
+    }
+  }
+}
+
+//footer
+footer {
+  & ul {
+    margin-top: 0 !important;
+  }
+}
+
+// recent
+div.right.sidebar .recent-notes h3 {
+  margin-top: 0;
+}
+
+// toc
+/*ul.toc-content.overflow { 
+  >li:last-of-type {
+    margin-bottom: 0;
+  }
+}*/
+
+// article title
+.article-title {
+  font-size: 2rem;
+}

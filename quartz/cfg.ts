@@ -2,14 +2,14 @@ import { ValidDateType } from "./components/Date"
 import { QuartzComponent } from "./components/types"
 import { ValidLocale } from "./i18n"
 import { PluginTypes } from "./plugins/types"
-import { SocialImageOptions } from "./util/og"
 import { Theme } from "./util/theme"
 
 export type Analytics =
   | null
   | {
       provider: "plausible"
-      host?: string
+      host?: string,
+      script: string
     }
   | {
       provider: "google"
@@ -61,10 +61,6 @@ export interface GlobalConfiguration {
    *   Quartz will avoid using this as much as possible and use relative URLs most of the time
    */
   baseUrl?: string
-  /**
-   * Whether to generate social images (Open Graph and Twitter standard) for link previews
-   */
-  generateSocialImages: boolean | Partial<SocialImageOptions>
   theme: Theme
   /**
    * Allow to translate the date in the language of your choice.
