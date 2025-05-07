@@ -119,7 +119,7 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
   const opts: FullPageLayout = {
     ...sharedPageComponents,
     ...defaultListPageLayout,
-    pageBody: TimeLine(),
+    pageBody: Timeline(),
     ...userOpts,
   }
 
@@ -158,7 +158,7 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
       )
 
       const folderInfo = computeFolderInfo(folders, content, cfg.locale)
-      yield* processFolderInfo(ctx, folderInfo, allFiles, opts, resources)
+      yield* processFolderInfo(ctx, folderInfo, allFiles, opts, resources, content)
     },
     async *partialEmit(ctx, content, resources, changeEvents) {
       const allFiles = content.map((c) => c[1].data)
@@ -178,7 +178,7 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
       // If there are affected folders, rebuild their pages
       if (affectedFolders.size > 0) {
         const folderInfo = computeFolderInfo(affectedFolders, content, cfg.locale)
-        yield* processFolderInfo(ctx, folderInfo, allFiles, opts, resources)
+        yield* processFolderInfo(ctx, folderInfo, allFiles, opts, resources, content)
       }
     },
   }

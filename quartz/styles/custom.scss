@@ -52,7 +52,16 @@ p.content-meta {
 
 body[data-slug="index"] {
   div.page-header div.popover-hint {
-    display: none;
+
+    >* {
+      display: none;
+
+    }
+
+    h1.article-title {
+      display: block;
+    }
+
   }
 }
 
@@ -70,13 +79,13 @@ body[data-slug="index"] {
   }
 }
 
-@media (min-width: 800px) {
-  .darkmode {
-    position: absolute;
-    top: 2em;
-    right: 2em;
-  }
-}
+/* @media (min-width: 800px) { */
+/*   .darkmode { */
+/*     position: absolute; */
+/*     top: 2em; */
+/*     right: 2em; */
+/*   } */
+/* } */
 
 @media not (min-width: 1200px) {
   .page>#quartz-body .sidebar.right {
@@ -233,11 +242,19 @@ div.right.sidebar .recent-notes h3 {
 }
 
 // toc
-/*ul.toc-content.overflow { 
-  >li:last-of-type {
-    margin-bottom: 0;
+ul.toc-content.overflow {
+  >li {
+
+    /* Need this because we have display none on first title */
+    &:first-of-type>a {
+      opacity: .75;
+    }
+
+    >a {
+      color: rgb(var(--ctp-subtext0))
+    }
   }
-}*/
+}
 
 // article title
 .article-title {

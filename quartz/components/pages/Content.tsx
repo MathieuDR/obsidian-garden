@@ -3,6 +3,10 @@ import { htmlToJsx } from "../../util/jsx"
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "../types"
 
 const Content: QuartzComponent = ({ fileData, tree }: QuartzComponentProps) => {
+  if (tree.children[0].tagName === "h1" 
+    && tree.children[0].children[0].value.toLowerCase() === fileData.frontmatter?.title.toLowerCase()){
+    let _header = tree.children.shift()
+  }
   const content = htmlToJsx(fileData.filePath!, tree) as ComponentChildren
   const classes: string[] = fileData.frontmatter?.cssclasses ?? []
   const classString = ["popover-hint", ...classes].join(" ")

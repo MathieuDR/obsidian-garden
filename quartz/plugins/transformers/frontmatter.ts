@@ -71,21 +71,23 @@ export const FrontMatter: QuartzTransformerPlugin<Partial<Options>> = (userOpts)
               },
             })
 
-            if (data.title != null && data.title.toString() !== "") {
-              data.title = data.title.toString()
-            } else {
-              data.title = file.stem ?? i18n(cfg.configuration.locale).propertyDefaults.title
-            }
-
-            const tags = coerceToArray(coalesceAliases(data, ["tags", "tag"]))
-            if (tags) data.tags = [...new Set(tags.map((tag: string) => slugTag(tag)))]
-
             const aliases = coerceToArray(coalesceAliases(data, ["aliases", "alias"]))
             if (aliases) {
               data.aliases = aliases // frontmatter
               file.data.aliases = getAliasSlugs(aliases)
               allSlugs.push(...file.data.aliases)
             }
+
+            if (data.title != null && data.title.toString() !== "") {
+              data.title = data.title.toString()
+            } else if(aliases && aliases[0]) {
+              data.title = aliases[0];
+            }else {
+              data.title = file.stem ?? i18n(cfg.configuration.locale).propertyDefaults.title
+            }
+
+            const tags = coerceToArray(coalesceAliases(data, ["tags", "tag"]))
+            if (tags) data.tags = [...new Set(tags.map((tag: string) => slugTag(tag)))]
 
             if (data.permalink != null && data.permalink.toString() !== "") {
               data.permalink = data.permalink.toString() as FullSlug

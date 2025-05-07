@@ -61,7 +61,7 @@ export default ((userOpts?: Partial<Options>) => {
 
   const Explorer: QuartzComponent = ({ cfg, displayClass }: QuartzComponentProps) => {
     return (
-      <nav
+      <div
         class={classNames(displayClass, "explorer")}
         data-behavior={opts.folderClickBehavior}
         data-collapsed={opts.folderDefaultState}
@@ -152,7 +152,7 @@ export default ((userOpts?: Partial<Options>) => {
             </div>
           </li>
         </template>
-      </nav>
+      </div>
     )
   }
 

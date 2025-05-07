@@ -6,40 +6,40 @@ import { pageResources, renderPage } from "../../components/renderPage"
 import { FullPageLayout } from "../../cfg"
 import { defaultListPageLayout, sharedPageComponents } from "../../../quartz.layout"
 import { Timeline } from "../../components"
-import { FilePath, pathToRoot } from "../../util/path"
-import { QuartzLogger } from "../../util/log"
+import { FilePath, FullSlug, joinSegments, pathToRoot } from "../../util/path"
 import { write } from "./helpers"
 import { getTimelineEvents } from "../../util/timeline"
 import chalk from "chalk"
+import { CustomLogger } from "../../util/logger"
+import { ProcessedContent, QuartzPluginData } from "../vfile"
 
 interface Options {
   limit?: number
-  disallowedSlugs?: string[]
+  disallowedSlugs?: FullSlug[]
   disallowedTags?: string[]
 }
 
-async function createPage(
+async function* createPage(
   ctx: any,
-  content: [string, { data: any }][],
+  content: ProcessedContent[],
   resources: any,
   opts: FullPageLayout,
-  slug: string,
+  slug: FullSlug,
   title: string,
   events: TimelineEvent[],
 ) {
-  const debug = new QuartzLogger(ctx.argv.verbose).createDebug("TimeLinePages")
+  const debug = new CustomLogger(ctx.argv.verbose).createDebug("TimeLinePages")
   debug(chalk.blue, "Creating page:", slug)
 
   const cfg = ctx.cfg.configuration
   const allFiles = content.map((c) => c[1].data)
 
-  const pageData = {
+  const pageData: QuartzPluginData = {
     slug,
-    frontmatter: { title },
-    filePath: slug,
+    frontmatter: { title }
   }
 
-  const externalResources = pageResources(pathToRoot(slug), pageData, resources)
+  const externalResources = pageResources(pathToRoot(slug), resources)
 
   debug(chalk.red, "  ↳ page data:", pageData)
   debug(chalk.red, "  ↳ external resources:", externalResources)
@@ -52,13 +52,13 @@ async function createPage(
     externalResources: externalResources,
     cfg,
     children: events,
-    tree: { type: "root", children: [] },
+    tree: { type: "root" },
     allFiles,
   }
 
   const pageContent = renderPage(cfg, slug, componentData, opts, componentData.externalResources)
 
-  return write({
+  yield write({
     ctx,
     content: pageContent,
     slug,
@@ -113,7 +113,7 @@ export const TimelinePages: QuartzEmitterPlugin<Options> = (userOpts) => {
         content,
         resources,
         opts,
-        "timeline/index",
+        joinSegments("timeline", "index") as FullSlug,
         "Timeline",
         timelineEvents,
       )

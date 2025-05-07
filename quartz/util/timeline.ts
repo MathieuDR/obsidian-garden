@@ -1,3 +1,6 @@
+import { ProcessedContent } from "../plugins/vfile"
+import { FullSlug } from "../util/path"
+
 export interface TimelineEvent {
   type: "created" | "modified"
   date: Date
@@ -36,22 +39,26 @@ export function createTimelineEvents(fileData: any): TimelineEvent[] {
 }
 
 export function getTimelineEvents(
-  content: [string, { data: any }][],
-  disallowedSlugs: Set<string>,
+  content: ProcessedContent[],
+  disallowedSlugs: Set<FullSlug>,
   disallowedTags: Set<string>,
   createdOnly: boolean = false,
 ) {
   const filteredContent = content
     .filter(([_, file]) => {
       const { data } = file
-      return !disallowedSlugs.has(data.slug) && !data.tags?.some((tag) => disallowedTags.has(tag))
+      if (data.slug == undefined){
+        return false
+      }
+
+      return !disallowedSlugs.has(data.slug) && !data.frontmatter?.tags?.some((tag) => disallowedTags.has(tag))
     })
     .map(([_, file]) => ({
       slug: file.data.slug,
-      title: file.data.frontmatter?.title || file.data.frontmatter?.aliases[0],
+      title: file.data.frontmatter?.title || file.data.frontmatter?.aliases?.at(0),
       dates: { ...file.data.dates },
       tags: file.data.frontmatter?.tags || [],
-      folder: file.data.slug.split("/").slice(0, -1).join("/"),
+      folder: file.data.slug?.toString().split("/").slice(0, -1).join("/"),
     }))
 
   const events = filteredContent
