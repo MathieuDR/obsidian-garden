@@ -19,7 +19,7 @@ interface Options {
   disallowedTags?: string[]
 }
 
-async function* createPage(
+async function createPage(
   ctx: any,
   content: ProcessedContent[],
   resources: any,
@@ -28,7 +28,7 @@ async function* createPage(
   title: string,
   events: TimelineEvent[],
 ) {
-  const debug = new CustomLogger(ctx.argv.verbose).createDebug("TimeLinePages")
+  const debug = new CustomLogger(true).createDebug("TimeLinePages")
   debug(chalk.blue, "Creating page:", slug)
 
   const cfg = ctx.cfg.configuration
@@ -43,8 +43,8 @@ async function* createPage(
 
   debug(chalk.red, "  ↳ page data:", pageData)
   debug(chalk.red, "  ↳ external resources:", externalResources)
-  debug(chalk.red, "  ↳ ctx:", ctx)
-  debug(chalk.red, "  ↳ cfg:", cfg)
+  // debug(chalk.red, "  ↳ ctx:", ctx)
+  // debug(chalk.red, "  ↳ cfg:", cfg)
 
   const componentData: QuartzComponentProps = {
     ctx,
@@ -58,7 +58,8 @@ async function* createPage(
 
   const pageContent = renderPage(cfg, slug, componentData, opts, componentData.externalResources)
 
-  yield write({
+
+  return write({
     ctx,
     content: pageContent,
     slug,
@@ -98,6 +99,8 @@ export const TimelinePages: QuartzEmitterPlugin<Options> = (userOpts) => {
       const limit = userOpts?.limit ?? 100
       const disallowedSlugs = new Set(userOpts?.disallowedSlugs ?? [])
       const disallowedTags = new Set(userOpts?.disallowedTags ?? [])
+      const debug = new CustomLogger(true).createDebug("TimeLinePages emitter")
+
 
       const timelineEvents = getTimelineEvents(content, disallowedSlugs, disallowedTags).slice(
         0,
@@ -107,6 +110,9 @@ export const TimelinePages: QuartzEmitterPlugin<Options> = (userOpts) => {
         0,
         limit,
       )
+
+      debug(chalk.magenta, "timeline events: " +  timelineEvents.length)
+      debug(chalk.magenta, "recent events: " + recentEvents.length)
 
       const timelinePage = await createPage(
         ctx,
@@ -123,7 +129,7 @@ export const TimelinePages: QuartzEmitterPlugin<Options> = (userOpts) => {
         content,
         resources,
         opts,
-        "recent/index",
+        joinSegments("recent", "index") as FullSlug,
         "Recent Notes",
         recentEvents,
       )
