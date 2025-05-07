@@ -152,9 +152,9 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
       });
 
       document.addEventListener('nav', (event) => {
-        plausible("pageview");
         const targetURL = event.detail.url;
         const isBack = event.detail.isBack;
+        plausible("pageview", {props: {is_back: isBack, target_note: targetURL}});
 
         if (!window.isInternalNoteNavigation && !isBack) {
           window.totalFollows = 0; // Reset counter if the navigation wasn't a note link
