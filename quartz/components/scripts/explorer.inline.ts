@@ -151,7 +151,7 @@ function createFolderNode(
 }
 
 async function setupExplorer(currentSlug: FullSlug) {
-  const allExplorers = document.querySelectorAll("div.explorer") as NodeListOf<HTMLElement>
+  const allExplorers = document.querySelectorAll("nav.explorer") as NodeListOf<HTMLElement>
 
   for (const explorer of allExplorers) {
     const dataFns = JSON.parse(explorer.dataset.dataFns || "{}")
