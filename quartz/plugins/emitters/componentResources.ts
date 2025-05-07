@@ -108,9 +108,73 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
 
       window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
 
-      document.addEventListener("nav", () => {
-        plausible("pageview")
-      })
+      function betterName(url) {
+        if (url === "/") {
+          return "index";
+        } else if (url.startsWith("/")) {
+          const cleanedUrl = url.substring(1);
+          return cleanedUrl;
+        } else {
+          return url; // Handle cases where the URL might not start with '/' (though unlikely with pathname)
+        }
+      }
+
+      window.currentURL = betterName(window.location.pathname);
+      window.totalFollows = 0;
+      window.isInternalNoteNavigation = false; // Flag to track if the last nav was a note link
+
+      document.addEventListener('click', (event) => {
+        const target = event.target.closest('a.internal');
+
+        if (target && target.href.startsWith(window.location.origin) && target.href !== window.location.href) {
+          const sourceURL = window.currentURL;
+          const targetURL = betterName(new URL(target.href).pathname);
+
+          const attrs = {
+            'source_note': betterName(sourceURL),
+            'target_note': targetURL,
+            'total_follows': window.totalFollows,
+          };
+
+          // console.log(attrs)
+          window.plausible('Zettel Note Followed', attrs);
+
+          window.currentURL = targetURL;
+          window.totalFollows++;
+          window.isInternalNoteNavigation = true; // Set the flag
+
+          // Prevent default navigation if your SPA's router handles it
+          event.preventDefault();
+        } else {
+          window.isInternalNoteNavigation = false; // Reset the flag if a non-note link is clicked
+        }
+      });
+
+      document.addEventListener('nav', (event) => {
+        plausible("pageview");
+        const targetURL = event.detail.url;
+        const isBack = event.detail.isBack;
+
+        if (!window.isInternalNoteNavigation && !isBack) {
+          window.totalFollows = 0; // Reset counter if the navigation wasn't a note link
+        }
+
+        if (isBack){
+          const attrs = {
+            'source_note': betterName(window.currentURL),
+            'target_note': targetURL,
+            'total_follows': window.totalFollows,
+            'isBack': true
+          };
+          // console.log(attrs)
+
+          window.plausible('Zettel Note Followed', attrs);
+        }
+
+        window.isInternalNoteNavigation = false; // Reset after each 'nav' event
+        window.currentURL = betterName(targetURL);
+      });
+
     `)
   } else if (cfg.analytics?.provider === "umami") {
     componentResources.afterDOMLoaded.push(`

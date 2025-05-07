@@ -35,8 +35,8 @@ const getOpts = ({ target }: Event): { url: URL; scroll?: boolean } | undefined 
   return { url: new URL(href), scroll: "routerNoscroll" in a.dataset ? false : undefined }
 }
 
-function notifyNav(url: FullSlug) {
-  const event: CustomEventMap["nav"] = new CustomEvent("nav", { detail: { url } })
+function notifyNav(url: FullSlug, isBack: boolean = false) {
+  const event: CustomEventMap["nav"] = new CustomEvent("nav", { detail: { url, isBack } })
   document.dispatchEvent(event)
 }
 
@@ -120,7 +120,7 @@ async function navigate(url: URL, isBack: boolean = false) {
     history.pushState({}, "", url)
   }
 
-  notifyNav(getFullSlug(window))
+  notifyNav(getFullSlug(window), isBack)
   delete announcer.dataset.persist
 }
 
