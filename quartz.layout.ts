@@ -13,47 +13,51 @@ const explorerOpts = {
         }
 
         // If both are folders
-        if (!a.file && !b.file) {
-          const orderA = folderOrder[a.name] || Number.MAX_SAFE_INTEGER
-          const orderB = folderOrder[b.name] || Number.MAX_SAFE_INTEGER
+        if (a.isFolder && b.isFolder) {
+          const orderA = folderOrder[a.displayName] || Number.MAX_SAFE_INTEGER
+          const orderB = folderOrder[b.displayName] || Number.MAX_SAFE_INTEGER
           return orderA - orderB
         }
 
         // If one is a folder and one is a file
-        if (a.file && !b.file) {
+        if (!a.isFolder && b.isFolder) {
           return 1 // Files come after folders
         }
-        if (!a.file && b.file) {
+        if (a.isFolder && !b.isFolder) {
           return -1 // Folders come before files
         }
 
         // If both are files, sort by creation date (newest first)
-        if (a.file && b.file) {
-          const dateA = new Date(a.file.dates?.created || 0)
-          const dateB = new Date(b.file.dates?.created || 0)
-          return dateB.getTime() - dateA.getTime()
+        if (!a.isFolder && !b.isFolder) {
+          afile = a.slugSegments.at(-1)
+          bfile = b.slugSegments.at(-1)
+          if(afile <= bfile){
+            return 1
+          } else {
+            return -1
+          }
         }
 
         return 0
       },
       mapFn: (node) => {
         // Only transform folder names, not files
-        if (!node.file) {
+        if (node.isFolder) {
           // Capitalize the first letter
-          node.displayName = node.name.charAt(0).toUpperCase() + node.name.slice(1)
+          node.displayName = node.displayName.charAt(0).toUpperCase() + node.displayName.slice(1)
 
           // Set icon component based on folder
-          switch (node.name.toLowerCase()) {
-            case "slips":
-              node.icon = NotebookText
-              break
-            case "output":
-              node.icon = PencilLine
-              break
-            case "research":
-              node.icon = Microscope
-              break
-          }
+          // switch (node.displayName.toLowerCase()) {
+          //   case "slips":
+          //     node.icon = iconToSVG(NotebookText)
+          //     break
+          //   case "output":
+          //     node.icon = iconToSVG(PencilLine)
+          //     break
+          //   case "research":
+          //     node.icon = iconToSVG(Microscope)
+          //     break
+          // }
         }
       },
       folderDefaultState: "collapsed",

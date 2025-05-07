@@ -92,9 +92,9 @@ const config: QuartzConfig = {
     ],
     filters: [Plugin.ExplicitPublish()],
     emitters: [
-      Plugin.TimelinePages({
-        limit: 100,
-      }),
+      // Plugin.TimelinePages({
+      //   limit: 100,
+      // }),
       Plugin.AliasRedirects(),
       Plugin.ComponentResources(),
       Plugin.ContentPage(),
