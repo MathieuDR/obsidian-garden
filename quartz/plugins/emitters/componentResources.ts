@@ -131,13 +131,14 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
           const targetURL = betterName(new URL(target.href).pathname);
 
           const attrs = {
-            'source_note': betterName(sourceURL),
-            'target_note': targetURL,
-            'total_follows': window.totalFollows,
+            source_note: betterName(sourceURL),
+            target_note: targetURL,
+            total_follows: window.totalFollows,
+            is_back: false
           };
 
           // console.log(attrs)
-          window.plausible('Zettel Note Followed', attrs);
+          window.plausible('Zettel Note Followed', {props: attrs});
 
           window.currentURL = targetURL;
           window.totalFollows++;
@@ -161,14 +162,14 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
 
         if (isBack){
           const attrs = {
-            'source_note': betterName(window.currentURL),
-            'target_note': targetURL,
-            'total_follows': window.totalFollows,
-            'isBack': true
+            source_note: betterName(window.currentURL),
+            target_note: targetURL,
+            total_follows: window.totalFollows,
+            is_back: isBack
           };
           // console.log(attrs)
 
-          window.plausible('Zettel Note Followed', attrs);
+          window.plausible('Zettel Note Followed', {props: attrs});
         }
 
         window.isInternalNoteNavigation = false; // Reset after each 'nav' event
