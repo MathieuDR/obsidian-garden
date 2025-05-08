@@ -1,6 +1,6 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
-import { Microscope, NotebookText, PencilLine, ClipboardList, ScrollText } from "lucide"
-import * as Component from "./quartz/components"
+import { Microscope, NotebookText, PencilLine, createElement as toSVG } from "lucide"
+import * as Component from "./quartz/components";
 
 const explorerOpts = {
       title: "Notes",
@@ -47,17 +47,25 @@ const explorerOpts = {
           node.displayName = node.displayName.charAt(0).toUpperCase() + node.displayName.slice(1)
 
           // Set icon component based on folder
-          // switch (node.displayName.toLowerCase()) {
-          //   case "slips":
-          //     node.icon = iconToSVG(NotebookText)
-          //     break
-          //   case "output":
-          //     node.icon = iconToSVG(PencilLine)
-          //     break
-          //   case "research":
-          //     node.icon = iconToSVG(Microscope)
-          //     break
-          // }
+          let icon = undefined;
+          console.log(NotebookText)
+          switch (node.displayName.toLowerCase()) {
+            case "slips":
+              icon = toSVG(NotebookText)
+              break
+            case "output":
+              icon = toSVG(PencilLine)
+              break
+            case "research":
+              icon = toSVG(Microscope)
+              break
+          }
+
+          if (icon != undefined){
+            console.log(icon)
+            // node.displayName = `${renderToString(icon)} ${node.displayName}`
+            // console.log(node.displayName)
+          }
         }
       },
       folderDefaultState: "collapsed",

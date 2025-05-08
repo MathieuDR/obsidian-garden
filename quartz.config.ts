@@ -1,6 +1,5 @@
 import { QuartzConfig } from "./quartz/cfg"
 import * as Plugin from "./quartz/plugins"
-import { Microscope, NotebookText, PencilLine, ClipboardList, ScrollText } from "lucide"
 
 /**
  * Quartz 4 Configuration
@@ -111,7 +110,7 @@ const config: QuartzConfig = {
       Plugin.Static(),
       Plugin.NotFoundPage(),
       Plugin.Favicon(),
-      Plugin.LucidIcons({icons: [Microscope, NotebookText, PencilLine, ClipboardList, ScrollText]})
+      // Plugin.LucidIcons({icons: [Microscope, NotebookText, PencilLine, ClipboardList, ScrollText]})
       // Plugin.CustomOgImages(),
     ],
   },

@@ -118,7 +118,12 @@ function createFolderNode(
     a.href = resolveRelative(currentSlug, folderPath)
     a.dataset.for = folderPath
     a.className = "folder-title"
-    a.textContent = node.displayName
+    if (node.displayName.includes("<svg")) {
+      a.innerHTML = node.displayName;
+    } else {
+      a.textContent = node.displayName;
+    }
+
     button.replaceWith(a)
   } else {
     const span = titleContainer.querySelector(".folder-title") as HTMLElement
