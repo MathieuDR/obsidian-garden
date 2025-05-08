@@ -28,7 +28,7 @@ async function createPage(
   title: string,
   events: TimelineEvent[],
 ) {
-  const debug = new CustomLogger(true).createDebug("TimeLinePages")
+  const debug = new CustomLogger(ctx.argv.verbose).createDebug("TimeLinePages")
   debug(chalk.blue, "Creating page:", slug)
 
   const cfg = ctx.cfg.configuration
@@ -99,7 +99,7 @@ export const TimelinePages: QuartzEmitterPlugin<Options> = (userOpts) => {
       const limit = userOpts?.limit ?? 100
       const disallowedSlugs = new Set(userOpts?.disallowedSlugs ?? [])
       const disallowedTags = new Set(userOpts?.disallowedTags ?? [])
-      const debug = new CustomLogger(true).createDebug("TimeLinePages emitter")
+      const debug = new CustomLogger(ctx.argv.verbose).createDebug("TimeLinePages emitter")
 
 
       const timelineEvents = getTimelineEvents(content, disallowedSlugs, disallowedTags).slice(
