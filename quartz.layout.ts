@@ -1,65 +1,62 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
-import { Microscope, NotebookText, PencilLine, ClipboardList, ScrollText } from "lucide"
-import * as Component from "./quartz/components"
+import { Microscope, NotebookText, PencilLine, createElement } from "lucide"
+import * as Component from "./quartz/components";
 
 const explorerOpts = {
-      title: "Notes",
-      sortFn: (a, b) => {
-        // Define folder order
-        const folderOrder = {
-          slips: 1,
-          output: 2,
-          research: 3,
-        }
+  title: "Notes",
+  sortFn: (a, b) => {
+    // Define folder order
+    const folderOrder = {
+      slips: 1,
+      output: 2,
+      research: 3,
+    }
 
-        // If both are folders
-        if (!a.file && !b.file) {
-          const orderA = folderOrder[a.name] || Number.MAX_SAFE_INTEGER
-          const orderB = folderOrder[b.name] || Number.MAX_SAFE_INTEGER
-          return orderA - orderB
-        }
+    // If both are folders
+    if (a.isFolder && b.isFolder) {
+      const orderA = folderOrder[a.displayName] || Number.MAX_SAFE_INTEGER
+      const orderB = folderOrder[b.displayName] || Number.MAX_SAFE_INTEGER
+      return orderA - orderB
+    }
 
-        // If one is a folder and one is a file
-        if (a.file && !b.file) {
-          return 1 // Files come after folders
-        }
-        if (!a.file && b.file) {
-          return -1 // Folders come before files
-        }
+    // If one is a folder and one is a file
+    if (!a.isFolder && b.isFolder) {
+      return 1 // Files come after folders
+    }
+    if (a.isFolder && !b.isFolder) {
+      return -1 // Folders come before files
+    }
 
-        // If both are files, sort by creation date (newest first)
-        if (a.file && b.file) {
-          const dateA = new Date(a.file.dates?.created || 0)
-          const dateB = new Date(b.file.dates?.created || 0)
-          return dateB.getTime() - dateA.getTime()
-        }
+    // If both are files, sort by creation date (newest first)
+    if (!a.isFolder && !b.isFolder) {
+      afile = a.slugSegments.at(-1)
+      bfile = b.slugSegments.at(-1)
+      if (afile <= bfile) {
+        return 1
+      } else {
+        return -1
+      }
+    }
 
-        return 0
-      },
-      mapFn: (node) => {
-        // Only transform folder names, not files
-        if (!node.file) {
-          // Capitalize the first letter
-          node.displayName = node.name.charAt(0).toUpperCase() + node.name.slice(1)
+    return 0
+  },
+  mapFn: (node) => {
+    // Only transform folder names, not files
+    if (node.isFolder) {
+      // Capitalize the first letter
+      node.displayName = node.displayName.charAt(0).toUpperCase() + node.displayName.slice(1)
 
-          // Set icon component based on folder
-          switch (node.name.toLowerCase()) {
-            case "slips":
-              node.icon = NotebookText
-              break
-            case "output":
-              node.icon = PencilLine
-              break
-            case "research":
-              node.icon = Microscope
-              break
-          }
-        }
-      },
-      folderDefaultState: "collapsed",
-      useSavedState: true,
-      order: ["filter", "sort", "map"], // Explicitly ensure mapping happens last
-    };
+      // Add metadata instead of trying to inject SVG directly
+      const folderName = node.displayName.toLowerCase();
+      if (["slips", "output", "research"].includes(folderName)) {
+        node.iconType = folderName;
+      }
+    }
+  },
+  folderDefaultState: "collapsed",
+  useSavedState: true,
+  order: ["filter", "sort", "map"], // Explicitly ensure mapping happens last
+};
 
 // components shared across all pages
 export const sharedPageComponents: SharedLayout = {
@@ -87,7 +84,10 @@ export const sharedPageComponents: SharedLayout = {
 // components for pages that display a single page (e.g. a single note)
 export const defaultContentPageLayout: PageLayout = {
   beforeBody: [
-    Component.Breadcrumbs(),
+    Component.ConditionalRender({
+      component: Component.Breadcrumbs(),
+      condition: (page) => page.fileData.slug !== "index",
+    }),
     Component.ArticleTitle(),
     Component.ContentMeta({
       showReadingTime: false,
@@ -98,12 +98,19 @@ export const defaultContentPageLayout: PageLayout = {
   left: [
     Component.PageTitle(),
     Component.MobileOnly(Component.Spacer()),
-    Component.Search(),
+    Component.Flex({
+      components: [
+        {
+          Component: Component.Search(),
+          grow: true,
+        },
+        { Component: Component.Darkmode() },
+        { Component: Component.ReaderMode() },
+      ],
+    }),
     Component.Explorer(explorerOpts),
   ],
   right: [
-    Component.Darkmode(),
-    // Component.Graph(),
     Component.DesktopOnly(Component.TableOfContents()),
     Component.RecentNotes(),
   ],
@@ -118,8 +125,15 @@ export const defaultListPageLayout: PageLayout = {
   left: [
     Component.PageTitle(),
     Component.MobileOnly(Component.Spacer()),
-    Component.Search(),
-    Component.Darkmode(),
+    Component.Flex({
+      components: [
+        {
+          Component: Component.Search(),
+          grow: true,
+        },
+        { Component: Component.Darkmode() },
+      ],
+    }),
     Component.Explorer(explorerOpts),
   ],
   right: [],

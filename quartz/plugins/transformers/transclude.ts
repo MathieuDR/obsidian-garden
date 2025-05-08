@@ -4,11 +4,11 @@ import { visit } from "unist-util-visit"
 import { ReplaceFunction, findAndReplace } from "mdast-util-find-and-replace"
 import { FilePath, pathToRoot, slugTag, slugifyFilePath, FullSlug } from "../../util/path"
 import { dirname, join } from "path"
-import { QuartzLogger } from "../../util/log"
 import { readFileSync } from "fs"
 import yaml from "js-yaml"
 import markdown from "remark-parse"
 import { fromMarkdown } from "mdast-util-from-markdown"
+import { CustomLogger } from "../../util/logger"
 
 interface Options {
   debug: boolean
@@ -31,8 +31,8 @@ export const TranscludeUnpublished: QuartzTransformerPlugin<Partial<Options>> = 
         () => {
           return async (tree: Root, file) => {
             const currentSlug = file.data.slug! as FullSlug
-            const currentDir = dirname(file.data.relativePath)
-            const debug = new QuartzLogger(ctx.argv.verbose).createDebug(
+            const currentDir = dirname(file.data.relativePath?.toString())
+            const debug = new CustomLogger(ctx.argv.verbose).createDebug(
               `TranscludeUnpublished[${currentSlug}]`,
             )
 
@@ -40,7 +40,7 @@ export const TranscludeUnpublished: QuartzTransformerPlugin<Partial<Options>> = 
               return fromMarkdown(content)?.children[0] ?? null
             }
 
-            const findBlock = (content: string, blockRef: string): string | null => {
+            const findBlock = (content: string, blockRef: string): string | Root | null => {
               const lines = content.split("\n")
 
               // Find the line containing the block reference
@@ -50,7 +50,7 @@ export const TranscludeUnpublished: QuartzTransformerPlugin<Partial<Options>> = 
                   const cleanLine = line.replace(`^${blockRef}`, "").trim()
                   debug(cleanLine)
                   const parsedContent = parseMdast(cleanLine)
-                  debug(parsedContent)
+                  //debug(parsedContent)
 
                   return parsedContent
                 }
@@ -84,7 +84,7 @@ export const TranscludeUnpublished: QuartzTransformerPlugin<Partial<Options>> = 
             const replacements: [RegExp, string | ReplaceFunction][] = [
               [
                 wikilinkRegex,
-                (value: string, ...capture: string[]) => {
+                (_value: any, ...capture: any) => {
                   let [rawFp, rawHeader, rawAlias] = capture
                   const fp = rawFp?.trim() ?? ""
                   const anchor = rawHeader?.trim() ?? ""
@@ -107,7 +107,7 @@ export const TranscludeUnpublished: QuartzTransformerPlugin<Partial<Options>> = 
                   try {
                     const frontmatter = yaml.load(fmMatch[1], {
                       schema: yaml.JSON_SCHEMA,
-                    }) as object
+                    }) as any
                     if (frontmatter.publish) {
                       debug("File is published, skipping")
                       return false
