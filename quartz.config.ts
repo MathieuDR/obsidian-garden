@@ -110,6 +110,7 @@ const config: QuartzConfig = {
       Plugin.Static(),
       Plugin.NotFoundPage(),
       Plugin.Favicon(),
+      // Plugin.LucidIcons({icons: [Microscope, NotebookText, PencilLine, ClipboardList, ScrollText]})
       // Plugin.CustomOgImages(),
     ],
   },

@@ -1,19 +1,24 @@
 @use "./base.scss";
 @use "./themes";
 
-:root[saved-theme="light"],
-:root[saved-theme="dark"] {
+
+:root:root[saved-theme="light"],
+:root:root[saved-theme="dark"] {
   --ctp-accent: var(--ctp-mauve);
+
+  body {
+    --link-external-color: rgb(var(--ctp-green)) !important;
+  }
 }
 
-.page-title a {
+body .page-title a {
   font-family: "JetBrains Mono", serif;
   color: rgb(var(--ctp-accent))
 }
 
 h1 {
   /* text-transform: uppercase; */
-  color: rgb(var(--ctp-accent));
+  color: rgb(var(--ctp-accent)) !important;
 }
 
 h2,
@@ -21,7 +26,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: rgb(var(--ctp-subtext0));
+  color: rgb(var(--ctp-subtext0)) !important;
 }
 
 .breadcrumb-element>a,
@@ -74,23 +79,19 @@ body[data-slug="index"] {
     color: var(--text-normal) !important;
 
     &:hover {
-      color: var(--link-color-hover) !important;
+      color: var(--tertiary) !important;
     }
   }
 }
-
-/* @media (min-width: 800px) { */
-/*   .darkmode { */
-/*     position: absolute; */
-/*     top: 2em; */
-/*     right: 2em; */
-/*   } */
-/* } */
 
 @media not (min-width: 1200px) {
   .page>#quartz-body .sidebar.right {
     flex-direction: column;
     padding: 0 1rem;
+
+    >* {
+      max-height: unset;
+    }
   }
 
   .page>#quartz-body {
@@ -100,6 +101,10 @@ body[data-slug="index"] {
   .page>#quartz-body>div.center {
     box-sizing: border-box;
     padding: 0 1rem;
+  }
+
+  footer {
+    padding: 0 1em;
   }
 }
 
@@ -206,6 +211,10 @@ body[data-has-right='false'] div#quartz-body {
 
     gap: 5px;
   }
+
+  div.left.sidebar {
+    padding: 0.5em 1em;
+  }
 }
 
 // Explorer
@@ -214,8 +223,15 @@ body[data-has-right='false'] div#quartz-body {
     display: flex;
     align-items: center;
 
+    &:hover svg {
+      color: var(--tertiary) !important;
+    }
+
     svg {
       color: var(--nav-item-color);
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
 
       >* {
         stroke-width: 2px;
@@ -227,12 +243,26 @@ body[data-has-right='false'] div#quartz-body {
       margin-left: 7px;
     }
   }
+
+  div.folder-outer ul.content li {
+    &:has(.active) {
+      border-left: none;
+    }
+
+    a.active {
+      color: rgb(var(--ctp-mauve));
+    }
+  }
 }
 
 //footer
 footer {
   & ul {
     margin-top: 0 !important;
+  }
+
+  a.external {
+    color: var(--link-external-color);
   }
 }
 
@@ -259,4 +289,9 @@ ul.toc-content.overflow {
 // article title
 .article-title {
   font-size: 2rem;
+}
+
+// Search
+body .search>.search-container>.search-space>.search-layout .highlight {
+  background-color: rgb(var(--ctp-overlay0));
 }
