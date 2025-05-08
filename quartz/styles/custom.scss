@@ -219,8 +219,15 @@ body[data-has-right='false'] div#quartz-body {
     display: flex;
     align-items: center;
 
+    &:hover svg {
+      color: var(--tertiary) !important;
+    }
+
     svg {
       color: var(--nav-item-color);
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
 
       >* {
         stroke-width: 2px;
