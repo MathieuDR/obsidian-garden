@@ -7,7 +7,7 @@ import path from "path";
 import { renderToString } from "preact-render-to-string";
 
 const defaultOptions: LucidIconOptions = {
-  icons: [Microscope, NotebookText, PencilLine, ClipboardList, ScrollText]
+  icons: []
 }
 
 export type LucidIconOptions = {
