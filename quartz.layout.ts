@@ -1,5 +1,5 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
-import { Microscope, NotebookText, PencilLine, createElement as toSVG } from "lucide"
+import { Microscope, NotebookText, PencilLine, createElement } from "lucide"
 import * as Component from "./quartz/components";
 
 const explorerOpts = {
@@ -46,25 +46,10 @@ const explorerOpts = {
       // Capitalize the first letter
       node.displayName = node.displayName.charAt(0).toUpperCase() + node.displayName.slice(1)
 
-      // Set icon component based on folder
-      let icon = undefined;
-      console.log(NotebookText)
-      switch (node.displayName.toLowerCase()) {
-        case "slips":
-          icon = toSVG(NotebookText)
-          break
-        case "output":
-          icon = toSVG(PencilLine)
-          break
-        case "research":
-          icon = toSVG(Microscope)
-          break
-      }
-
-      if (icon != undefined) {
-        console.log(icon)
-        // node.displayName = `${renderToString(icon)} ${node.displayName}`
-        // console.log(node.displayName)
+      // Add metadata instead of trying to inject SVG directly
+      const folderName = node.displayName.toLowerCase();
+      if (["slips", "output", "research"].includes(folderName)) {
+        node.iconType = folderName;
       }
     }
   },
