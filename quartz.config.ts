@@ -111,7 +111,9 @@ const config: QuartzConfig = {
       Plugin.NotFoundPage(),
       Plugin.Favicon(),
       // Plugin.LucidIcons({icons: [Microscope, NotebookText, PencilLine, ClipboardList, ScrollText]})
-      // Plugin.CustomOgImages(),
+      Plugin.CustomOgImages({
+        colorScheme: "darkMode"
+      }),
     ],
   },
 }
