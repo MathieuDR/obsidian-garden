@@ -62,6 +62,7 @@ export default ((userOpts?: Partial<Options>) => {
   const Explorer: QuartzComponent = ({ cfg, displayClass }: QuartzComponentProps) => {
     return (
       <nav
+        role="explorer"
         class={classNames(displayClass, "explorer")}
         data-behavior={opts.folderClickBehavior}
         data-collapsed={opts.folderDefaultState}
@@ -94,13 +95,24 @@ export default ((userOpts?: Partial<Options>) => {
             <line x1="4" x2="20" y1="18" y2="18" />
           </svg>
         </button>
+        <ul class="pages">
+          {Object.entries(opts.links).map(([text, link]) => (
+            <li>
+              <a href={link}>{text}</a>
+            </li>
+          ))}
+        </ul>
         <button
           type="button"
           class="title-button explorer-toggle desktop-explorer"
           data-mobile={false}
           aria-expanded={true}
         >
-          <h2>{opts.title ?? i18n(cfg.locale).components.explorer.title}</h2>
+          <h2>
+            <a href={opts.titleLink}>
+              {opts.title ?? i18n(cfg.locale).components.explorer.title}
+            </a>
+          </h2>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="14"

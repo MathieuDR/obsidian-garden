@@ -3,7 +3,12 @@ import { Microscope, NotebookText, PencilLine, createElement } from "lucide"
 import * as Component from "./quartz/components";
 
 const explorerOpts = {
-  title: "Notes",
+  title: "Garden",
+  titleLink: "/output/pages/1746441940-digital-garden",
+  links: {
+    About: "/output/pages/1746442137-about-me",
+    Projects: "/output/pages/1746442167-current-projects",
+  },
   sortFn: (a, b) => {
     // Define folder order
     const folderOrder = {
@@ -53,7 +58,7 @@ const explorerOpts = {
       }
     }
   },
-  folderDefaultState: "collapsed",
+  folderDefaultState: "open",
   useSavedState: true,
   order: ["filter", "sort", "map"], // Explicitly ensure mapping happens last
 };
@@ -62,14 +67,6 @@ const explorerOpts = {
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
-  // header: [Component.Nav({
-  //   links: {
-  //     Home: "/",
-  //     About: "/output/pages/1746442137-about-me",
-  //     Projects: "/output/pages/1746442167-current-projects",
-  //     Garden: "/output/pages/1746441940-digital-garden"
-  //   }
-  // })],
   afterBody: [],
   footer: Component.Footer({
     links: {

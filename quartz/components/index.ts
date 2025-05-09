@@ -28,6 +28,7 @@ import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 
 export {
+  Nav,
   Timeline,
   ArticleTitle,
   Content,
