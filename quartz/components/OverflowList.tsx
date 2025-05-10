@@ -18,7 +18,7 @@ export default () => {
 
   return {
     OverflowList: (props: JSX.HTMLAttributes<HTMLUListElement>) => (
-      <OverflowList {...props} id={id} />
+      <OverflowList {...props} data-list-id={id} />
     ),
     overflowListAfterDOMLoaded: `
 document.addEventListener("nav", (e) => {
@@ -34,7 +34,7 @@ document.addEventListener("nav", (e) => {
     }
   })
 
-  const ul = document.getElementById("${id}")
+  const ul = document.querySelector("ul[data-list-number='${id}']")
   if (!ul) return
 
   const end = ul.querySelector(".overflow-end")
