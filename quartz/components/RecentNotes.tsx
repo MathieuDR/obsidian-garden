@@ -40,9 +40,9 @@ export default ((userOpts?: Partial<Options>) => {
     return (
       <div class={classNames(displayClass, "recent-notes")}>
         <a class="title" href="/recent">
-          <h3>
+          <h2>
             {opts.title ?? i18n(cfg.locale).components.recentNotes.title} {iconToSVG(ChevronRight)}
-          </h3>
+          </h2>
         </a>
         <ul class="recent-ul">
           {pages.slice(0, opts.limit).map((page) => {

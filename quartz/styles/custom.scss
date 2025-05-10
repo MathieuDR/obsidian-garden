@@ -71,12 +71,14 @@ body[data-slug="index"] {
   }
 }
 
+// Recent
 .recent-notes {
   ul.tags {
     font-size: 14px;
   }
 
-  a.title h3 {
+  a.title h2 {
+    margin: 0.5rem 0 0 0 !important;
     color: var(--text-normal) !important;
 
     &:hover {
@@ -85,7 +87,6 @@ body[data-slug="index"] {
   }
 }
 
-// Recent
 .recent-ul {
   .recent-li {
     .section {
@@ -365,4 +366,9 @@ ul.toc-content.overflow {
 // Search
 body .search>.search-container>.search-space>.search-layout .highlight {
   background-color: rgb(var(--ctp-overlay0));
+}
+
+// backlinks
+.backlinks h2 {
+  font-size: 1.4rem;
 }
