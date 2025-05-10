@@ -75,6 +75,11 @@ body[data-slug="index"] {
 .recent-notes {
   ul.tags {
     font-size: 14px;
+
+    li a.internal.tag-link {
+      margin: 0;
+      padding: 0;
+    }
   }
 
   a.title h2 {
