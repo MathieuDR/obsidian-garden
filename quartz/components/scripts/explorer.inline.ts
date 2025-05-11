@@ -1,7 +1,6 @@
 import { FileTrieNode } from "../../util/fileTrie"
 import { FullSlug, resolveRelative, simplifySlug } from "../../util/path"
 import { ContentDetails } from "../../plugins/emitters/contentIndex"
-import { Microscope, NotebookText, PencilLine, createIcons } from "lucide"
 
 type MaybeHTMLElement = HTMLElement | undefined
 
@@ -261,14 +260,6 @@ async function setupExplorer(currentSlug: FullSlug) {
         activeElement.scrollIntoView({ behavior: "smooth" })
       }
     }
-
-    createIcons({
-      icons: {
-        Microscope,
-        NotebookText,
-        PencilLine,
-      },
-    })
 
     // Set up event handlers
     const explorerButtons = explorer.getElementsByClassName(

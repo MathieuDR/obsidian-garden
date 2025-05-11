@@ -70,7 +70,7 @@ const explorerOpts = {
 // components shared across all pages
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
-  header: [],
+  header: [Component.Icons({icons: []})],
   // header: [Component.Nav({
   //   links: {
   //     Home: "/",

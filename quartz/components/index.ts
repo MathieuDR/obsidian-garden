@@ -26,8 +26,10 @@ import Timeline from "./timeline"
 import Nav from "./Nav"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
+import Icons from "./LucideIcons"
 
 export {
+  Icons,
   Nav,
   Timeline,
   ArticleTitle,
