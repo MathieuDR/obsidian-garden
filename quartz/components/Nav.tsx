@@ -13,7 +13,7 @@ export default ((opts?: Options) => {
     return (
       <>
       <div class="nav-break"></div>
-      <nav role="pages" class={`${displayClass ?? ""}`}>
+      <nav class={`${displayClass ?? "page-navigation"}`}>
         <ul>
           {linkEntries.map(([text, link], index) => (
             <>

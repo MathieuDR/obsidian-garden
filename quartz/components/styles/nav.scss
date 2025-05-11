@@ -2,7 +2,7 @@ div.nav-break {
   display: none;
 }
 
-nav[role="pages"] {
+nav.page-navigation {
   text-align: left;
   font-family: var(--bodyFont);
 
@@ -28,7 +28,7 @@ nav[role="pages"] {
     flex-basis: 100%;
   }
 
-  nav[role="pages"] {
+  nav.page-navigation {
     justify-content: unset;
     margin: 1rem 0 0.5rem;
   }
