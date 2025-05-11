@@ -44,6 +44,10 @@ export function getTimelineEvents(
   disallowedTags: Set<string>,
   createdOnly: boolean = false,
 ) {
+  if(content == undefined){
+    return []
+  }
+
   const filteredContent = content
     .filter(([_, file]) => {
       const { data } = file
