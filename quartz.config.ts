@@ -12,7 +12,11 @@ const config: QuartzConfig = {
     pageTitleSuffix: " | Growing ideas",
     enableSPA: true,
     enablePopovers: true,
-    analytics: { provider: 'plausible', host: 'https://insights.deraedt.dev', script: 'outbound-links.pageview-props.tagged-events' },
+    analytics: {
+      provider: "plausible",
+      host: "https://insights.deraedt.dev",
+      script: "outbound-links.pageview-props.tagged-events",
+    },
     locale: "en-GB",
     baseUrl: "mathieu.deraedt.dev",
     ignorePatterns: [
@@ -29,11 +33,11 @@ const config: QuartzConfig = {
       colorScheme: "darkMode",
     },
     theme: {
-      fontOrigin: "googleFonts",
-      cdnCaching: true,
+      fontOrigin: "local",
+      cdnCaching: false,
       typography: {
         header: "Schibsted Grotesk",
-        body: "Source Sans Pro",
+        body: "Roboto",
         code: "JetBrains Mono",
       },
       colors: {

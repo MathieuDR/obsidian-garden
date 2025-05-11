@@ -1,8 +1,10 @@
+div.nav-break {
+  display: none;
+}
+
 nav[role="pages"] {
-  background-color: red;
   text-align: left;
-  margin-bottom: 4rem;
-  opacity: 0.7;
+  font-family: var(--bodyFont);
 
   & ul {
     list-style: none;
@@ -11,6 +13,23 @@ nav[role="pages"] {
     display: flex;
     flex-direction: row;
     gap: 1rem;
-    margin-top: -1rem;
+    justify-content: space-between;
+
+    li.divider {
+      border-right: dotted 3px rgb(var(--ctp-accent));
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  div.nav-break {
+    display: unset;
+    height: 0;
+    flex-basis: 100%;
+  }
+
+  nav[role="pages"] {
+    justify-content: unset;
+    margin: 1rem 0 0.5rem;
   }
 }

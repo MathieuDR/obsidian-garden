@@ -82,9 +82,9 @@ export const FrontMatter: QuartzTransformerPlugin<Partial<Options>> = (userOpts)
 
             if (data.title != null && data.title.toString() !== "") {
               data.title = data.title.toString()
-            } else if(aliases && aliases[0]) {
-              data.title = aliases[0];
-            }else {
+            } else if (aliases && aliases[0]) {
+              data.title = aliases[0]
+            } else {
               data.title = file.stem ?? i18n(cfg.configuration.locale).propertyDefaults.title
             }
 

@@ -1,0 +1,35 @@
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/static/fonts/jetbrainsmono-variablefont_wght-webfont.woff2') format('woff2'),
+    url('/static/fonts/jetbrainsmono-variablefont_wght-webfont.woff') format('woff');
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/static/fonts/roboto-variablefont_wdthwght-webfont.woff2') format('woff2'),
+    url('/static/fonts/roboto-variablefont_wdthwght-webfont.woff') format('woff');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/static/fonts/roboto-italic-variablefont_wdthwght-webfont.woff2') format('woff2'),
+    url('/static/fonts/roboto-italic-variablefont_wdthwght-webfont.woff') format('woff');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'Schibsted Grotesk';
+  src: url('/static/fonts/schibstedgrotesk-variablefont_wght-webfont.woff2') format('woff2'),
+    url('/static/fonts/schibstedgrotesk-variablefont_wght-webfont.woff') format('woff');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}

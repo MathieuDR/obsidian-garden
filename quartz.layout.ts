@@ -1,6 +1,6 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
 import { Microscope, NotebookText, PencilLine, createElement } from "lucide"
-import * as Component from "./quartz/components";
+import * as Component from "./quartz/components"
 
 const explorerOpts = {
   title: "Notes",
@@ -47,16 +47,25 @@ const explorerOpts = {
       node.displayName = node.displayName.charAt(0).toUpperCase() + node.displayName.slice(1)
 
       // Add metadata instead of trying to inject SVG directly
-      const folderName = node.displayName.toLowerCase();
+      const folderName = node.displayName.toLowerCase()
       if (["slips", "output", "research"].includes(folderName)) {
-        node.iconType = folderName;
+        node.iconType = folderName
       }
     }
+  },
+  filterFn: (node) => {
+    const filtered = [
+      "output/pages/1746442137-about-me",
+      "output/pages/1746442167-current-projects",
+      "output/pages/1746441940-digital-garden",
+    ]
+
+    return filtered.indexOf(node.slug) == -1
   },
   folderDefaultState: "collapsed",
   useSavedState: true,
   order: ["filter", "sort", "map"], // Explicitly ensure mapping happens last
-};
+}
 
 // components shared across all pages
 export const sharedPageComponents: SharedLayout = {
@@ -108,15 +117,17 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.DesktopOnly(Component.ReaderMode()) },
       ],
     }),
+    Component.Nav({
+      links: {
+        About: "/output/pages/1746442137-about-me",
+        Projects: "/output/pages/1746442167-current-projects",
+        Garden: "/output/pages/1746441940-digital-garden",
+      },
+    }),
     Component.Explorer(explorerOpts),
   ],
-  right: [
-    Component.DesktopOnly(Component.TableOfContents()),
-    Component.RecentNotes(),
-  ],
-  afterBody: [
-    Component.Backlinks(),
-  ],
+  right: [Component.DesktopOnly(Component.TableOfContents()), Component.RecentNotes()],
+  afterBody: [Component.Backlinks()],
 }
 
 // components for pages that display lists of pages  (e.g. tags or folders)
@@ -133,6 +144,13 @@ export const defaultListPageLayout: PageLayout = {
         },
         { Component: Component.Darkmode() },
       ],
+    }),
+    Component.Nav({
+      links: {
+        About: "/output/pages/1746442137-about-me",
+        Projects: "/output/pages/1746442167-current-projects",
+        Garden: "/output/pages/1746441940-digital-garden",
+      },
     }),
     Component.Explorer(explorerOpts),
   ],

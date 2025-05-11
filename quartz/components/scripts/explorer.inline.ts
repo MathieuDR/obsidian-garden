@@ -96,27 +96,27 @@ function createFileNode(currentSlug: FullSlug, node: FileTrieNode): HTMLLIElemen
   return li
 }
 
-function createIcon(iconType: string){
+function createIcon(iconType: string) {
   let iconName
 
-    switch (iconType) {
-      case 'slips':
-        iconName = 'notebook-text'
-        break
-      case 'output':
-        iconName = 'pencil-line'
-        break
-      case 'research':
-        iconName = 'microscope'
-        break
-    }
+  switch (iconType) {
+    case "slips":
+      iconName = "notebook-text"
+      break
+    case "output":
+      iconName = "pencil-line"
+      break
+    case "research":
+      iconName = "microscope"
+      break
+  }
 
-   if (!iconName) return
-    
-    // Create the icon element using an <i> tag with data-lucide attribute
-    const iconElement = document.createElement('i')
-    iconElement.setAttribute('data-lucide', iconName)
-    iconElement.className = 'lucide-icon'
+  if (!iconName) return
+
+  // Create the icon element using an <i> tag with data-lucide attribute
+  const iconElement = document.createElement("i")
+  iconElement.setAttribute("data-lucide", iconName)
+  iconElement.className = "lucide-icon"
 
   return iconElement
 }
@@ -145,13 +145,13 @@ function createFolderNode(
     a.dataset.for = folderPath
     a.className = "folder-title"
 
-    if(node.iconType){
+    if (node.iconType) {
       const i = createIcon(node.iconType)
       a.appendChild(i)
-    }  
+    }
 
-    const textNode = document.createTextNode(node.displayName);
-    a.appendChild(textNode);
+    const textNode = document.createTextNode(node.displayName)
+    a.appendChild(textNode)
 
     button.replaceWith(a)
   } else {
@@ -266,8 +266,8 @@ async function setupExplorer(currentSlug: FullSlug) {
       icons: {
         Microscope,
         NotebookText,
-        PencilLine
-      }
+        PencilLine,
+      },
     })
 
     // Set up event handlers

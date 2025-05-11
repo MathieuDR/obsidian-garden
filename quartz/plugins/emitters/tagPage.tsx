@@ -71,19 +71,17 @@ async function processTagPage(
   allFiles: QuartzPluginData[],
   opts: FullPageLayout,
   resources: StaticResources,
-  content: ProcessedContent[]
+  content: ProcessedContent[],
 ) {
   const slug = joinSegments("tags", tag) as FullSlug
   const [tree, file] = tagContent
   const cfg = ctx.cfg.configuration
   const externalResources = pageResources(pathToRoot(slug), resources)
 
-  const timelineEvents = getTimelineEvents(content, new Set(), new Set(), false).filter(
-    (event) => {
-      if (tag === "index") return true
-      return event.type === "created" && event.tags?.includes(tag)
-    },
-  )
+  const timelineEvents = getTimelineEvents(content, new Set(), new Set(), false).filter((event) => {
+    if (tag === "index") return true
+    return event.type === "created" && event.tags?.includes(tag)
+  })
   const componentData: QuartzComponentProps = {
     ctx,
     fileData: file.data,

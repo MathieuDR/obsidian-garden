@@ -47,11 +47,14 @@ export function getTimelineEvents(
   const filteredContent = content
     .filter(([_, file]) => {
       const { data } = file
-      if (data.slug == undefined){
+      if (data.slug == undefined) {
         return false
       }
 
-      return !disallowedSlugs.has(data.slug) && !data.frontmatter?.tags?.some((tag) => disallowedTags.has(tag))
+      return (
+        !disallowedSlugs.has(data.slug) &&
+        !data.frontmatter?.tags?.some((tag) => disallowedTags.has(tag))
+      )
     })
     .map(([_, file]) => ({
       slug: file.data.slug,
@@ -65,14 +68,14 @@ export function getTimelineEvents(
     .flatMap((fileData) => createTimelineEvents(fileData))
     .filter((event) => !createdOnly || event.type === "created")
     .sort((a, b) => {
-      const timeComparison = b.date.getTime() - a.date.getTime();
-      
+      const timeComparison = b.date.getTime() - a.date.getTime()
+
       if (timeComparison === 0) {
-        if (a.type === "created" && b.type === "modified") return 1;
-        if (a.type === "modified" && b.type === "created") return -1;
+        if (a.type === "created" && b.type === "modified") return 1
+        if (a.type === "modified" && b.type === "created") return -1
       }
-      
-      return timeComparison;
+
+      return timeComparison
     })
 
   return events

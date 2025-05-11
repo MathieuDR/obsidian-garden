@@ -36,7 +36,7 @@ async function createPage(
 
   const pageData: QuartzPluginData = {
     slug,
-    frontmatter: { title }
+    frontmatter: { title },
   }
 
   const externalResources = pageResources(pathToRoot(slug), resources)
@@ -57,7 +57,6 @@ async function createPage(
   }
 
   const pageContent = renderPage(cfg, slug, componentData, opts, componentData.externalResources)
-
 
   return write({
     ctx,
@@ -101,7 +100,6 @@ export const TimelinePages: QuartzEmitterPlugin<Options> = (userOpts) => {
       const disallowedTags = new Set(userOpts?.disallowedTags ?? [])
       const debug = new CustomLogger(ctx.argv.verbose).createDebug("TimeLinePages emitter")
 
-
       const timelineEvents = getTimelineEvents(content, disallowedSlugs, disallowedTags).slice(
         0,
         limit,
@@ -111,7 +109,7 @@ export const TimelinePages: QuartzEmitterPlugin<Options> = (userOpts) => {
         limit,
       )
 
-      debug(chalk.magenta, "timeline events: " +  timelineEvents.length)
+      debug(chalk.magenta, "timeline events: " + timelineEvents.length)
       debug(chalk.magenta, "recent events: " + recentEvents.length)
 
       const timelinePage = await createPage(

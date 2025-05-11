@@ -1,6 +1,6 @@
 @use "./base.scss";
 @use "./themes";
-
+@use "./fonts.scss";
 
 :root:root[saved-theme="light"],
 :root:root[saved-theme="dark"] {
@@ -10,11 +10,32 @@
   body {
     --link-external-color: rgb(var(--ctp-green)) !important;
   }
+
+
+  /* Theme fixes */
+  /* Don't forget to remove the --titleFont, --headerFont, --bodyFont and --codeFont from the theme */
+
+  --h1-font: var(--headerFont);
+  --h1-font: var(--headerFont);
+  --h2-font: var(--headerFont);
+  --h3-font: var(--headerFont);
+  --h4-font: var(--headerFont);
+  --h5-font: var(--headerFont);
+  --h6-font: var(--headerFont);
+  /* --titleFont: var(--font-text) !important; */
+  /* --headerFont: var(--font-text) !important; */
+  /* --bodyFont: var(--font-text) !important; */
+  /* --codeFont: var(--font-monospace) !important; */
 }
 
 body .page-title a {
-  font-family: "JetBrains Mono", serif;
-  color: rgb(var(--ctp-accent))
+  font-family: var(--code-font);
+  color: rgb(var(--ctp-accent));
+}
+
+nav[role="pages"] ul li a {
+  font-family: var(--code-font);
+  color: rgb(var(--ctp-accent));
 }
 
 h1 {
@@ -58,16 +79,13 @@ p.content-meta {
 
 body[data-slug="index"] {
   div.page-header div.popover-hint {
-
     >* {
       display: none;
-
     }
 
     h1.article-title {
       display: block;
     }
-
   }
 }
 
@@ -205,7 +223,7 @@ em {
 
 // From simple tag list, not sure how to import
 .tags {
-  font-family: JetBrains Mono, serif;
+  font-family: var(--code-font);
   list-style: none;
   display: flex;
   padding-left: 0;
@@ -236,7 +254,7 @@ div.popover div.popover-hint {
 
   nav.breadcrumb-container,
   ul.tags {
-    display: none
+    display: none;
   }
 
   h1.article-title {
@@ -248,7 +266,7 @@ div.popover div.popover-hint {
   z-index: 5;
 }
 
-body[data-has-right='false'] div#quartz-body {
+body[data-has-right="false"] div#quartz-body {
   grid-template:
     "grid-sidebar-left grid-header"
     "grid-sidebar-left grid-center"
@@ -262,7 +280,7 @@ body[data-has-right='false'] div#quartz-body {
 }
 
 @media (min-width: 800px) and (max-width: 1200px) {
-  body[data-has-right='false'] .page>#quartz-body {
+  body[data-has-right="false"] .page>#quartz-body {
     grid-template:
       "grid-sidebar-left grid-header"
       "grid-sidebar-left grid-center"
@@ -274,7 +292,7 @@ body[data-has-right='false'] div#quartz-body {
 }
 
 @media (max-width: 800px) {
-  body[data-has-right='false'] .page>#quartz-body {
+  body[data-has-right="false"] .page>#quartz-body {
     grid-template:
       "grid-sidebar-left"
       "grid-header"
@@ -286,6 +304,7 @@ body[data-has-right='false'] div#quartz-body {
   }
 
   div.left.sidebar {
+    flex-wrap: wrap;
     padding: 0.5em 1em !important;
   }
 
@@ -354,11 +373,11 @@ ul.toc-content.overflow {
 
     /* Need this because we have display none on first title */
     &:first-of-type>a {
-      opacity: .75;
+      opacity: 0.75;
     }
 
     >a {
-      color: rgb(var(--ctp-subtext0))
+      color: rgb(var(--ctp-subtext0));
     }
   }
 }

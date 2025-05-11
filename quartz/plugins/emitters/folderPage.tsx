@@ -33,7 +33,7 @@ async function* processFolderInfo(
   allFiles: QuartzPluginData[],
   opts: FullPageLayout,
   resources: StaticResources,
-  content: ProcessedContent[]
+  content: ProcessedContent[],
 ) {
   for (const [folder, folderContent] of Object.entries(folderInfo) as [
     SimpleSlug,
