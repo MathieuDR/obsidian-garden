@@ -6,9 +6,11 @@
 :root:root[saved-theme="dark"] {
   --ctp-accent: var(--ctp-mauve);
   --text-faint: rgb(var(--ctp-subtext0)) !important;
+  --secondary: rgb(var(--ctp-accent)) !important;
+  --tertiary: rgb(var(--ctp-green)) !important;
 
   body {
-    --link-external-color: rgb(var(--ctp-green)) !important;
+    --link-external-color: var(--secondary) !important;
   }
 
 
@@ -26,6 +28,25 @@
   /* --headerFont: var(--font-text) !important; */
   /* --bodyFont: var(--font-text) !important; */
   /* --codeFont: var(--font-monospace) !important; */
+}
+
+body {
+  ::selection {
+    background-color: rgb(var(--ctp-lavender));
+    color: rgb(var(--ctp-crust));
+  }
+
+  a::selection {
+    background-color: rgb(var(--ctp-teal));
+  }
+
+  a.external {
+    text-decoration: underline;
+
+    :hover {
+      color: var(--link-external-color-hover) !important;
+    }
+  }
 }
 
 div.center>article {

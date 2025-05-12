@@ -36,7 +36,7 @@ const config: QuartzConfig = {
       fontOrigin: "local",
       cdnCaching: false,
       typography: {
-        header: "Schibsted Grotesk",
+        header: "Satoshi",
         body: "Roboto",
         code: "JetBrains Mono",
       },
