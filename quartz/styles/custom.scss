@@ -382,6 +382,8 @@ body[data-has-right="false"] div#quartz-body {
 
 //footer
 footer {
+  box-sizing: border-box;
+
   & ul {
     margin-top: 0 !important;
   }
