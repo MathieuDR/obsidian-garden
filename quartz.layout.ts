@@ -55,6 +55,8 @@ const explorerOpts = {
   },
   filterFn: (node) => {
     const filtered = [
+      "output/pages/1749074946-confirm",
+      "output/pages/1749074960-thank-you",
       "output/pages/1746442137-about-me",
       "output/pages/1746442167-current-projects",
       "output/pages/1746441940-digital-garden",

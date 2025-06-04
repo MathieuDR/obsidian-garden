@@ -36,6 +36,10 @@ body {
     color: rgb(var(--ctp-crust));
   }
 
+  hr {
+    margin-bottom: 1rem;
+  }
+
   a::selection {
     background-color: rgb(var(--ctp-teal));
   }
