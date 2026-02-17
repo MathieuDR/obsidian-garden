@@ -9,5 +9,7 @@ COPY --from=deps /usr/src/app/ .
 COPY . .
 RUN npx quartz build
 
-FROM lipanski/docker-static-website:latest
-COPY --from=builder /usr/src/app/public .
+FROM caddy:alpine
+COPY --from=builder /usr/src/app/public /usr/share/caddy
+COPY Caddyfile /etc/caddy/Caddyfile
+EXPOSE 80
