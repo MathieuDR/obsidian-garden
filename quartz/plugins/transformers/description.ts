@@ -45,8 +45,17 @@ export const Description: QuartzTransformerPlugin<Partial<Options>> = (userOpts)
               return
             }
 
-            // otherwise, use the text content
-            const desc = text
+            // Strip leading H1 if it matches the frontmatter title
+            let desc = text
+            const frontMatterTitle = file.data.frontmatter?.title
+            if (frontMatterTitle) {
+              const escapedTitle = escapeHTML(frontMatterTitle).trim()
+              desc = desc.replace(
+                new RegExp(`^\\s*${escapedTitle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*`, "i"),
+                "",
+              ).trim()
+            }
+
             const sentences = desc.replace(/\s+/g, " ").split(/\.\s/)
             let finalDesc = ""
             let sentenceIdx = 0
