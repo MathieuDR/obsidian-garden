@@ -91,7 +91,7 @@ const config: QuartzConfig = {
       }),
       Plugin.GitHubFlavoredMarkdown(),
       Plugin.TableOfContents(),
-      Plugin.CrawlLinks({ markdownLinkResolution: "shortest", openLinksInNewTab: true, lazyLoad: true}),
+      Plugin.CrawlLinks({ markdownLinkResolution: "shortest", openLinksInNewTab: true, lazyLoad: true }),
       Plugin.Description(),
     ],
     filters: [Plugin.ExplicitPublish()],
@@ -115,9 +115,9 @@ const config: QuartzConfig = {
       Plugin.NotFoundPage(),
       Plugin.Favicon(),
       // Plugin.LucidIcons({icons: [Microscope, NotebookText, PencilLine, ClipboardList, ScrollText]})
-      // Plugin.CustomOgImages({
-      //   colorScheme: "darkMode"
-      // }),
+      Plugin.CustomOgImages({
+        colorScheme: "darkMode",
+      }),
     ],
   },
 }
