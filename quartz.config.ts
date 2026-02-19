@@ -1,6 +1,8 @@
 import { QuartzConfig } from "./quartz/cfg"
 import * as Plugin from "./quartz/plugins"
 
+const isProd = process.env.NODE_ENV === "production"
+
 /**
  * Quartz 4 Configuration
  *
@@ -29,9 +31,7 @@ const config: QuartzConfig = {
       "assets/views",
     ],
     defaultDateType: "created",
-    generateSocialImages: {
-      colorScheme: "darkMode",
-    },
+    generateSocialImages: isProd ? { colorScheme: "darkMode" } : false,
     theme: {
       fontOrigin: "local",
       cdnCaching: false,
@@ -115,9 +115,7 @@ const config: QuartzConfig = {
       Plugin.NotFoundPage(),
       Plugin.Favicon(),
       // Plugin.LucidIcons({icons: [Microscope, NotebookText, PencilLine, ClipboardList, ScrollText]})
-      Plugin.CustomOgImages({
-        colorScheme: "darkMode",
-      }),
+      ...(isProd ? [Plugin.CustomOgImages({ colorScheme: "darkMode" })] : []),
     ],
   },
 }
