@@ -7,7 +7,7 @@ FROM node:22-slim AS builder
 WORKDIR /usr/src/app
 COPY --from=deps /usr/src/app/ .
 COPY . .
-RUN npx quartz build
+RUN NODE_ENV=production npx quartz build
 
 FROM caddy:alpine
 COPY --from=builder /usr/src/app/public /usr/share/caddy
