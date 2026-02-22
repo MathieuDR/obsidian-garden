@@ -16,9 +16,9 @@ const config: QuartzConfig = {
     enablePopovers: true,
     analytics: {
       provider: "goatcounter",
-      host: "insights.deraedt.dev",
+      host: "deraedt.dev",
       scriptSrc: "https://insights.deraedt.dev/count.js",
-      websiteId: "garden"
+      websiteId: "insights"
     },
     locale: "en-GB",
     baseUrl: "mathieu.deraedt.dev",
