@@ -207,9 +207,9 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
       );
       goatcounterScript.onload = () => {
         window.goatcounter = { no_onload: true };
-        goatcounter.count({ path: location.pathname });
+        goatcounter.count({ path: location.host + location.pathname });
         document.addEventListener('nav', () => {
-          goatcounter.count({ path: location.pathname });
+          goatcounter.count({ path: location.host + location.pathname });
         });
       };
 
