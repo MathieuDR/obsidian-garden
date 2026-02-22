@@ -15,9 +15,10 @@ const config: QuartzConfig = {
     enableSPA: true,
     enablePopovers: true,
     analytics: {
-      provider: "plausible",
+      provider: "goatcounter",
       host: "https://insights.deraedt.dev",
-      script: "outbound-links.pageview-props.tagged-events",
+      scriptSrc: "https://insights.deraedt.dev/count.js",
+      websiteId: "mathieu.deraedt.dev"
     },
     locale: "en-GB",
     baseUrl: "mathieu.deraedt.dev",
