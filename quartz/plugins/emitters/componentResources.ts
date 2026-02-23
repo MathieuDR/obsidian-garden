@@ -214,9 +214,9 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
 
       goatcounterScript.onload = () => {
         function bindExternalLinks() {
-          document.querySelectorAll('a.external:not([data-gc-bound])').forEach((link) => {
-            console.log(link)
-            link.setAttribute('data-gc-bound', 'true')
+          document.querySelectorAll('a.external').forEach((link) => {
+            if (link._gcBound) return
+            link._gcBound = true
             link.addEventListener('click', function() {
               window.goatcounter.count({
                 path: 'external-' + link.href,
