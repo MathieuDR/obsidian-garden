@@ -218,9 +218,10 @@ goatcounterScript.onload = () => {
   goatcounter.count({ path: initialPath });
 
   document.addEventListener('nav', () => {
-    const navPath = window.goatcounter.path(location.pathname);
-    console.log('[goatcounter] nav event fired, counting:', navPath);
-    goatcounter.count({ path: navPath });
+ const navPath = 'garden/' + event.detail.url;
+  console.log('[goatcounter] nav event fired, path:', navPath);
+  console.log('[goatcounter] url would be:', goatcounter.url({ path: navPath }));
+  goatcounter.count({ path: navPath });
   });
   console.log('[goatcounter] nav listener registered');
 };
