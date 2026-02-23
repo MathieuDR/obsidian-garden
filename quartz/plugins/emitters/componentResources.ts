@@ -213,33 +213,28 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
       );
 
       goatcounterScript.onload = () => {
-        const initialPath = window.goatcounter.path(location.pathname);
-        goatcounter.count({ path: initialPath });
-
-        document.addEventListener('nav', (event) => {
-          const navPath = 'garden/' + event.detail.url;
-          goatcounter.count({ path: navPath });
-
-          document.querySelectorAll('a.external').forEach((link) => {
+        function bindExternalLinks() {
+          document.querySelectorAll('a.external:not([data-gc-bound])').forEach((link) => {
+            link.setAttribute('data-gc-bound', 'true')
             link.addEventListener('click', function() {
               window.goatcounter.count({
                 path: 'external-' + link.href,
                 title: link.innerText || link.href,
                 event: true,
               })
-            }, { once: true })
-          })
-        });
-
-        document.querySelectorAll('a.external').forEach((link) => {
-          link.addEventListener('click', function() {
-            window.goatcounter.count({
-              path: 'external-' + link.href,
-              title: link.innerText || link.href,
-              event: true,
             })
-          }, { once: true })
-        })
+          })
+        }
+
+        const initialPath = window.goatcounter.path(location.pathname);
+        goatcounter.count({ path: initialPath });
+        bindExternalLinks();
+
+        document.addEventListener('nav', (event) => {
+          const navPath = 'garden/' + event.detail.url;
+          goatcounter.count({ path: navPath });
+          bindExternalLinks();
+        });
       };
 
       document.head.appendChild(goatcounterScript);
