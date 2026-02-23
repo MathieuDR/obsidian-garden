@@ -213,19 +213,19 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
       );
 
       goatcounterScript.onload = () => {
-        function bindExternalLinks() {
-          document.querySelectorAll('a.external').forEach((link) => {
-            if (link._gcBound) return
-            link._gcBound = true
-            link.addEventListener('click', function() {
-              window.goatcounter.count({
-                path: 'external-' + link.href,
-                title: link.innerText || link.href,
-                event: true,
-              })
+        document.querySelectorAll('a.external').forEach((link) => {
+          if (link._gcBound) return
+          link._gcBound = true
+          const handler = function() {
+            window.goatcounter.count({
+              path: 'external-' + link.href,
+              title: link.innerText || link.href,
+              event: true,
             })
-          })
-        }
+          }
+          link.addEventListener('click', handler)
+          link.addEventListener('auxclick', handler) // middle-click
+        })
 
         const initialPath = window.goatcounter.path(location.pathname);
         goatcounter.count({ path: initialPath });
