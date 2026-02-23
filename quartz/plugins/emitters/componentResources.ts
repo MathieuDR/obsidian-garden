@@ -219,7 +219,27 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
         document.addEventListener('nav', (event) => {
           const navPath = 'garden/' + event.detail.url;
           goatcounter.count({ path: navPath });
+
+          document.querySelectorAll('a.external').forEach((link) => {
+            link.addEventListener('click', function() {
+              window.goatcounter.count({
+                path: 'external-' + link.href,
+                title: link.innerText || link.href,
+                event: true,
+              })
+            }, { once: true })
+          })
         });
+
+        document.querySelectorAll('a.external').forEach((link) => {
+          link.addEventListener('click', function() {
+            window.goatcounter.count({
+              path: 'external-' + link.href,
+              title: link.innerText || link.href,
+              event: true,
+            })
+          }, { once: true })
+        })
       };
 
       document.head.appendChild(goatcounterScript);
