@@ -4,6 +4,9 @@ import { fetchCanonical } from "./util"
 
 const p = new DOMParser()
 let activeAnchor: HTMLAnchorElement | null = null
+let hoverTimer: ReturnType<typeof setTimeout> | null = null
+let hoverFired = false
+const HOVER_THRESHOLD_MS = 5000
 
 async function mouseEnterHandler(
   this: HTMLAnchorElement,
@@ -13,6 +16,13 @@ async function mouseEnterHandler(
   if (link.dataset.noPopover === "true") {
     return
   }
+
+  // Start hover timer
+  hoverFired = false
+  hoverTimer = setTimeout(() => {
+    hoverFired = true
+    hoverTimer = null
+  }, HOVER_THRESHOLD_MS)
 
   async function setPosition(popoverElement: HTMLElement) {
     const { x, y } = await computePosition(link, popoverElement, {
@@ -114,6 +124,36 @@ async function mouseEnterHandler(
   showPopover(popoverElement)
 }
 
+function mouseleaveHandler(this: HTMLAnchorElement) {
+  // Fire goatcounter event only if:
+  // 1. They hovered for > 5s (hoverFired is true)
+  // 2. They didn't click (mouseleave fires before click, so we check in clickHandler)
+  if (hoverFired && window.goatcounter) {
+    window.goatcounter.count({
+      path: "popover-hover-" + this.pathname,
+      title: this.innerText || this.href,
+      event: true,
+    })
+  }
+
+  if (hoverTimer) {
+    clearTimeout(hoverTimer)
+    hoverTimer = null
+  }
+  hoverFired = false
+
+  clearActivePopover()
+}
+
+function clickHandler() {
+  // Cancel the hover event - if they clicked, we don't want the mouseleave to fire it
+  hoverFired = false
+  if (hoverTimer) {
+    clearTimeout(hoverTimer)
+    hoverTimer = null
+  }
+}
+
 function clearActivePopover() {
   activeAnchor = null
   const allPopoverElements = document.querySelectorAll(".popover")
@@ -124,10 +164,12 @@ document.addEventListener("nav", () => {
   const links = [...document.querySelectorAll("a.internal")] as HTMLAnchorElement[]
   for (const link of links) {
     link.addEventListener("mouseenter", mouseEnterHandler)
-    link.addEventListener("mouseleave", clearActivePopover)
+    link.addEventListener("mouseleave", mouseleaveHandler)
+    link.addEventListener("click", clickHandler)
     window.addCleanup(() => {
       link.removeEventListener("mouseenter", mouseEnterHandler)
-      link.removeEventListener("mouseleave", clearActivePopover)
+      link.removeEventListener("mouseleave", mouseleaveHandler)
+      link.removeEventListener("click", clickHandler)
     })
   }
 })
