@@ -213,17 +213,13 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
       );
 
       goatcounterScript.onload = () => {
-        console.log('[goatcounter] script loaded');
         const initialPath = window.goatcounter.path(location.pathname);
-        console.log('[goatcounter] counting initial page:', initialPath);
         goatcounter.count({ path: initialPath });
 
         document.addEventListener('nav', (event) => {
           const navPath = 'garden/' + event.detail.url;
-          console.log('[goatcounter] nav event fired, path:', navPath);
           goatcounter.count({ path: navPath });
         });
-        console.log('[goatcounter] nav listener registered');
       };
 
       document.head.appendChild(goatcounterScript);
