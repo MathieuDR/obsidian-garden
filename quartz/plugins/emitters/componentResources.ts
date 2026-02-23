@@ -200,6 +200,7 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
     componentResources.afterDOMLoaded.push(`
       window.goatcounter = {
         no_onload: true,
+        endpoint: "https://${cfg.analytics.websiteId}.${cfg.analytics.host ?? "goatcounter.com"}/count",
         path: function(p) { return 'garden' + p }
       };
 
@@ -211,20 +212,19 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
         "https://${cfg.analytics.websiteId}.${cfg.analytics.host ?? "goatcounter.com"}/count"
       );
 
-goatcounterScript.onload = () => {
-  console.log('[goatcounter] script loaded');
-  const initialPath = window.goatcounter.path(location.pathname);
-  console.log('[goatcounter] counting initial page:', initialPath);
-  goatcounter.count({ path: initialPath });
+      goatcounterScript.onload = () => {
+        console.log('[goatcounter] script loaded');
+        const initialPath = window.goatcounter.path(location.pathname);
+        console.log('[goatcounter] counting initial page:', initialPath);
+        goatcounter.count({ path: initialPath });
 
-  document.addEventListener('nav', () => {
- const navPath = 'garden/' + event.detail.url;
-  console.log('[goatcounter] nav event fired, path:', navPath);
-  console.log('[goatcounter] url would be:', goatcounter.url({ path: navPath }));
-  goatcounter.count({ path: navPath });
-  });
-  console.log('[goatcounter] nav listener registered');
-};
+        document.addEventListener('nav', (event) => {
+          const navPath = 'garden/' + event.detail.url;
+          console.log('[goatcounter] nav event fired, path:', navPath);
+          goatcounter.count({ path: navPath });
+        });
+        console.log('[goatcounter] nav listener registered');
+      };
 
       document.head.appendChild(goatcounterScript);
     `)
