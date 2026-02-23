@@ -210,17 +210,20 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
         'data-goatcounter',
         "https://${cfg.analytics.websiteId}.${cfg.analytics.host ?? "goatcounter.com"}/count"
       );
-      goatcounterScript.onload = () => {
-        console.log('[goatcounter] script loaded');
-        console.log('[goatcounter] counting initial page:', window.goatcounter.path(location.pathname));
-        goatcounter.count();
 
-        document.addEventListener('nav', () => {
-          console.log('[goatcounter] nav event fired, counting:', window.goatcounter.path(location.pathname));
-          goatcounter.count();
-        });
-        console.log('[goatcounter] nav listener registered');
-      };
+goatcounterScript.onload = () => {
+  console.log('[goatcounter] script loaded');
+  const initialPath = window.goatcounter.path(location.pathname);
+  console.log('[goatcounter] counting initial page:', initialPath);
+  goatcounter.count({ path: initialPath });
+
+  document.addEventListener('nav', () => {
+    const navPath = window.goatcounter.path(location.pathname);
+    console.log('[goatcounter] nav event fired, counting:', navPath);
+    goatcounter.count({ path: navPath });
+  });
+  console.log('[goatcounter] nav listener registered');
+};
 
       document.head.appendChild(goatcounterScript);
     `)
