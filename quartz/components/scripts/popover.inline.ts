@@ -6,6 +6,7 @@ const p = new DOMParser()
 let activeAnchor: HTMLAnchorElement | null = null
 let hoverTimer: ReturnType<typeof setTimeout> | null = null
 let hoverFired = false
+let hoverStart = 0
 const HOVER_THRESHOLD_MS = 5000
 
 async function mouseEnterHandler(
@@ -19,6 +20,7 @@ async function mouseEnterHandler(
 
   // Start hover timer
   hoverFired = false
+  hoverStart = Date.now()
   hoverTimer = setTimeout(() => {
     hoverFired = true
     hoverTimer = null
