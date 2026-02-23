@@ -129,9 +129,14 @@ function mouseleaveHandler(this: HTMLAnchorElement) {
   // 1. They hovered for > 5s (hoverFired is true)
   // 2. They didn't click (mouseleave fires before click, so we check in clickHandler)
   if (hoverFired && window.goatcounter) {
+    const elapsed = Date.now() - hoverStart
+    const seconds = Math.floor(elapsed / 1000)
+    // bucket into ranges so you get meaningful groupings in goatcounter
+    const bucket = seconds < 10 ? '5-10s' : seconds < 30 ? '10-30s' : '30s+'
+
     window.goatcounter.count({
-      path: "popover-hover-" + this.pathname,
-      title: this.innerText || this.href,
+      path: `popover-hover${this.pathname}`,
+      title: `Popover hover (${bucket}) – ${this.innerText || this.pathname}`,
       event: true,
     })
   }
