@@ -111,6 +111,13 @@ const config: QuartzConfig = {
         rssLimit: 15,
         rssFullHtml: false,
       }),
+      Plugin.JsonLd({
+        author: {
+          name: "Mathieu Deraedt",
+          url: "https://mathieu.deraedt.dev",
+          sameAs: ["https://github.com/MathieuDR", "https://www.linkedin.com/in/mathieuderaedt"]
+        },
+      }),
       Plugin.Assets(),
       Plugin.Static(),
       Plugin.NotFoundPage(),
