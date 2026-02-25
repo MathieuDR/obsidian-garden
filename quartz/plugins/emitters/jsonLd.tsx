@@ -41,9 +41,7 @@ const defaultOptions: JsonLdOptions = {
   includeTags: true,
   tagTypeMap: {
     thought: "BlogPosting",
-    distilled: "Article",
-    knowledge: "Article",
-    blueprint: "TechArticle",
+    gateway: "CollectionPage",
   },
 }
 

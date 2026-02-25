@@ -115,6 +115,7 @@ const config: QuartzConfig = {
         author: {
           name: "Mathieu Deraedt",
           url: "https://mathieu.deraedt.dev",
+          sameAs: ["https://github.com/MathieuDR", "https://www.linkedin.com/in/mathieuderaedt"]
         },
       }),
       Plugin.Assets(),
