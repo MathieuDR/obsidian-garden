@@ -75,7 +75,7 @@ const config: QuartzConfig = {
       }),
       Plugin.TranscludeUnpublished({
         debug: true,
-        commonDirectories: ["slips/", "fleeting/", "fleeting/clippings"],
+        commonDirectories: ["slips/", "fleeting/", "fleeting/archived", "fleeting/clippings"],
       }),
       Plugin.SyntaxHighlighting({
         theme: {
