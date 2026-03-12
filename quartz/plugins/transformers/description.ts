@@ -1,7 +1,7 @@
 import { Root as HTMLRoot } from "hast"
 import { toString } from "hast-util-to-string"
 import { QuartzTransformerPlugin } from "../types"
-import { escapeHTML } from "../../util/escape"
+import { escapeHTML, normalizeTitle, unescapeHTML } from "../../util/escape"
 
 export interface Options {
   descriptionLength: number
@@ -49,11 +49,21 @@ export const Description: QuartzTransformerPlugin<Partial<Options>> = (userOpts)
             let desc = text
             const frontMatterTitle = file.data.frontmatter?.title
             if (frontMatterTitle) {
-              const escapedTitle = escapeHTML(frontMatterTitle).trim()
-              desc = desc.replace(
-                new RegExp(`^\\s*${escapedTitle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*`, "i"),
-                "",
-              ).trim()
+              const normalizedTitle = normalizeTitle(unescapeHTML(frontMatterTitle)).trim()
+              const normalizedDesc = normalizeTitle(unescapeHTML(desc))
+
+              const stripped = normalizedDesc
+                .replace(
+                  new RegExp(
+                    `^\\s*${normalizedTitle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*`,
+                    "i",
+                  ),
+                  "",
+                )
+                .trim()
+
+              // Re-escape the stripped plain text for safe use downstream
+              desc = escapeHTML(stripped)
             }
 
             const sentences = desc.replace(/\s+/g, " ").split(/\.\s/)
