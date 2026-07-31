@@ -44,5 +44,10 @@ jobs:
 
           install -m600 /dev/null "$key"
           printf "%s\n" "$VPS_SSH_KEY" > "$key"
-          ssh -i "$key" -o StrictHostKeyChecking=accept-new "$VPS_USERNAME@$VPS_HOST" \
-            "deploy_image ghcr.io/mathieudr/obsidian-garden latest podman-garden"
+          # The ghcr image is private and deploy_image pulls with `sudo podman`
+          # (rootful), so log ROOT's podman into ghcr with the PAT (piped over
+          # ssh stdin, never in argv) before deploy_image runs.
+          printf '%s' "$GHCR_TOKEN" | ssh -i "$key" \
+            -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            "$VPS_USERNAME@$VPS_HOST" \
+            "sudo podman login ghcr.io -u '$GHCR_USERNAME' --password-stdin && deploy_image ghcr.io/mathieudr/obsidian-garden latest podman-garden"
