@@ -33,11 +33,15 @@ jobs:
           npx quartz build
           nix-build image.nix -o image-result
 
+          # skopeo defaults its auth file to /run/containers/<uid>, which the
+          # unprivileged runner can't write; keep it in the temp dir instead.
+          key="$RUNNER_TEMP/deploy_key"
+          export REGISTRY_AUTH_FILE="$RUNNER_TEMP/auth.json"
+          trap 'rm -f "$key" "$REGISTRY_AUTH_FILE"' EXIT
+
           echo "$GHCR_TOKEN" | skopeo login ghcr.io -u "$GHCR_USERNAME" --password-stdin
           skopeo copy "docker-archive:image-result" "docker://$IMAGE"
 
-          key="$RUNNER_TEMP/deploy_key"
-          trap 'rm -f "$key"' EXIT
           install -m600 /dev/null "$key"
           printf "%s\n" "$VPS_SSH_KEY" > "$key"
           ssh -i "$key" -o StrictHostKeyChecking=accept-new "$VPS_USERNAME@$VPS_HOST" \
