@@ -1,0 +1,44 @@
+name: Build & Deploy
+on:
+  push:
+    branches: [v4]
+  workflow_dispatch:
+
+jobs:
+  build-deploy:
+    runs-on: native
+    env:
+      IMAGE: ghcr.io/mathieudr/obsidian-garden:latest
+      GHCR_USERNAME: mathieudr
+      # The DynamicUser runner has no writable $HOME of its own; keep npm/nix
+      # caches in the (writable) workspace.
+      HOME: ${{ github.workspace }}
+    steps:
+      - name: Checkout (with private content submodule)
+        uses: https://code.forgejo.org/actions/checkout@v4
+        with:
+          # Full history so Quartz can derive per-note created/modified dates.
+          fetch-depth: 0
+          submodules: recursive
+          token: ${{ secrets.CODEBERG_TOKEN }}
+
+      - name: Build site, push image, deploy
+        env:
+          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USERNAME: ${{ secrets.VPS_USERNAME }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          npm ci
+          npx quartz build
+          nix-build image.nix -o image-result
+
+          echo "$GHCR_TOKEN" | skopeo login ghcr.io -u "$GHCR_USERNAME" --password-stdin
+          skopeo copy "docker-archive:image-result" "docker://$IMAGE"
+
+          key="$RUNNER_TEMP/deploy_key"
+          trap 'rm -f "$key"' EXIT
+          install -m600 /dev/null "$key"
+          printf "%s\n" "$VPS_SSH_KEY" > "$key"
+          ssh -i "$key" -o StrictHostKeyChecking=accept-new "$VPS_USERNAME@$VPS_HOST" \
+            "deploy_image ghcr.io/mathieudr/obsidian-garden latest podman-garden"
