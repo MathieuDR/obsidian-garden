@@ -5,8 +5,9 @@ import { h } from "preact"
 const CSS = `
 .garden-meta { margin: 0.75rem 0; font-size: 0.85rem; }
 .garden-meta .garden-stats { color: var(--gray); margin-bottom: 0.3rem; }
-.garden-meta .random-note { color: var(--secondary); font-family: var(--codeFont); text-decoration: none; cursor: pointer; }
+.garden-meta .random-note { color: var(--secondary); font-family: var(--codeFont); text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35em; }
 .garden-meta .random-note:hover { color: var(--tertiary); }
+.garden-meta .random-note svg { width: 14px; height: 14px; }
 `
 
 // fetchData is the global content-index promise Quartz exposes (used by search/explorer).
@@ -41,6 +42,31 @@ function fmt(n) {
   return n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(n)
 }
 
+// Lucide "dices" icon, inheriting the link colour via currentColor.
+function dicesIcon() {
+  return h(
+    "svg",
+    {
+      xmlns: "http://www.w3.org/2000/svg",
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke: "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "aria-hidden": "true",
+    },
+    [
+      h("rect", { width: "12", height: "12", x: "2", y: "10", rx: "2", ry: "2" }),
+      h("path", { d: "m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6" }),
+      h("path", { d: "M6 18h.01" }),
+      h("path", { d: "M10 14h.01" }),
+      h("path", { d: "M15 6h.01" }),
+      h("path", { d: "M18 9h.01" }),
+    ],
+  )
+}
+
 const GardenMeta = (opts) => {
   const Component = ({ allFiles }) => {
     const notes = (allFiles || []).filter(
@@ -66,7 +92,7 @@ const GardenMeta = (opts) => {
     parts.push(`${fmt(tagSet.size)} tags`)
     return h("div", { class: "garden-meta" }, [
       h("div", { class: "garden-stats" }, parts.join(" · ")),
-      h("a", { class: "random-note", href: "#" }, "🎲 Random note"),
+      h("a", { class: "random-note", href: "#" }, [dicesIcon(), h("span", null, "Random note")]),
     ])
   }
   Component.css = CSS

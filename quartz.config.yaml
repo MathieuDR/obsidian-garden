@@ -272,6 +272,8 @@ plugins:
     enabled: true
     options:
       linkToMore: recent
+      hideTagPages: true
+      hideFolderPages: true
     layout:
       position: right
       priority: 40

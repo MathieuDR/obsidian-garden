@@ -1,7 +1,8 @@
 name: Build & Deploy
 on:
   push:
-    branches: [main]
+    # both during the v4 -> main rename transition; v4 becomes a no-op once deleted.
+    branches: [main, v4]
   workflow_dispatch:
 
 jobs:
