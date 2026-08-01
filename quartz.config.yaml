@@ -70,6 +70,7 @@ plugins:
     options:
       enableInHtmlEmbed: false
       enableCheckbox: true
+      parseBlockReferences: true
     order: 30
   - source: "@quartz-community/github-flavored-markdown"
     enabled: true
@@ -84,6 +85,7 @@ plugins:
     enabled: true
     options:
       markdownLinkResolution: shortest
+      openLinksInNewTab: true
     order: 60
   - source: "@quartz-community/description"
     enabled: true
@@ -123,10 +125,14 @@ plugins:
     options:
       enableSiteMap: true
       enableRSS: true
+      rssLimit: 15
+      rssFullHtml: false
   - source: "@quartz-community/favicon"
     enabled: true
   - source: "@quartz-community/og-image"
     enabled: true
+    options:
+      colorScheme: darkMode
   - source: "@quartz-community/cname"
     enabled: true
   - source: "@quartz-community/canvas-page"
@@ -248,8 +254,10 @@ plugins:
     enabled: true
     options:
       links:
-        GitHub: https://github.com/jackyzha0/quartz
-        Discord Community: https://discord.gg/cRFFHYye7t
+        Home: /
+        Recent notes: /recent
+        Timeline: /timeline
+        RSS Feed: /index.xml
     layout:
       position: footer
       priority: 50
