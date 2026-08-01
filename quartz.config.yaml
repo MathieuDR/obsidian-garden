@@ -153,10 +153,12 @@ plugins:
       sortFn: |
         (a, b) => {
           const folderOrder = { slips: 1, output: 2, research: 3 }
+          const seg = (n) => (n.slugSegment || n.displayName || "").toLowerCase()
           if (a.isFolder && b.isFolder) {
-            const oa = folderOrder[a.displayName] || Number.MAX_SAFE_INTEGER
-            const ob = folderOrder[b.displayName] || Number.MAX_SAFE_INTEGER
-            return oa - ob
+            const oa = folderOrder[seg(a)] || Number.MAX_SAFE_INTEGER
+            const ob = folderOrder[seg(b)] || Number.MAX_SAFE_INTEGER
+            if (oa !== ob) return oa - ob
+            return seg(a).localeCompare(seg(b))
           }
           if (!a.isFolder && b.isFolder) return 1
           if (a.isFolder && !b.isFolder) return -1
