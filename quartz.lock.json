@@ -19,6 +19,12 @@
       "commit": "local",
       "installedAt": "2026-08-01T12:18:36.787Z"
     },
+    "strip-duplicate-h1": {
+      "source": "./local-plugins/strip-duplicate-h1",
+      "resolved": "/Users/mathieu.deraedt/development/sources/obsidian-garden/local-plugins/strip-duplicate-h1",
+      "commit": "local",
+      "installedAt": "2026-08-01T15:47:32.925Z"
+    },
     "timeline": {
       "source": "./local-plugins/timeline",
       "resolved": "/Users/mathieu.deraedt/development/sources/obsidian-garden/local-plugins/timeline",

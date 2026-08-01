@@ -1,0 +1,20 @@
+{
+  "name": "@local/strip-duplicate-h1",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": { "import": "./dist/index.js" },
+    "./package.json": "./package.json"
+  },
+  "quartz": {
+    "name": "strip-duplicate-h1",
+    "displayName": "StripDuplicateH1",
+    "category": "transformer",
+    "quartzVersion": ">=5.0.0",
+    "dependencies": [],
+    "defaultOrder": 35,
+    "defaultEnabled": true,
+    "defaultOptions": {}
+  }
+}
