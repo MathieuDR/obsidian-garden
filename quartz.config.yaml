@@ -335,7 +335,7 @@ plugins:
         Garden: /output/pages/1746441940-digital-garden
     layout:
       position: left
-      priority: 15
+      priority: 40
   - source: ./local-plugins/media-meta
     enabled: true
     layout:

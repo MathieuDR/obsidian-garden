@@ -2,11 +2,14 @@
 import { h, Fragment } from "preact"
 
 const CSS = `
-.page-navigation { margin-top: 0.5rem; }
-.page-navigation ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.35rem; }
-.page-navigation li.divider { border-top: 1px solid var(--lightgray); margin: 0.15rem 0; height: 0; }
-.page-navigation a { color: var(--dark); text-decoration: none; }
-.page-navigation a:hover { color: var(--secondary); }
+nav.page-navigation { text-align: left; font-family: var(--bodyFont); margin: 0.5rem 0; }
+nav.page-navigation ul {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-direction: row; flex-wrap: wrap; gap: 1rem; align-items: center;
+}
+nav.page-navigation li.divider { border-right: dotted 3px var(--secondary); height: 1em; }
+nav.page-navigation a { color: var(--dark); text-decoration: none; }
+nav.page-navigation a:hover { color: var(--secondary); }
 `
 
 const Nav = (opts) => {
