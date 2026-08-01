@@ -38,6 +38,12 @@ function firstFrontmatterValue(fmText, key) {
   return m ? m[1].replace(/^["']|["']$/g, "").trim() : undefined
 }
 
+function firstListItem(fmText, key) {
+  // first item of a YAML block sequence: "key:\n  - value"
+  const m = fmText.match(new RegExp(`^\\s*${key}\\s*:\\s*\\n\\s*-\\s*(.+?)\\s*$`, "m"))
+  return m ? m[1].replace(/^["']|["']$/g, "").trim() : undefined
+}
+
 const TranscludeUnpublished = (userOpts) => {
   const opts = { ...defaultOptions, ...userOpts }
   return {
@@ -87,6 +93,8 @@ const TranscludeUnpublished = (userOpts) => {
 
             const title =
               firstFrontmatterValue(fmText, "title") ??
+              firstListItem(fmText, "alias") ??
+              firstListItem(fmText, "aliases") ??
               firstFrontmatterValue(fmText, "id") ??
               fp
 
