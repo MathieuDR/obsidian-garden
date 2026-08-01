@@ -17,6 +17,7 @@ const defaultOptions: Options = {
   layout: "modern",
 }
 
+let numTocs = 0
 export default ((opts?: Partial<Options>) => {
   const layout = opts?.layout ?? defaultOptions.layout
   const { OverflowList, overflowListAfterDOMLoaded } = OverflowListFactory()
@@ -29,13 +30,14 @@ export default ((opts?: Partial<Options>) => {
       return null
     }
 
+    const id = `toc-${numTocs++}`
     return (
       <div class={classNames(displayClass, "toc")}>
         <button
           type="button"
           class={fileData.collapseToc ? "collapsed toc-header" : "toc-header"}
           aria-labelledby="toc-heading"
-          aria-controls="toc-content"
+          aria-controls={id}
           aria-expanded={!fileData.collapseToc}
         >
           <h3 id="toc-heading">{i18n(cfg.locale).components.tableOfContents.title}</h3>
@@ -55,7 +57,7 @@ export default ((opts?: Partial<Options>) => {
           </svg>
         </button>
         <OverflowList
-          id="toc-content"
+          id={id}
           class={fileData.collapseToc ? "collapsed toc-content" : "toc-content"}
         >
           {fileData.toc.map((tocEntry) => (

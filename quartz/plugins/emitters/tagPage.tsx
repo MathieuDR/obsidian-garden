@@ -169,7 +169,7 @@ export const TagPage: QuartzEmitterPlugin<Partial<TagPageOptions>> = (userOpts) 
 
         for (const tag of affectedTags) {
           if (tagDescriptions[tag]) {
-            yield processTagPage(ctx, tag, tagDescriptions[tag], allFiles, opts, resources)
+            yield processTagPage(ctx, tag, tagDescriptions[tag], allFiles, opts, resources, content)
           }
         }
       }
