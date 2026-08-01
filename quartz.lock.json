@@ -1,6 +1,12 @@
 {
   "version": "1.0.0",
   "plugins": {
+    "media-meta": {
+      "source": "./local-plugins/media-meta",
+      "resolved": "/Users/mathieu.deraedt/development/sources/obsidian-garden/local-plugins/media-meta",
+      "commit": "local",
+      "installedAt": "2026-08-01T12:26:02.966Z"
+    },
     "nav": {
       "source": "./local-plugins/nav",
       "resolved": "/Users/mathieu.deraedt/development/sources/obsidian-garden/local-plugins/nav",

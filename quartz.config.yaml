@@ -327,6 +327,11 @@ plugins:
     layout:
       position: left
       priority: 15
+  - source: ./local-plugins/media-meta
+    enabled: true
+    layout:
+      position: beforeBody
+      priority: 25
 layout:
   groups:
     toolbar:
