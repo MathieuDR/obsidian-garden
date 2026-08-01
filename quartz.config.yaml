@@ -20,12 +20,14 @@ configuration:
     - assets/scripts
     - assets/views
   theme:
-    fontOrigin: googleFonts
-    cdnCaching: true
+    fontOrigin: local
+    cdnCaching: false
     typography:
-      header: Schibsted Grotesk
-      body: Source Sans Pro
-      code: IBM Plex Mono
+      header: Satoshi
+      body: Roboto
+      code: JetBrains Mono
+    # @quartz-themes/core (catppuccin mocha) overrides these at runtime, but Quartz
+    # core's joinStyles still requires the block to exist.
     colors:
       lightMode:
         light: "#faf8f8"
@@ -109,11 +111,16 @@ plugins:
     order: 92
   - source: "@quartz-community/quartz-fonts"
     enabled: true
-  - source: "@quartz-themes/core"
-    enabled: false
     options:
-      theme: tokyo-night
+      fontOrigin: local
+      useThemeFonts: true
+  - source: "@quartz-themes/core"
+    enabled: true
+    options:
+      theme: catppuccin
+      variation: mocha
       mode: both
+      themeFonts: false
   - source: "@quartz-community/remove-draft"
     enabled: false
   - source: "@quartz-community/explicit-publish"
