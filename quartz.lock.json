@@ -1,6 +1,12 @@
 {
   "version": "1.0.0",
   "plugins": {
+    "filter-tags": {
+      "source": "./local-plugins/filter-tags",
+      "resolved": "/Users/mathieu.deraedt/development/sources/obsidian-garden/local-plugins/filter-tags",
+      "commit": "local",
+      "installedAt": "2026-08-01T17:42:00.407Z"
+    },
     "folder-timeline": {
       "source": "./local-plugins/folder-timeline",
       "resolved": "/Users/mathieu.deraedt/development/sources/obsidian-garden/local-plugins/folder-timeline",

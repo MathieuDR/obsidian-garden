@@ -330,6 +330,9 @@ plugins:
   - source: ./local-plugins/title-fix
     enabled: true
     order: 6
+  - source: ./local-plugins/filter-tags
+    enabled: true
+    order: 7
   - source: ./local-plugins/strip-duplicate-h1
     enabled: true
     order: 35
