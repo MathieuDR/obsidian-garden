@@ -132,7 +132,7 @@ plugins:
   - source: "@quartz-community/cname"
     enabled: true
   - source: "@quartz-community/canvas-page"
-    enabled: true
+    enabled: false
   - source: "@quartz-community/content-page"
     enabled: true
   - source: "@quartz-community/folder-page"
@@ -177,7 +177,12 @@ plugins:
             "output/pages/1746442167-current-projects",
             "output/pages/1746441940-digital-garden",
           ]
-          return filtered.indexOf(node.slug) == -1
+          const s = node.slug || ""
+          if (filtered.indexOf(s) !== -1) return false
+          // Lean explorer: only the three real folders (hides timeline, recent,
+          // tags, tag index, ZK canvasses, root pages).
+          const top = s.split("/")[0]
+          return top === "slips" || top === "output" || top === "research"
         }
     layout:
       position: left
@@ -278,9 +283,7 @@ plugins:
       priority: 25
       display: mobile-only
   - source: "@quartz-community/bases-page"
-    enabled: true
-    options: {}
-    order: 50
+    enabled: false
   - source: "@quartz-community/note-properties"
     enabled: true
     options:

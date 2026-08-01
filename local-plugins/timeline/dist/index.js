@@ -1,11 +1,11 @@
 // Local pageType plugin: /timeline and /recent as a chronological alternating "leaf"
-// view (v4 look). pageType body CSS isn't collected by the v5 branch, so styles are
-// inlined as <style>. v4 rendered both /timeline and /recent with the Timeline component.
+// view (v4 look). /recent = created events only ("new notes"); /timeline = created AND
+// modified events. pageType body CSS isn't collected by the v5 branch, so it's inlined.
 import { h } from "preact"
 
 const CSS = `
 .timeline { width: 100%; margin: 2rem 0; }
-.timeline-container { position: relative; max-width: 100%; margin: 0 auto; }
+.timeline-container { position: relative; z-index: 0; max-width: 100%; margin: 0 auto; }
 .timeline-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: var(--lightgray); transform: translateX(-50%); }
 .timeline-event { display: grid; grid-template-columns: 1fr; gap: 0.5rem; position: relative; width: calc(50% - 2rem); margin: 2rem 0; }
 .timeline-event.left { margin-right: auto; padding-right: 2rem; }
@@ -51,33 +51,41 @@ function fmtDate(d, locale) {
 }
 
 const TimelineBody = () => {
-  const Timeline = ({ allFiles, cfg }) => {
+  const Timeline = ({ fileData, allFiles, cfg }) => {
     const locale = cfg?.locale ?? "en-GB"
-    const events = (allFiles || [])
-      .filter((f) => f && f.slug && f.slug !== "timeline" && f.slug !== "recent" && !String(f.slug).endsWith("/index"))
-      .map((f) => ({
+    const recentOnly = (fileData && fileData.slug) === "recent"
+
+    const events = []
+    for (const f of allFiles || []) {
+      if (!f || !f.slug || f.slug === "timeline" || f.slug === "recent" || String(f.slug).endsWith("/index")) continue
+      const base = {
         slug: f.slug,
         title: (f.frontmatter && f.frontmatter.title) || f.slug,
-        date: f.dates && f.dates.created,
         folder: String(f.slug).split("/").slice(0, -1).join("/"),
         tags: (f.frontmatter && Array.isArray(f.frontmatter.tags)) ? f.frontmatter.tags : [],
-      }))
-      .filter((e) => e.date)
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      }
+      const created = f.dates && f.dates.created
+      const modified = f.dates && f.dates.modified
+      if (created) events.push({ ...base, type: "created", date: created })
+      if (!recentOnly && modified && String(modified) !== String(created)) {
+        events.push({ ...base, type: "modified", date: modified })
+      }
+    }
+    events.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
     return h("div", { class: "timeline" }, [
       h("style", null, CSS),
       h("div", { class: "timeline-container" }, [
         h("div", { class: "timeline-line" }),
         ...events.map((e, i) =>
-          h("div", { class: `timeline-event ${i % 2 === 0 ? "left" : "right"}`, key: e.slug }, [
+          h("div", { class: `timeline-event ${i % 2 === 0 ? "left" : "right"}`, key: `${e.slug}-${e.type}-${i}` }, [
             h("div", { class: "timeline-connector" }, [
               h("div", { class: "timeline-dot" }),
               h("div", { class: "timeline-line-to-content" }),
             ]),
             h("div", { class: "timeline-metadata" }, [
               h("div", { class: "timeline-type-date" }, [
-                h("span", { class: "timeline-type" }, "Created"),
+                h("span", { class: "timeline-type" }, e.type === "modified" ? "Last modified" : "Created"),
                 h("span", { class: "timeline-date" }, fmtDate(e.date, locale)),
               ]),
               e.folder ? h("div", { class: "timeline-folder-desktop" }, e.folder) : null,
