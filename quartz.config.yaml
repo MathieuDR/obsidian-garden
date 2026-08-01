@@ -270,6 +270,9 @@ plugins:
   - source: ./local-plugins/title-fix
     enabled: true
     order: 6
+  - source: ./local-plugins/timeline
+    enabled: true
+    order: 50
 layout:
   groups:
     toolbar:
