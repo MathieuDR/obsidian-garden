@@ -31,7 +31,9 @@ jobs:
         run: |
           npm ci
           npx quartz build
-          nix-build image.nix -o image-result
+          nix-build image.nix -o image-result \
+            --argstr created "$(git log -1 --format=%cI)" \
+            --argstr rev "$GITHUB_SHA"
 
           # skopeo defaults its auth file to /run/containers/<uid>, which the
           # unprivileged runner can't write; keep it in the temp dir instead.

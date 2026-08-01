@@ -6,6 +6,10 @@
 # whereas nix-build copies the path from the working tree as-is.
 {
   publicDir ? ./public,
+  # Overridden in CI with the garden commit's date/sha so the image is stamped
+  # (reproducibly) instead of showing dockerTools' default epoch timestamp.
+  created ? "1970-01-01T00:00:01Z",
+  rev ? "",
   pkgs ?
     import (fetchTarball {
       url = "https://github.com/NixOS/nixpkgs/archive/1da52dd49a127ad74486b135898da2cef8c62665.tar.gz";
@@ -23,6 +27,7 @@ in
   pkgs.dockerTools.buildLayeredImage {
     name = "obsidian-garden";
     tag = "latest";
+    created = created;
     contents = [pkgs.caddy siteRoot];
     config = {
       Cmd = ["${pkgs.caddy}/bin/caddy" "run" "--config" "/etc/caddy/Caddyfile" "--adapter" "caddyfile"];
@@ -31,5 +36,8 @@ in
         "XDG_DATA_HOME=/data"
         "XDG_CONFIG_HOME=/config"
       ];
+      Labels = pkgs.lib.optionalAttrs (rev != "") {
+        "org.opencontainers.image.revision" = rev;
+      };
     };
   }
