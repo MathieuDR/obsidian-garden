@@ -1,7 +1,16 @@
 // Local pageType plugin: generates a /timeline page listing published notes
 // chronologically (newest first), grouped by year. Ports the essence of the v4
 // timeline emitter to the v5 pageType API (generate + match + body).
+// NB: the v5 branch doesn't collect component.css from pageType bodies, so the
+// styles are inlined as a <style> element to guarantee they reach the page.
 import { h } from "preact"
+
+const CSS = `
+.timeline-list{list-style:none;padding:0;margin:0 0 1.5rem}
+.timeline-year>h2{margin:1.5rem 0 .4rem;border-bottom:1px solid var(--lightgray)}
+.timeline-entry{display:flex;gap:.75rem;padding:.15rem 0;align-items:baseline}
+.timeline-date{color:var(--gray);min-width:7rem;font-variant-numeric:tabular-nums;font-size:.85em}
+`
 
 function fmtDate(d, locale) {
   try {
@@ -35,10 +44,9 @@ const TimelineBody = () => {
     }
     const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a))
 
-    return h(
-      "div",
-      { class: "timeline" },
-      years.map((y) =>
+    return h("div", { class: "timeline" }, [
+      h("style", null, CSS),
+      ...years.map((y) =>
         h("section", { class: "timeline-year", key: y }, [
           h("h2", {}, String(y)),
           h(
@@ -53,14 +61,9 @@ const TimelineBody = () => {
           ),
         ]),
       ),
-    )
+    ])
   }
-  Timeline.css = `
-.timeline-list{list-style:none;padding:0;margin:0 0 1.5rem}
-.timeline-year>h2{margin:1.5rem 0 .4rem;border-bottom:1px solid var(--lightgray)}
-.timeline-entry{display:flex;gap:.75rem;padding:.15rem 0;align-items:baseline}
-.timeline-date{color:var(--gray);min-width:7rem;font-variant-numeric:tabular-nums;font-size:.85em}
-`
+  Timeline.css = CSS
   return Timeline
 }
 
