@@ -1,5 +1,6 @@
-// Local pageType plugin: /timeline as a chronological alternating "leaf" view (v4 look).
-// pageType body CSS isn't collected by the v5 branch, so styles are inlined as <style>.
+// Local pageType plugin: /timeline and /recent as a chronological alternating "leaf"
+// view (v4 look). pageType body CSS isn't collected by the v5 branch, so styles are
+// inlined as <style>. v4 rendered both /timeline and /recent with the Timeline component.
 import { h } from "preact"
 
 const CSS = `
@@ -24,6 +25,7 @@ const CSS = `
 .timeline-date { font-size: 0.85em; }
 .timeline-folder-desktop { font-size: 0.9em; color: var(--gray); align-self: flex-end; }
 .timeline-content { background: var(--lightgray); border: 1px solid var(--gray); border-radius: 8px; padding: 1rem; }
+.timeline-content .tags { margin: 0.5rem 0 0; }
 .timeline-header { margin-bottom: 0.5rem; }
 a.timeline-title.internal { font-size: 1.15em; background-color: unset; font-weight: 600; color: var(--secondary); text-decoration: none; }
 a.timeline-title.internal:hover { text-decoration: underline; }
@@ -52,12 +54,13 @@ const TimelineBody = () => {
   const Timeline = ({ allFiles, cfg }) => {
     const locale = cfg?.locale ?? "en-GB"
     const events = (allFiles || [])
-      .filter((f) => f && f.slug && f.slug !== "timeline" && !String(f.slug).endsWith("/index"))
+      .filter((f) => f && f.slug && f.slug !== "timeline" && f.slug !== "recent" && !String(f.slug).endsWith("/index"))
       .map((f) => ({
         slug: f.slug,
         title: (f.frontmatter && f.frontmatter.title) || f.slug,
         date: f.dates && f.dates.created,
         folder: String(f.slug).split("/").slice(0, -1).join("/"),
+        tags: (f.frontmatter && Array.isArray(f.frontmatter.tags)) ? f.frontmatter.tags : [],
       }))
       .filter((e) => e.date)
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -79,11 +82,16 @@ const TimelineBody = () => {
               ]),
               e.folder ? h("div", { class: "timeline-folder-desktop" }, e.folder) : null,
             ]),
-            h("div", { class: "timeline-content" },
+            h("div", { class: "timeline-content" }, [
               h("div", { class: "timeline-header" },
                 h("a", { href: "/" + e.slug, class: "internal timeline-title" }, e.title),
               ),
-            ),
+              e.tags.length > 0
+                ? h("ul", { class: "tags" }, e.tags.map((t) =>
+                    h("li", { key: t }, h("a", { href: "/tags/" + t, class: "internal tag-link" }, t)),
+                  ))
+                : null,
+            ]),
           ]),
         ),
       ]),
@@ -96,10 +104,11 @@ const TimelineBody = () => {
 const Timeline = (opts) => ({
   name: "Timeline",
   priority: 10,
-  match: ({ slug }) => slug === "timeline",
+  match: ({ slug }) => slug === "timeline" || slug === "recent",
   layout: "content",
   generate: () => [
     { slug: "timeline", title: "Timeline", data: { frontmatter: { title: "Timeline" } } },
+    { slug: "recent", title: "Recent", data: { frontmatter: { title: "Recent" } } },
   ],
   body: () => TimelineBody(),
 })

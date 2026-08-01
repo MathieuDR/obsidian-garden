@@ -110,3 +110,19 @@ a.external { text-decoration: underline; }
 
 // Hide the layout separator between the article and the footer (v4 didn't show it).
 article + hr { display: none; }
+
+// Explorer folders: semibold header font in the normal text colour (v4 look),
+// not the mauve link colour that folderClickBehavior=link gives them.
+.explorer .folder-title,
+.explorer a.folder-title,
+.explorer .folder-button {
+  color: var(--dark);
+  font-weight: 600;
+  font-family: var(--headerFont);
+}
+
+// Article/content titles in mauve (matches v4's `h1 { color: accent }`).
+h1.article-title,
+article h1 {
+  color: var(--secondary);
+}

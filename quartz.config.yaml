@@ -210,6 +210,7 @@ plugins:
     layout:
       position: beforeBody
       priority: 20
+      condition: not-index
     options:
       showReadingTime: false
   - source: "@quartz-community/tag-list"
@@ -217,6 +218,7 @@ plugins:
     layout:
       position: beforeBody
       priority: 30
+      condition: not-index
   - source: "@quartz-community/page-title"
     enabled: true
     layout:
@@ -261,6 +263,8 @@ plugins:
       priority: 50
   - source: "@quartz-community/recent-notes"
     enabled: true
+    options:
+      linkToMore: recent
     layout:
       position: right
       priority: 40
