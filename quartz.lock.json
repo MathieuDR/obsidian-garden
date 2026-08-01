@@ -1,6 +1,12 @@
 {
   "version": "1.0.0",
   "plugins": {
+    "nav": {
+      "source": "./local-plugins/nav",
+      "resolved": "/Users/mathieu.deraedt/development/sources/obsidian-garden/local-plugins/nav",
+      "commit": "local",
+      "installedAt": "2026-08-01T12:18:36.787Z"
+    },
     "timeline": {
       "source": "./local-plugins/timeline",
       "resolved": "/Users/mathieu.deraedt/development/sources/obsidian-garden/local-plugins/timeline",

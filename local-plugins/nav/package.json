@@ -1,0 +1,29 @@
+{
+  "name": "@local/nav",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": { "import": "./dist/index.js" },
+    "./components": { "import": "./dist/components.js" },
+    "./package.json": "./package.json"
+  },
+  "quartz": {
+    "name": "nav",
+    "displayName": "Nav",
+    "category": "component",
+    "quartzVersion": ">=5.0.0",
+    "dependencies": [],
+    "defaultOrder": 50,
+    "defaultEnabled": true,
+    "defaultOptions": {},
+    "components": {
+      "Nav": {
+        "displayName": "Nav",
+        "defaultPosition": "left",
+        "defaultPriority": 15
+      }
+    }
+  },
+  "peerDependencies": { "preact": "^10.0.0" }
+}
