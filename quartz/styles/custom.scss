@@ -107,3 +107,6 @@ a.internal.tag-link:hover {
 
 // Minor v4 touch.
 a.external { text-decoration: underline; }
+
+// Hide the layout separator between the article and the footer (v4 didn't show it).
+article + hr { display: none; }
