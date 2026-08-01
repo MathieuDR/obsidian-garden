@@ -26,29 +26,29 @@ configuration:
       header: Satoshi
       body: Roboto
       code: JetBrains Mono
-    # @quartz-themes/core (catppuccin mocha) overrides these at runtime, but Quartz
-    # core's joinStyles still requires the block to exist.
+    # Catppuccin palette applied to Quartz's native (flat) colour system:
+    # light=Latte, dark=Mocha. secondary=mauve, tertiary=green.
     colors:
       lightMode:
-        light: "#faf8f8"
-        lightgray: "#e5e5e5"
-        gray: "#b8b8b8"
-        darkgray: "#4e4e4e"
-        dark: "#2b2b2b"
-        secondary: "#284b63"
-        tertiary: "#84a59d"
-        highlight: rgba(143, 159, 169, 0.15)
-        textHighlight: "#fff23688"
+        light: "#eff1f5"
+        lightgray: "#ccd0da"
+        gray: "#9ca0b0"
+        darkgray: "#6c6f85"
+        dark: "#4c4f69"
+        secondary: "#8839ef"
+        tertiary: "#40a02b"
+        highlight: rgba(172, 176, 190, 0.15)
+        textHighlight: "#df8e1d88"
       darkMode:
-        light: "#161618"
-        lightgray: "#393639"
-        gray: "#646464"
-        darkgray: "#d4d4d4"
-        dark: "#ebebec"
-        secondary: "#7b97aa"
-        tertiary: "#84a59d"
-        highlight: rgba(143, 159, 169, 0.15)
-        textHighlight: "#b3aa0288"
+        light: "#1e1e2e"
+        lightgray: "#313244"
+        gray: "#6c7086"
+        darkgray: "#a6adc8"
+        dark: "#cdd6f4"
+        secondary: "#cba6f7"
+        tertiary: "#a6e3a1"
+        highlight: rgba(88, 91, 112, 0.15)
+        textHighlight: "#f9e2af88"
 plugins:
   - source: "@quartz-community/created-modified-date"
     enabled: true
@@ -114,13 +114,6 @@ plugins:
     options:
       fontOrigin: local
       useThemeFonts: true
-  - source: "@quartz-themes/core"
-    enabled: true
-    options:
-      theme: catppuccin
-      variation: mocha
-      mode: both
-      themeFonts: false
   - source: "@quartz-community/remove-draft"
     enabled: false
   - source: "@quartz-community/explicit-publish"
