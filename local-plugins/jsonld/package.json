@@ -1,0 +1,21 @@
+{
+  "name": "@local/jsonld",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": { "import": "./dist/index.js" },
+    "./package.json": "./package.json"
+  },
+  "quartz": {
+    "name": "jsonld",
+    "displayName": "JsonLd",
+    "category": "emitter",
+    "quartzVersion": ">=5.0.0",
+    "dependencies": [],
+    "defaultOrder": 80,
+    "defaultEnabled": true,
+    "defaultOptions": {}
+  },
+  "peerDependencies": { "preact": "^10.0.0" }
+}

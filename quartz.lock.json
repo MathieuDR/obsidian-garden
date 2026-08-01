@@ -1,6 +1,12 @@
 {
   "version": "1.0.0",
   "plugins": {
+    "jsonld": {
+      "source": "./local-plugins/jsonld",
+      "resolved": "/Users/mathieu.deraedt/development/sources/obsidian-garden/local-plugins/jsonld",
+      "commit": "local",
+      "installedAt": "2026-08-01T12:30:09.939Z"
+    },
     "media-meta": {
       "source": "./local-plugins/media-meta",
       "resolved": "/Users/mathieu.deraedt/development/sources/obsidian-garden/local-plugins/media-meta",

@@ -332,6 +332,15 @@ plugins:
     layout:
       position: beforeBody
       priority: 25
+  - source: ./local-plugins/jsonld
+    enabled: true
+    options:
+      author:
+        name: Mathieu Deraedt
+        url: https://mathieu.deraedt.dev
+        sameAs:
+          - https://github.com/MathieuDR
+          - https://www.linkedin.com/in/mathieuderaedt
 layout:
   groups:
     toolbar:
