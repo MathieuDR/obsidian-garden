@@ -74,3 +74,36 @@
   mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2724%27%20height%3D%2724%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27%23000%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M13%2021h8%27%2F%3E%3Cpath%20d%3D%27m15%205%204%204%27%2F%3E%3Cpath%20d%3D%27M21.174%206.812a1%201%200%200%200-3.986-3.987L3.842%2016.174a2%202%200%200%200-.5.83l-1.321%204.352a.5.5%200%200%200%20.623.622l4.353-1.32a2%202%200%200%200%20.83-.497z%27%2F%3E%3C%2Fsvg%3E");
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2724%27%20height%3D%2724%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27%23000%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M13%2021h8%27%2F%3E%3Cpath%20d%3D%27m15%205%204%204%27%2F%3E%3Cpath%20d%3D%27M21.174%206.812a1%201%200%200%200-3.986-3.987L3.842%2016.174a2%202%200%200%200-.5.83l-1.321%204.352a.5.5%200%200%200%20.623.622l4.353-1.32a2%202%200%200%200%20.83-.497z%27%2F%3E%3C%2Fsvg%3E");
 }
+
+// --- v4 look: mauve monospace title, flat tag links ---
+
+// Site title: mauve, monospace (matches v4 ~/.mathieu).
+.page-title a {
+  color: var(--secondary);
+  font-family: var(--codeFont);
+}
+
+// Tags as plain coloured links (not pills): no background/padding, code font.
+a.internal.tag-link {
+  background-color: transparent;
+  color: var(--secondary);
+  padding: 0;
+  border-radius: 0;
+  font-family: var(--codeFont);
+  font-size: 0.9em;
+}
+a.internal.tag-link:hover {
+  text-decoration: underline;
+}
+
+// Recent-notes tags: compact and unobtrusive.
+.recent-notes ul.tags {
+  gap: 0.5rem;
+  margin: 0.3rem 0 0;
+}
+.recent-notes a.internal.tag-link {
+  font-size: 0.8em;
+}
+
+// Minor v4 touch.
+a.external { text-decoration: underline; }
