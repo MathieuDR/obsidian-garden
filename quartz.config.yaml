@@ -311,6 +311,15 @@ plugins:
       position: afterBody
       priority: 50
       display: all
+  - source: ./local-plugins/transclude-unpublished
+    enabled: true
+    order: 29
+    options:
+      commonDirectories:
+        - slips/
+        - fleeting/
+        - fleeting/archived/
+        - fleeting/clippings/
   - source: ./local-plugins/title-fix
     enabled: true
     order: 6

@@ -30,6 +30,12 @@
       "resolved": "/Users/mathieu.deraedt/development/sources/obsidian-garden/local-plugins/title-fix",
       "commit": "local",
       "installedAt": "2026-08-01T10:45:44.813Z"
+    },
+    "transclude-unpublished": {
+      "source": "./local-plugins/transclude-unpublished",
+      "resolved": "/Users/mathieu.deraedt/development/sources/obsidian-garden/local-plugins/transclude-unpublished",
+      "commit": "local",
+      "installedAt": "2026-08-01T12:40:31.048Z"
     }
   }
 }

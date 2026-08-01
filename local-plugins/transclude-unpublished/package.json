@@ -1,0 +1,20 @@
+{
+  "name": "@local/transclude-unpublished",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": { "import": "./dist/index.js" },
+    "./package.json": "./package.json"
+  },
+  "quartz": {
+    "name": "transclude-unpublished",
+    "displayName": "TranscludeUnpublished",
+    "category": "transformer",
+    "quartzVersion": ">=5.0.0",
+    "dependencies": [],
+    "defaultOrder": 29,
+    "defaultEnabled": true,
+    "defaultOptions": {}
+  }
+}
