@@ -1,0 +1,60 @@
+name: Build & Deploy
+on:
+  push:
+    branches: [v4]
+  workflow_dispatch:
+
+jobs:
+  build-deploy:
+    runs-on: native
+    env:
+      IMAGE: ghcr.io/mathieudr/obsidian-garden:latest
+      GHCR_USERNAME: mathieudr
+      # The DynamicUser runner has no writable $HOME of its own; keep npm/nix
+      # caches in the (writable) workspace.
+      HOME: ${{ github.workspace }}
+    steps:
+      - name: Checkout (with private content submodule)
+        uses: https://code.forgejo.org/actions/checkout@v4
+        with:
+          # Full history so Quartz can derive per-note created/modified dates.
+          fetch-depth: 0
+          submodules: recursive
+          token: ${{ secrets.CODEBERG_TOKEN }}
+
+      - name: Build site, push image, deploy
+        env:
+          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USERNAME: ${{ secrets.VPS_USERNAME }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          # Quartz v5 needs node >=22; the flake devShell provides it (and runs
+          # `npm i` in its shellHook). Community + local plugins must be installed
+          # from the config before the build.
+          nix develop --command bash -c '
+            node ./quartz/bootstrap-cli.mjs plugin install --from-config
+            node ./quartz/bootstrap-cli.mjs build
+          '
+          nix-build image.nix -o image-result \
+            --argstr created "$(git log -1 --format=%cI)" \
+            --argstr rev "$GITHUB_SHA"
+
+          # skopeo defaults its auth file to /run/containers/<uid>, which the
+          # unprivileged runner can't write; keep it in the temp dir instead.
+          key="$RUNNER_TEMP/deploy_key"
+          export REGISTRY_AUTH_FILE="$RUNNER_TEMP/auth.json"
+          trap 'rm -f "$key" "$REGISTRY_AUTH_FILE"' EXIT
+
+          echo "$GHCR_TOKEN" | skopeo login ghcr.io -u "$GHCR_USERNAME" --password-stdin
+          skopeo copy "docker-archive:image-result" "docker://$IMAGE"
+
+          install -m600 /dev/null "$key"
+          printf "%s\n" "$VPS_SSH_KEY" > "$key"
+          # The ghcr image is private and deploy_image pulls with `sudo podman`
+          # (rootful), so log ROOT's podman into ghcr with the PAT (piped over
+          # ssh stdin, never in argv) before deploy_image runs.
+          printf '%s' "$GHCR_TOKEN" | ssh -i "$key" \
+            -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            "$VPS_USERNAME@$VPS_HOST" \
+            "sudo podman login ghcr.io -u '$GHCR_USERNAME' --password-stdin && deploy_image ghcr.io/mathieudr/obsidian-garden latest podman-garden"
