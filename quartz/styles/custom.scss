@@ -199,3 +199,12 @@ a.external:hover {
   border-bottom-color: var(--secondary);
 }
 a.external svg { opacity: 0.6; }
+
+// Mobile/tablet: Quartz caps right-sidebar children at max-height 24rem. With backlinks
+// moved to the centre, the lone Recent Notes block overflows that cap and overlaps the
+// footer. Let it size to its content so the footer sits cleanly below it.
+@media all and not ($desktop) {
+  .sidebar.right > * {
+    max-height: none;
+  }
+}
