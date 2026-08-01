@@ -168,3 +168,34 @@ a.internal {
 .popover .tags {
   display: none;
 }
+
+// ===== Link treatment (Zettelkasten: internal links are the graph) =====
+// Internal note links: mauve + a quiet mauve underline (no constant fill). The highlight
+// "pill" returns on HOVER (green) as a reward. Tags + timeline titles keep their own style.
+a.internal:not(.tag-link):not(.timeline-title) {
+  color: var(--secondary);
+  background-color: transparent;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--secondary) 35%, transparent);
+  border-radius: 0;
+  padding: 0 1px 1px;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+a.internal:not(.tag-link):not(.timeline-title):hover {
+  color: var(--tertiary);
+  border-bottom-color: var(--tertiary);
+  background-color: color-mix(in srgb, var(--tertiary) 14%, transparent);
+  border-radius: 3px;
+}
+
+// External / outbound references: quieter, dotted underline, dimmed arrow.
+a.external {
+  color: var(--darkgray);
+  text-decoration: none;
+  border-bottom: 1px dotted color-mix(in srgb, var(--darkgray) 45%, transparent);
+}
+a.external:hover {
+  color: var(--secondary);
+  border-bottom-color: var(--secondary);
+}
+a.external svg { opacity: 0.6; }
