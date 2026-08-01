@@ -159,3 +159,12 @@ a.internal {
   margin-top: 2rem;
   padding-top: 1rem;
 }
+
+// Hover popover: show only the title + text — hide breadcrumb, date and tags (v4 did this
+// for breadcrumb+tags; we also drop the date so it's title + text immediately).
+.popover .breadcrumb-container,
+.popover .content-meta,
+.popover ul.tags,
+.popover .tags {
+  display: none;
+}
