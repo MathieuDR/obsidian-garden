@@ -10,7 +10,7 @@
   "quartz": {
     "name": "timeline",
     "displayName": "Timeline",
-    "category": ["pageType", "component"],
+    "category": ["pageType"],
     "quartzVersion": ">=5.0.0",
     "dependencies": [],
     "defaultOrder": 50,
