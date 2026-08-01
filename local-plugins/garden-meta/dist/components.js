@@ -5,6 +5,8 @@ import { h } from "preact"
 const CSS = `
 .garden-meta { margin: 0.75rem 0; font-size: 0.85rem; }
 .garden-meta .garden-stats { color: var(--gray); margin-bottom: 0.3rem; }
+.garden-meta .garden-stats a { color: inherit; text-decoration: none; }
+.garden-meta .garden-stats a:hover { color: var(--dark); text-decoration: underline; }
 .garden-meta .random-note { color: var(--secondary); font-family: var(--codeFont); text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35em; }
 .garden-meta .random-note:hover { color: var(--tertiary); }
 .garden-meta .random-note svg { width: 14px; height: 14px; }
@@ -87,11 +89,12 @@ const GardenMeta = (opts) => {
       for (const t of tags) tagSet.add(t)
       if (Array.isArray(f.links)) links += f.links.length
     }
-    const parts = [`${fmt(notes.length)} notes`]
-    if (links > 0) parts.push(`${fmt(links)} links`)
-    parts.push(`${fmt(tagSet.size)} tags`)
+    const stats = [`${fmt(notes.length)} notes · `]
+    if (links > 0) stats.push(`${fmt(links)} links · `)
+    // "N tags" is a subtle (grey, non-accented) link to the tag index.
+    stats.push(h("a", { class: "stats-tags", href: "/tags" }, `${fmt(tagSet.size)} tags`))
     return h("div", { class: "garden-meta" }, [
-      h("div", { class: "garden-stats" }, parts.join(" · ")),
+      h("div", { class: "garden-stats" }, stats),
       h("a", { class: "random-note", href: "#" }, [dicesIcon(), h("span", null, "Random note")]),
     ])
   }

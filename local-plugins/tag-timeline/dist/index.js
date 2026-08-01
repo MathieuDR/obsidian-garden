@@ -42,6 +42,12 @@ a.timeline-title.internal:hover { text-decoration: underline; }
 }
 `
 
+const INDEX_CSS = `
+.tag-index-list { list-style: none; padding: 0; margin: 1.5rem 0; display: flex; flex-wrap: wrap; gap: 0.6rem 1.4rem; }
+.tag-index-item { display: inline-flex; align-items: baseline; gap: 0.35rem; }
+.tag-index-item .tag-count { color: var(--gray); font-size: 0.85em; font-variant-numeric: tabular-nums; }
+`
+
 function fmtDate(d, locale) {
   try { return new Date(d).toLocaleDateString(locale ?? "en-GB", { year: "numeric", month: "short", day: "numeric" }) } catch { return "" }
 }
@@ -99,16 +105,39 @@ const TagTimeline = (opts) => ({
     const Component = ({ fileData, allFiles, cfg }) => {
       const locale = cfg?.locale ?? "en-GB"
       const s = String((fileData && fileData.slug) || "")
-      const tag = s === "tags" || s === "tags/index" ? null : s.replace(/^tags\//, "")
+      const isIndex = s === "tags" || s === "tags/index"
+
+      // /tags → a browsable index of all tags with note counts (sorted by frequency).
+      if (isIndex) {
+        const counts = {}
+        for (const f of allFiles || []) {
+          if (!isRealNote(f)) continue
+          const tags = f.frontmatter && Array.isArray(f.frontmatter.tags) ? f.frontmatter.tags : []
+          for (const t of tags) counts[t] = (counts[t] || 0) + 1
+        }
+        const sorted = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b))
+        return h("div", { class: "tag-index" }, [
+          h("style", null, INDEX_CSS),
+          h(
+            "ul",
+            { class: "tag-index-list" },
+            sorted.map((t) =>
+              h("li", { class: "tag-index-item", key: t }, [
+                h("a", { href: "/tags/" + t, class: "internal tag-link" }, t),
+                h("span", { class: "tag-count" }, String(counts[t])),
+              ]),
+            ),
+          ),
+        ])
+      }
+
+      // /tags/<tag> → the timeline of notes carrying that tag.
+      const tag = s.replace(/^tags\//, "")
       const events = []
       for (const f of allFiles || []) {
         if (!isRealNote(f)) continue
-        const tags = (f.frontmatter && Array.isArray(f.frontmatter.tags)) ? f.frontmatter.tags : []
-        if (tag) {
-          if (!tags.includes(tag)) continue
-        } else {
-          if (tags.length === 0) continue // tag index: only tagged notes
-        }
+        const tags = f.frontmatter && Array.isArray(f.frontmatter.tags) ? f.frontmatter.tags : []
+        if (!tags.includes(tag)) continue
         const created = f.dates && f.dates.created
         if (created) events.push({ ...noteBase(f), date: created })
       }
