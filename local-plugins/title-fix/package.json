@@ -1,0 +1,20 @@
+{
+  "name": "@local/title-fix",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": { "import": "./dist/index.js" },
+    "./package.json": "./package.json"
+  },
+  "quartz": {
+    "name": "title-fix",
+    "displayName": "Title Fix",
+    "category": "transformer",
+    "quartzVersion": ">=5.0.0",
+    "dependencies": [],
+    "defaultOrder": 6,
+    "defaultEnabled": true,
+    "defaultOptions": {}
+  }
+}

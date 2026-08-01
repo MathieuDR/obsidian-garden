@@ -267,6 +267,9 @@ plugins:
       position: afterBody
       priority: 50
       display: all
+  - source: ./local-plugins/title-fix
+    enabled: true
+    order: 6
 layout:
   groups:
     toolbar:
