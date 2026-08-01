@@ -126,3 +126,36 @@ h1.article-title,
 article h1 {
   color: var(--secondary);
 }
+
+// ===== Lighter accent pass (branch quartz-v5-accent) =====
+// Keep the mauve + green identity; get hierarchy from size/weight/placement, not more colours.
+// No orange, nav + tags stay mauve.
+
+// Article H1: the one strong anchor — biggest/boldest.
+h1.article-title {
+  font-size: 2.3rem;
+  font-weight: 800;
+}
+
+// Body links: mauve, but drop the filled highlight (less "wash").
+a.internal {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+// Breadcrumb: muted grey + small — orientation metadata, not an accent.
+.breadcrumb-container,
+.breadcrumb-container a,
+.breadcrumb-element,
+.breadcrumb-element a {
+  color: var(--gray);
+  font-size: 0.85rem;
+}
+
+// Backlinks now live at the end of the article (centre) — give them a divider.
+.backlinks {
+  border-top: 1px solid var(--lightgray);
+  margin-top: 2rem;
+  padding-top: 1rem;
+}
