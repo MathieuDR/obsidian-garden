@@ -139,6 +139,42 @@ plugins:
     enabled: true
   - source: "@quartz-community/explorer"
     enabled: true
+    options:
+      title: Notes
+      folderDefaultState: collapsed
+      useSavedState: true
+      order: [filter, sort, map]
+      sortFn: |
+        (a, b) => {
+          const folderOrder = { slips: 1, output: 2, research: 3 }
+          if (a.isFolder && b.isFolder) {
+            const oa = folderOrder[a.displayName] || Number.MAX_SAFE_INTEGER
+            const ob = folderOrder[b.displayName] || Number.MAX_SAFE_INTEGER
+            return oa - ob
+          }
+          if (!a.isFolder && b.isFolder) return 1
+          if (a.isFolder && !b.isFolder) return -1
+          const af = a.slugSegments[a.slugSegments.length - 1]
+          const bf = b.slugSegments[b.slugSegments.length - 1]
+          return af <= bf ? 1 : -1
+        }
+      mapFn: |
+        (node) => {
+          if (node.isFolder) {
+            node.displayName = node.displayName.charAt(0).toUpperCase() + node.displayName.slice(1)
+          }
+        }
+      filterFn: |
+        (node) => {
+          const filtered = [
+            "output/pages/1749074946-confirm",
+            "output/pages/1749074960-thank-you",
+            "output/pages/1746442137-about-me",
+            "output/pages/1746442167-current-projects",
+            "output/pages/1746441940-digital-garden",
+          ]
+          return filtered.indexOf(node.slug) == -1
+        }
     layout:
       position: left
       priority: 50
