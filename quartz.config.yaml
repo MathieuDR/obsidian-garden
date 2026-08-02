@@ -359,7 +359,7 @@ plugins:
     enabled: true
     layout:
       position: afterBody
-      priority: 45
+      priority: 55
       display: mobile-only
   - source: ./local-plugins/garden-meta
     enabled: true
