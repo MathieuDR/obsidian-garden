@@ -111,14 +111,66 @@ a.external { text-decoration: underline; }
 // Hide the layout separator between the article and the footer (v4 didn't show it).
 article + hr { display: none; }
 
+// Mobile specific fixes
+@media all and ($mobile) {
+  // Sidebar fix on mobile
+  .left.sidebar {
+    flex-wrap: wrap;
+    padding-bottom: 0;
+
+    nav.page-navigation{
+      flex: 1 auto;
+      margin-top: 1rem;
+
+      ul{
+        justify-content: center;
+      }
+    }
+  }
+
+  .explorer.collapsed > .explorer-content {
+    display: none;
+  }
+
+  // Title fixes
+  div.center h1.article-title{
+    margin-top: 0.5rem;
+  }
+
+}
+
+
 // Explorer folders: semibold header font in the normal text colour (v4 look),
 // not the mauve link colour that folderClickBehavior=link gives them.
-.explorer .folder-title,
-.explorer a.folder-title,
-.explorer .folder-button {
-  color: var(--dark);
-  font-weight: 600;
-  font-family: var(--headerFont);
+.explorer {
+  .folder-title,
+  a.folder-title,
+  .folder-button {
+    color: var(--dark);
+    font-weight: 600;
+    font-family: var(--headerFont);
+  }
+
+  .explorer-content .folder-outer ul li{
+    a.nav-file-title{
+      display: block;
+      line-height: 1.2rem;
+      padding: 0.3rem 0;
+      border-bottom: 1px solid var(--lightgray);
+
+      &:hover {
+        background-color: var(--tertiary);
+        color: var(--text-on-accent);
+      }
+    }
+  }
+
+@media all and ($mobile) {
+  .explorer-content{
+    position: fixed;
+    padding-left: 2rem;
+  }
+}
 }
 
 // Article/content titles in mauve (matches v4's `h1 { color: accent }`).
