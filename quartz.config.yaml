@@ -126,7 +126,7 @@ plugins:
   - source: "@quartz-community/favicon"
     enabled: true
   - source: "@quartz-community/og-image"
-    enabled: false
+    enabled: true
     options:
       colorScheme: darkMode
   - source: "@quartz-community/cname"
