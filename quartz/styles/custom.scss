@@ -112,14 +112,14 @@ a.external { text-decoration: underline; }
 article + hr { display: none; }
 
 // Mobile specific fixes
-@media all and ($mobile) {
+@media ($mobile) {
   // Sidebar fix on mobile
   .left.sidebar {
     flex-wrap: wrap;
     padding-bottom: 0;
 
     nav.page-navigation{
-      flex: 1 auto;
+      flex: 1 100%;
       margin-top: 1rem;
 
       ul{
@@ -136,9 +136,7 @@ article + hr { display: none; }
   div.center h1.article-title{
     margin-top: 0.5rem;
   }
-
 }
-
 
 // Explorer folders: semibold header font in the normal text colour (v4 look),
 // not the mauve link colour that folderClickBehavior=link gives them.

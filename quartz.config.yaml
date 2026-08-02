@@ -126,7 +126,7 @@ plugins:
   - source: "@quartz-community/favicon"
     enabled: true
   - source: "@quartz-community/og-image"
-    enabled: true
+    enabled: false
     options:
       colorScheme: darkMode
   - source: "@quartz-community/cname"
@@ -358,8 +358,15 @@ plugins:
   - source: ./local-plugins/garden-meta
     enabled: true
     layout:
+      position: afterBody
+      priority: 45
+      display: mobile-only
+  - source: ./local-plugins/garden-meta
+    enabled: true
+    layout:
       position: left
       priority: 45
+      display: desktop-only
   - source: ./local-plugins/media-meta
     enabled: true
     layout:
